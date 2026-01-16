@@ -1,0 +1,100 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using TechGear.Models
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Admin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+
+</head>
+
+<body>
+    <!-- TOP NAVBAR -->
+    <nav class="navbar navbar-dark bg-dark px-3">
+        <span class="navbar-brand fw-bold">Admin Panel</span>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+            <div class="d-flex align-items-center">
+                <span class="text-white me-3">
+                    Xin chào, @UserManager.GetUserName(User)
+                </span>
+
+                <form asp-area="Identity"
+                      asp-page="/Account/Logout"
+                      method="post"
+                      class="m-0">
+                    <button type="submit" class="btn btn-outline-light btn-sm">
+                        Đăng xuất
+                    </button>
+                </form>
+            </div>
+        }
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- SIDEBAR -->
+            <aside class="col-md-2 sidebar p-0">
+                <ul class="nav flex-column pt-3">
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           asp-area="Admin"
+                           asp-controller="Dashboard"
+                           asp-action="Index">
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="UserRole"
+                           asp-action="Index">
+                            Quản lý User
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link"
+                           asp-area="Admin"
+                           asp-controller="Role"
+                           asp-action="Index">
+                            Quản lý Role
+                        </a>
+                    </li>
+
+                    @* <li class="nav-item mt-3">
+                        <a class="nav-link"
+                           asp-area=""
+                           asp-controller="Home"
+                           asp-action="Index">
+                            ← Về Website
+                        </a>
+                    </li> *@
+
+                </ul>
+            </aside>
+
+            <!-- MAIN CONTENT -->
+            <main class="col-md-10 content">
+                <h4 class="mb-3">@ViewData["Title"]</h4>
+                <hr />
+                @RenderBody()
+            </main>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

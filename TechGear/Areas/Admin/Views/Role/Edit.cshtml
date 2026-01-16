@@ -1,0 +1,24 @@
+﻿@model TechGear.Models.ApplicationUser
+@{
+    var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Identity.IdentityRole>;
+    var userRoles = ViewBag.UserRoles as IList<string>;
+}
+
+<h2>Change Role - @Model.Email</h2>
+
+<form method="post">
+    <input type="hidden" name="userId" value="@Model.Id" />
+
+    @foreach (var role in roles)
+    {
+        <div>
+            <input type="checkbox"
+                   name="roles"
+                   value="@role.Name"
+                   @(userRoles.Contains(role.Name) ? "checked" : "") />
+            <label>@role.Name</label>
+        </div>
+    }
+
+    <button type="submit">Save</button>
+</form>

@@ -1,0 +1,21 @@
+﻿@using TechGear.Models
+@model IEnumerable<ApplicationUser>
+
+
+<h2>User Permission Management</h2>
+
+<table class="table">
+    <tr>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Email</td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@user.Id">Change Role</a>
+            </td>
+        </tr>
+    }
+</table>

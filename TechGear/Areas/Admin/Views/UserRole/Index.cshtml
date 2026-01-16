@@ -1,0 +1,40 @@
+﻿@model IEnumerable<TechGear.Models.ViewModels.UserRoleVM>
+
+<h2>User Role Management</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Email</td>
+                <td>
+                    @if (item.Roles != null && item.Roles.Any())
+                    {
+                        @string.Join(", ", item.Roles)
+                    }
+                    else
+                    {
+                        <span class="text-muted">No role</span>
+                    }
+                </td>
+                <td>
+                    <a asp-area="Admin"
+                       asp-controller="UserRole"
+                       asp-action="Edit"
+                       asp-route-id="@item.UserId"
+                       class="btn btn-sm btn-primary">
+                        Change Role
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
