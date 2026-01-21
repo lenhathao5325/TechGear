@@ -1,22 +1,453 @@
-html {
-  font-size: 14px;
-}
+﻿/* =========================================
+   1. GLOBAL SETTINGS & VARIABLES
+   ========================================= */
+/* Import Font: Poppins */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
-}
-
-html {
-  position: relative;
-  min-height: 100%;
+:root {
+    --primary-color: #ff6a00; /* Màu cam chủ đạo */
+    --primary-hover: #e05e00; /* Màu cam đậm khi hover */
+    --secondary-color: #2c3e50; /* Màu xanh đen sang trọng */
+    --dark-bg: #1a1a1a; /* Màu nền tối (Footer) */
+    --light-bg: #f8f9fa; /* Màu nền sáng */
+    --body-bg: #f4f6f9; /* Màu nền body (xám rất nhạt) */
+    --text-main: #333;
+    --border-color: #eee;
 }
 
 body {
-  margin-bottom: 60px;
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--body-bg);
+    color: var(--text-main);
 }
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+}
+
+/* Các class tiện ích màu sắc */
+.text-orange {
+    color: var(--primary-color) !important;
+}
+
+.bg-orange {
+    background-color: var(--primary-color) !important;
+}
+
+/* Custom Button */
+.btn-orange {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    transition: 0.3s;
+}
+
+    .btn-orange:hover {
+        background-color: var(--primary-hover);
+        color: white;
+    }
+
+/* =========================================
+   2. HEADER & NAVIGATION
+   ========================================= */
+/* Logo animation */
+.brand-logo:hover {
+    transform: scale(1.02);
+    transition: transform 0.3s ease;
+}
+
+/* Search Bar (Bo tròn) */
+.search-container .form-control {
+    border-top-left-radius: 50px;
+    border-bottom-left-radius: 50px;
+    border: 2px solid #eee;
+    padding-left: 20px;
+    box-shadow: none;
+}
+
+    .search-container .form-control:focus {
+        border-color: var(--primary-color);
+    }
+
+.search-container .btn-search {
+    border-top-right-radius: 50px;
+    border-bottom-right-radius: 50px;
+    background: var(--primary-color);
+    color: white;
+    padding: 0 25px;
+    border: none;
+    transition: all 0.3s;
+}
+
+    .search-container .btn-search:hover {
+        background: var(--primary-hover);
+    }
+
+/* Icons Header */
+.icon-hover {
+    transition: color 0.3s;
+}
+
+    .icon-hover:hover {
+        color: var(--primary-color) !important;
+    }
+
+.cart-badge {
+    background-color: #d70018; /* Đỏ tươi */
+    font-size: 0.7rem;
+    padding: 0.25em 0.6em;
+}
+
+/* Menu Bar (Category Bar) */
+.main-nav {
+    background: linear-gradient(90deg, #2c3e50 0%, #000000 100%);
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+}
+    /* Style cho link trong Category Component */
+    .main-nav a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        padding: 8px 15px;
+        border-radius: 4px;
+        display: inline-block;
+    }
+
+        .main-nav a:hover {
+            color: var(--primary-color);
+            background: rgba(255,255,255,0.1);
+        }
+
+/* =========================================
+   3. PRODUCT CARD (HOME & LIST)
+   ========================================= */
+.product-card {
+    background: #fff;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+    .product-card:hover {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        transform: translateY(-5px);
+        border-color: var(--primary-color);
+    }
+
+/* Khung ảnh cố định */
+.product-img-wrap {
+    height: 200px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+    .product-img-wrap img {
+        max-height: 100%;
+        max-width: 100%;
+        object-fit: contain;
+        transition: transform 0.5s;
+    }
+
+.product-card:hover .product-img-wrap img {
+    transform: scale(1.08); /* Zoom nhẹ ảnh khi hover */
+}
+
+/* Overlay Badge (Mới/Giảm giá) */
+.badge-overlay {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+/* Tên sản phẩm */
+.product-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-main);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 2.8em;
+    margin-bottom: 0.5rem;
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+    .product-title:hover {
+        color: var(--primary-color);
+    }
+
+/* Giá tiền */
+.price-box {
+    color: #d70018;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+/* Nút thêm vào giỏ (ẩn hiện hoặc style riêng) */
+.add-to-cart-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 10px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+    .add-to-cart-btn:hover {
+        background-color: var(--primary-hover);
+        color: white;
+    }
+
+/* =========================================
+   4. CATEGORY PAGE (FILTERS)
+   ========================================= */
+.filter-sidebar {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    overflow: hidden;
+    /* Dùng cho sticky top */
+    top: 90px;
+    z-index: 900;
+}
+
+.filter-header {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 12px 15px;
+    font-weight: 600;
+}
+
+.filter-group {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.filter-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    font-size: 0.95rem;
+}
+
+/* Checkbox đẹp */
+.custom-checkbox .form-check-input:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.custom-checkbox label {
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* Tags lọc giá */
+.price-tag {
+    display: block;
+    padding: 6px 10px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    color: #555;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+}
+
+    .price-tag:hover, .price-tag.active {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background-color: #fff5f0;
+        text-decoration: none;
+    }
+
+/* Thanh sắp xếp (Sort Bar) */
+.sort-bar {
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   5. PRODUCT DETAIL PAGE
+   ========================================= */
+/* Gallery ảnh */
+.product-gallery .main-img-wrap {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 10px;
+    cursor: zoom-in;
+    background: #fff;
+}
+
+.product-gallery .thumb-list img {
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    border: 1px solid #eee;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 5px;
+    background: #fff;
+    transition: all 0.2s;
+}
+
+    .product-gallery .thumb-list img:hover,
+    .product-gallery .thumb-list img.active {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 5px rgba(255, 106, 0, 0.3);
+    }
+
+/* Hộp quà tặng / Ưu đãi */
+.policy-box {
+    border: 1px dashed var(--primary-color);
+    background: #fffbf8;
+    border-radius: 8px;
+    padding: 15px;
+}
+
+.gift-item {
+    font-size: 0.9rem;
+    color: #444;
+}
+
+/* Bảng thông số kỹ thuật */
+.tech-specs-table th {
+    width: 35%;
+    background-color: #f8f9fa;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.tech-specs-table td {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Tabs Navigation */
+.nav-tabs .nav-link {
+    color: #555;
+    font-weight: 500;
+    border: none;
+    border-bottom: 3px solid transparent;
+}
+
+    .nav-tabs .nav-link:hover {
+        border-color: transparent;
+        color: var(--primary-color);
+    }
+
+    .nav-tabs .nav-link.active {
+        color: var(--primary-color);
+        background: transparent;
+        border-bottom: 3px solid var(--primary-color);
+        font-weight: 600;
+    }
+
+/* =========================================
+   6. FOOTER
+   ========================================= */
+footer.tech-footer {
+    background-color: var(--dark-bg);
+    color: #aaa;
+    font-size: 0.9rem;
+}
+
+    footer.tech-footer h6 {
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 1.2rem;
+        font-size: 1rem;
+    }
+
+    footer.tech-footer ul li {
+        margin-bottom: 10px;
+        transition: 0.3s;
+    }
+
+        footer.tech-footer ul li:hover {
+            color: var(--primary-color);
+            padding-left: 5px;
+            cursor: pointer;
+        }
+
+    footer.tech-footer .social-icon {
+        width: 35px;
+        height: 35px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255,255,255,0.1);
+        border-radius: 50%;
+        margin-right: 10px;
+        transition: 0.3s;
+    }
+
+        footer.tech-footer .social-icon:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+/* ===== CATEGORY DROPDOWN ===== */
+.category-dropdown .btn-category {
+    background: #ff6a00;
+    border-radius: 6px;
+}
+
+.category-menu {
+    width: 260px;
+    padding: 8px 0;
+}
+
+    .category-menu .dropdown-item {
+        padding: 10px 16px;
+        font-size: 14px;
+        transition: all 0.2s ease;
+    }
+
+        .category-menu .dropdown-item:hover {
+            background-color: #f5f5f5;
+            color: #ff6a00;
+        }
+
+    .category-menu i {
+        font-size: 12px;
+    }
+
+/* Hover mở dropdown (PC) */
+@media (min-width: 992px) {
+    .category-dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+    }
+}
+/* LOGIN – BLACK STYLE */
+.login-black a,
+.login-black span,
+.login-black button,
+.login-black i {
+    color: #000 !important;
+}
+
+    .login-black a:hover {
+        color: #ff6a00 !important; /* hover cam cho giống GearVN */
+    }

@@ -1,100 +1,157 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using TechGear.Models
-@inject SignInManager<ApplicationUser> SignInManager
-@inject UserManager<ApplicationUser> UserManager
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewData["Title"] - Admin</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Bootstrap 5 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin - @ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-
-</head>
-
-<body>
-    <!-- TOP NAVBAR -->
-    <nav class="navbar navbar-dark bg-dark px-3">
-        <span class="navbar-brand fw-bold">Admin Panel</span>
-
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3">
-                    Xin chào, @UserManager.GetUserName(User)
-                </span>
-
-                <form asp-area="Identity"
-                      asp-page="/Account/Logout"
-                      method="post"
-                      class="m-0">
-                    <button type="submit" class="btn btn-outline-light btn-sm">
-                        Đăng xuất
-                    </button>
-                </form>
-            </div>
+    <style>
+        body {
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-    </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- SIDEBAR -->
-            <aside class="col-md-2 sidebar p-0">
-                <ul class="nav flex-column pt-3">
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                           asp-area="Admin"
-                           asp-controller="Dashboard"
-                           asp-action="Index">
-                            Dashboard
-                        </a>
-                    </li>
+        /* Sidebar Styles */
+        #sidebar-wrapper {
+            min-height: 100vh;
+            margin-left: -15rem;
+            transition: margin .25s ease-out;
+            background-color: #2c3e50; /* Màu nền tối */
+            color: white;
+        }
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="UserRole"
-                           asp-action="Index">
-                            Quản lý User
-                        </a>
-                    </li>
+            #sidebar-wrapper .sidebar-heading {
+                padding: 1.2rem;
+                font-size: 1.2rem;
+                font-weight: bold;
+                background: #1a252f;
+                color: #ff6a00; /* Màu cam chủ đạo */
+                text-align: center;
+                letter-spacing: 1px;
+            }
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Role"
-                           asp-action="Index">
-                            Quản lý Role
-                        </a>
-                    </li>
+            #sidebar-wrapper .list-group {
+                width: 15rem;
+            }
 
-                    @* <li class="nav-item mt-3">
-                        <a class="nav-link"
-                           asp-area=""
-                           asp-controller="Home"
-                           asp-action="Index">
-                            ← Về Website
-                        </a>
-                    </li> *@
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: 0;
+        }
 
-                </ul>
-            </aside>
+        /* Sidebar Links */
+        .list-group-item-action {
+            background-color: transparent;
+            color: #b8c7ce;
+            border: none;
+            padding: 15px 25px;
+            font-size: 0.95rem;
+            border-left: 4px solid transparent; /* Chuẩn bị cho hover */
+        }
 
-            <!-- MAIN CONTENT -->
-            <main class="col-md-10 content">
-                <h4 class="mb-3">@ViewData["Title"]</h4>
-                <hr />
+            .list-group-item-action:hover, .list-group-item-action.active {
+                background-color: #34495e;
+                color: #fff;
+                border-left: 4px solid #ff6a00; /* Viền cam khi hover */
+                text-decoration: none;
+            }
+
+            .list-group-item-action i {
+                width: 25px;
+                text-align: center;
+                margin-right: 5px;
+            }
+
+        /* Page Content */
+        #page-content-wrapper {
+            min-width: 100vw;
+        }
+
+       @@media (min-width: 768px) {
+            #sidebar-wrapper
+
+        {
+            margin-left: 0;
+        }
+
+        #page-content-wrapper {
+            min-width: 0;
+            width: 100%;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: -15rem;
+        }
+
+        }
+    </style>
+</head>
+<body>
+    <div class="d-flex" id="wrapper">
+        <div class="border-end" id="sidebar-wrapper">
+            <div class="sidebar-heading border-bottom border-secondary">
+                <i class="fa fa-cogs"></i> TECHGEAR
+            </div>
+            <div class="list-group list-group-flush">
+
+                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
+                    <i class="fa fa-tachometer-alt"></i> Dashboard
+                </a>
+
+                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">
+                    <i class="fa fa-folder-open"></i> Quản lý Danh mục
+                </a>
+
+                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminBrands" asp-action="Index">
+                    <i class="fa fa-copyright"></i> Quản lý Thương hiệu
+                </a>
+
+                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminProducts" asp-action="Index">
+                    <i class="fa fa-box-open"></i> Quản lý Sản phẩm
+                </a>
+
+                <a href="/Admin/Orders" class="list-group-item list-group-item-action">
+                    <i class="fa fa-shopping-cart"></i> Quản lý Đơn hàng
+                </a>
+
+                <a href="/Admin/Users" class="list-group-item list-group-item-action">
+                    <i class="fa fa-users"></i> Quản lý User
+                </a>
+
+              @*   <a href="/" class="list-group-item list-group-item-action mt-4 border-top border-secondary text-warning">
+                    <i class="fa fa-home"></i> Về trang bán hàng
+                </a> *@
+
+            </div>
+        </div>
+
+        <div id="page-content-wrapper">
+            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4 py-3">
+                <button class="btn btn-outline-secondary btn-sm" id="menu-toggle"><i class="fa fa-bars"></i></button>
+
+                <div class="ms-auto fw-bold text-secondary d-flex align-items-center">
+                    <span class="me-2">Xin chào, Admin!</span>
+                    <img src="https://ui-avatars.com/api/?name=Admin&background=random&color=fff&background=ff6a00" class="rounded-circle border border-2 border-warning" width="35">
+                </div>
+            </nav>
+
+            <div class="container-fluid py-4 px-4">
                 @RenderBody()
-            </main>
+            </div>
         </div>
     </div>
 
-    <!-- Bootstrap 5 JS -->
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

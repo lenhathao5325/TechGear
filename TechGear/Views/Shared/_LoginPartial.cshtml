@@ -1,26 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@* Lưu ý: Nếu project chưa có class ApplicationUser, hãy đổi thành IdentityUser *@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
+    <span class="text-white me-3" style="font-size: 13px;">
+        <i class="fa fa-user-circle me-1"></i> Xin chào,
+        <a asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" class="text-white fw-bold text-decoration-none">
+            @User.Identity?.Name
+        </a>
+    </span>
+
+    <form class="d-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+        <button type="submit" class="btn btn-link text-white text-decoration-none p-0 border-0" style="font-size: 13px;">
+            <i class="fa fa-sign-out-alt me-1"></i> Đăng xuất
+        </button>
+    </form>
 }
 else
 {
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
+    <a class="text-white text-decoration-none me-3" asp-area="Identity" asp-page="/Account/Login" style="font-size: 13px;">
+        <i class="fa fa-user me-1"></i> Đăng nhập
+    </a>
+
+    <a class="text-white text-decoration-none" asp-area="Identity" asp-page="/Account/Register" style="font-size: 13px;">
+        <i class="fa fa-key me-1"></i> Đăng ký
+    </a>
 }
-</ul>

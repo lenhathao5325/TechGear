@@ -1,25 +1,180 @@
 ﻿<h1>Admin Dashboard</h1>
 @{
     Layout = "_AdminLayout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Tổng quan";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="card shadow-sm">
+<style>
+    /* Card thống kê đẹp */
+    .stats-card {
+        border: none;
+        border-radius: 10px;
+        transition: 0.3s;
+    }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .icon-box {
+        font-size: 2.5rem;
+        opacity: 0.3;
+        position: absolute;
+        right: 20px;
+        top: 20px;
+    }
+
+    /* Màu sắc gradient */
+    .bg-gradient-primary {
+        background: linear-gradient(45deg, #4e73df, #224abe);
+        color: white;
+    }
+
+    .bg-gradient-success {
+        background: linear-gradient(45deg, #1cc88a, #13855c);
+        color: white;
+    }
+
+    .bg-gradient-warning {
+        background: linear-gradient(45deg, #f6c23e, #dda20a);
+        color: white;
+    }
+
+    .bg-gradient-danger {
+        background: linear-gradient(45deg, #e74a3b, #be2617);
+        color: white;
+    }
+</style>
+
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card stats-card bg-gradient-success h-100">
             <div class="card-body">
-                <h6 class="card-title">Users</h6>
-                <h3 class="fw-bold">125</h3>
+                <h6 class="text-uppercase mb-1" style="font-size: 0.8rem;">Tổng doanh thu</h6>
+                <h3 class="fw-bold mb-0">125.000.000 ₫</h3>
+                <i class="fa fa-dollar-sign icon-box"></i>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm">
+    <div class="col-md-3">
+        <div class="card stats-card bg-gradient-primary h-100">
             <div class="card-body">
-                <h6 class="card-title">Role</h6>
-                <h3 class="fw-bold">5</h3>
+                <h6 class="text-uppercase mb-1" style="font-size: 0.8rem;">Đơn hàng mới</h6>
+                <h3 class="fw-bold mb-0">24</h3>
+                <i class="fa fa-shopping-bag icon-box"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stats-card bg-gradient-warning h-100">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1" style="font-size: 0.8rem;">Thành viên</h6>
+                <h3 class="fw-bold mb-0">125</h3>
+                <i class="fa fa-user-plus icon-box"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card stats-card bg-gradient-danger h-100">
+            <div class="card-body">
+                <h6 class="text-uppercase mb-1" style="font-size: 0.8rem;">Sản phẩm sắp hết</h6>
+                <h3 class="fw-bold mb-0">5</h3>
+                <i class="fa fa-exclamation-triangle icon-box"></i>
             </div>
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-md-8 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 fw-bold text-primary"><i class="fa fa-chart-line"></i> Biểu đồ doanh thu 6 tháng</h6>
+            </div>
+            <div class="card-body">
+                <canvas id="revenueChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card shadow border-0 h-100">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 fw-bold text-primary"><i class="fa fa-list"></i> Đơn hàng mới nhất</h6>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0" style="font-size: 0.9rem;">
+                    <thead>
+                        <tr>
+                            <th>Mã</th>
+                            <th>Khách</th>
+                            <th>Tổng</th>
+                            <th>TT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#DH001</td>
+                            <td>Nguyễn Văn A</td>
+                            <td class="fw-bold">2.5tr</td>
+                            <td><span class="badge bg-warning">Chờ</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DH002</td>
+                            <td>Trần Thị B</td>
+                            <td class="fw-bold">15.0tr</td>
+                            <td><span class="badge bg-success">Xong</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DH003</td>
+                            <td>Lê Văn C</td>
+                            <td class="fw-bold">850k</td>
+                            <td><span class="badge bg-danger">Hủy</span></td>
+                        </tr>
+                        <tr>
+                            <td>#DH004</td>
+                            <td>Phạm D</td>
+                            <td class="fw-bold">5.2tr</td>
+                            <td><span class="badge bg-primary">Ship</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card-footer bg-white text-center">
+                <a href="/Admin/Orders" class="small text-decoration-none">Xem tất cả đơn hàng &rarr;</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Code vẽ biểu đồ giả lập bằng Chart.js
+        var ctx = document.getElementById('revenueChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
+                datasets: [{
+                    label: 'Doanh thu (Triệu VNĐ)',
+                    data: [12, 19, 3, 5, 20, 35],
+                    backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                    borderColor: 'rgba(78, 115, 223, 1)',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: { y: { beginAtZero: true } }
+            }
+        });
+    </script>
+}

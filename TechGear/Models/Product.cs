@@ -1,4 +1,6 @@
 ﻿using TechGear.Models;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TechGear.Models
 {
@@ -6,12 +8,14 @@ namespace TechGear.Models
     {
         public int Id { get; set; }
 
+        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         public string Name { get; set; }
         public string? Description { get; set; }
-        public int CategoryId { get; set; }
-        public int BrandId { get; set; } = 0;
-
-        public int ProductImages { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn danh mục")]
+        public int? CategoryId { get; set; }
+        [Required(ErrorMessage = "Vui lòng chọn thương hiệu")]
+        public int? BrandId { get; set; } 
+        public string? ImageUrl { get; set; }
 
         // Navigation
         public Category Category { get; set; }
