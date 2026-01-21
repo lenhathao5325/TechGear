@@ -1,0 +1,87 @@
+﻿@model TechGear.Models.Brand
+
+@* @{
+    ViewData["Title"] = "Xóa thương hiệu";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Sử dụng Layout Admin
+} *@
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin/Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/Admin/Brands">Thương hiệu</a></li>
+            <li class="breadcrumb-item active text-danger" aria-current="page">Xóa</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-0">
+                <div class="card-header bg-danger text-white py-3">
+                    <h5 class="m-0 fw-bold">
+                        <i class="fa fa-exclamation-triangle me-2"></i> Xác nhận xóa thương hiệu
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <div class="alert alert-warning text-center" role="alert">
+                        <strong>Cảnh báo!</strong> Hành động này không thể hoàn tác. Bạn có chắc chắn muốn xóa?
+                    </div>
+
+                    <div class="row align-items-center mt-4">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            <div class="p-3 border rounded bg-light">
+                                @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                                {
+                                    <img src="@Model.LogoUrl" alt="@Model.BrandName" class="img-fluid" style="max-height: 100px; object-fit: contain;">
+                                }
+                                else
+                                {
+                                    <i class="fa fa-image fa-4x text-muted"></i>
+                                    <p class="small text-muted mt-2">Không có logo</p>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <h3 class="fw-bold text-dark">@Model.BrandName</h3>
+
+                            <div class="mb-2">
+                                <span class="fw-bold text-secondary">Trạng thái:</span>
+                                @if (Model.IsActive)
+                                {
+                                    <span class="badge bg-success">Đang hoạt động</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Ngừng hoạt động</span>
+                                }
+                            </div>
+
+                            <div class="mb-2">
+                                <span class="fw-bold text-secondary">Mô tả:</span>
+                                <p class="text-muted small border p-2 rounded bg-light mt-1">
+                                    @(string.IsNullOrEmpty(Model.Description) ? "Không có mô tả" : Model.Description)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-4">
+
+                    <form asp-action="Delete" class="d-flex justify-content-end gap-2">
+                        <input type="hidden" asp-for="BrandId" />
+
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fa fa-times me-1"></i> Hủy bỏ
+                        </a>
+
+                        <button type="submit" class="btn btn-danger fw-bold">
+                            <i class="fa fa-trash-alt me-1"></i> Xóa vĩnh viễn
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

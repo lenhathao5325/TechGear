@@ -1,5 +1,8 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SQLitePCL;
+using System.Diagnostics;
+using TechGear.Data;
 using TechGear.Models;
 
 namespace TechGear.Controllers
@@ -8,14 +11,21 @@ namespace TechGear.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDbContext _context;
+        public HomeController(ApplicationDbContext context)
         {
-            _logger = logger;
+            _context = context;
         }
-
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .OrderByDescending(p => p.Id)
+                .Take(12)
+                .ToListAsync();
+
+            return View(products);
         }
 
         public IActionResult Privacy()

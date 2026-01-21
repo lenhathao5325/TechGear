@@ -1,0 +1,100 @@
+﻿@model TechGear.Models.Category
+
+@* @{
+    ViewData["Title"] = "Cập nhật danh mục";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Sử dụng Layout Admin
+} *@
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin/Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/Admin/Categories">Danh mục</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Cập nhật</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="m-0 fw-bold text-primary">
+                        <i class="fa fa-edit me-1"></i> Cập nhật danh mục: @Model.CategoryName
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Edit">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <input type="hidden" asp-for="CategoryId" />
+                        <input type="hidden" asp-for="CreatedAt" />
+
+                        <div class="mb-3">
+                            <label asp-for="CategoryName" class="form-label fw-bold">Tên danh mục <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light"><i class="fa fa-tag"></i></span>
+                                <input asp-for="CategoryName" class="form-control" />
+                            </div>
+                            <span asp-validation-for="CategoryName" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Description" class="form-label fw-bold">Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+                            <span asp-validation-for="Description" class="text-danger small"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted small">Ngày tạo (Read-only)</label>
+                            <input type="text" class="form-control bg-light" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold d-block">Trạng thái</label>
+                            <div class="form-check form-switch p-0 m-0 border rounded px-3 py-2 bg-light d-flex align-items-center">
+                                <input asp-for="IsActive" class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="activeSwitch" style="cursor: pointer;">
+                                <label class="form-check-label cursor-pointer fw-bold" for="activeSwitch" id="activeLabel">
+                                    @(Model.IsActive ? "Đang hoạt động" : "Đang ẩn")
+                                </label>
+                            </div>
+                        </div>
+
+                        <hr />
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
+                                <i class="fa fa-save"></i> Lưu thay đổi
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Script nhỏ để thay đổi text trạng thái khi bấm nút switch
+        document.getElementById('activeSwitch').addEventListener('change', function() {
+            var label = document.getElementById('activeLabel');
+            if(this.checked) {
+                label.innerText = "Đang hoạt động";
+                label.classList.remove("text-secondary");
+                label.classList.add("text-success");
+            } else {
+                label.innerText = "Đang ẩn";
+                label.classList.remove("text-success");
+                label.classList.add("text-secondary");
+            }
+        });
+    </script>
+}

@@ -1,0 +1,115 @@
+﻿@model TechGear.Models.ViewModels.BrandVM
+
+@* @{
+    ViewData["Title"] = "Thêm thương hiệu mới";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml"; // Đảm bảo dùng Layout Admin
+} *@
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb" class="my-3">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Admin/Dashboard">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="/Admin/Brands">Thương hiệu</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Thêm mới</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-white py-3 border-bottom">
+                    <h5 class="m-0 fw-bold text-primary">
+                        <i class="fa fa-copyright me-1"></i> Thêm Thương Hiệu Mới
+                    </h5>
+                </div>
+
+                <div class="card-body p-4">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label asp-for="BrandName" class="form-label fw-bold">Tên thương hiệu <span class="text-danger">*</span></label>
+                                    <input asp-for="BrandName" class="form-control" placeholder="Ví dụ: MSI, Asus, Logitech..." />
+                                    <span asp-validation-for="BrandName" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Description" class="form-label fw-bold">Mô tả</label>
+                                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả về thương hiệu..."></textarea>
+                                    <span asp-validation-for="Description" class="text-danger small"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold d-block">Trạng thái</label>
+                                    <div class="form-check form-switch">
+                                        <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">Đang hoạt động</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <label asp-for="LogoFile" class="form-label fw-bold">Logo thương hiệu</label>
+
+                                <div class="card border-dashed mb-3 text-center d-flex justify-content-center align-items-center" style="height: 200px; border: 2px dashed #ccc; background: #f9f9f9; overflow: hidden;">
+                                    <img id="logoPreview" src="#" alt="Logo Preview" style="display:none; max-width: 100%; max-height: 100%; object-fit: contain;" />
+                                    <div id="uploadPlaceholder" class="text-muted">
+                                        <i class="fa fa-image fa-3x mb-2"></i><br>
+                                        <small>Chưa chọn ảnh</small>
+                                    </div>
+                                </div>
+
+                                <input asp-for="LogoFile" type="file" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this)" />
+                                <span asp-validation-for="LogoFile" class="text-danger small"></span>
+                                <small class="text-muted fst-italic mt-1 d-block">Định dạng: .jpg, .png, .jpeg</small>
+                            </div>
+                        </div>
+
+                        <hr class="my-4" />
+
+                        <div class="d-flex justify-content-end gap-2">
+                            <a asp-action="Index" class="btn btn-secondary">
+                                <i class="fa fa-arrow-left"></i> Quay lại
+                            </a>
+                            <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
+                                <i class="fa fa-save"></i> Lưu thương hiệu
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Hàm hiển thị ảnh xem trước ngay khi chọn file
+        function previewImage(input) {
+            var preview = document.getElementById('logoPreview');
+            var placeholder = document.getElementById('uploadPlaceholder');
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                    placeholder.style.display = 'none';
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            } else {
+                preview.src = '#';
+                preview.style.display = 'none';
+                placeholder.style.display = 'block';
+            }
+        }
+    </script>
+}
