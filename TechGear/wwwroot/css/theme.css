@@ -1,0 +1,144 @@
+/* Theme styles for TechGear */
+
+:root{
+  --primary:#0d6efd;
+  --muted:#6c757d;
+}
+
+/* Header */
+.site-header .navbar-brand i{ color:var(--primary); }
+.site-header .search-input{ min-width:280px; }
+
+.hero{ background: linear-gradient(90deg, rgba(13,110,253,0.06), rgba(0,0,0,0)); }
+.hero .display-5{ color:#0a3a66; }
+
+/* Product grid and card */
+.product-card{ border:1px solid #eee; border-radius:8px; overflow:hidden; transition:transform .15s ease, box-shadow .15s ease; }
+.product-card:hover{ transform:translateY(-6px); box-shadow:0 8px 24px rgba(11,33,71,.08); }
+.product-card .card-body .price{ font-weight:700; color:var(--primary); }
+
+/* Footer */
+.site-footer{ background:#f8f9fa; padding:40px 0; margin-top:40px; }
+
+/* Admin sidebar tweaks */
+.sidebar{ background:#f8f9fb; min-height:100vh; border-right:1px solid #e9ecef; }
+.sidebar .nav-link{ color:#333; padding:12px 16px; }
+.sidebar .nav-link.active{ background:linear-gradient(90deg,var(--primary),#3b82f6); color:white; border-radius:6px; }
+.sidebar .nav-link i{ margin-right:8px; }
+
+/* small screens */
+@media (max-width: 767px){
+  .site-header .search-input{ min-width:120px; }
+  .sidebar{ display:none; }
+}
+
+/* Admin specific */
+.admin-container{ display:flex; min-height:calc(100vh - 56px); }
+.admin-sidebar{ width:240px; background: #071026; color:#fff; display:flex; flex-direction:column; box-shadow: inset -1px 0 0 rgba(255,255,255,0.02); }
+.admin-sidebar .sidebar-header{ padding:22px 18px; border-bottom:1px solid rgba(255,255,255,0.03); }
+.admin-sidebar .sidebar-header img{ width:56px; height:56px; }
+.admin-sidebar .nav-link{ color:rgba(255,255,255,0.9); padding:14px 18px; display:flex; align-items:center; gap:12px; border-left:4px solid transparent; transition: background .12s ease, transform .08s ease, border-color .12s ease; }
+.admin-sidebar .nav-link i{ font-size:1.15rem; }
+.admin-sidebar .nav-link .nav-text{ font-size:1rem; }
+
+/* Dark look similar to provided image */
+.admin-sidebar{ background: linear-gradient(180deg,#071026,#071827); }
+.admin-sidebar .nav-link:hover{ background: rgba(255,255,255,0.02); transform: translateX(6px); border-left-color: rgba(255,255,255,0.06); }
+.admin-sidebar .nav-link.active{ background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border-left-color: var(--primary); }
+
+/* Hover highlights brighter: "s�ng l�n" effect */
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link:focus{
+  background: linear-gradient(90deg, rgba(13,110,253,0.10), rgba(255,255,255,0.02));
+  color: #fff;
+  box-shadow: inset 6px 0 0 rgba(13,110,253,0.18);
+  transform: translateX(6px) scale(1.01);
+}
+.admin-sidebar .nav-link:hover i,
+.admin-sidebar .nav-link:focus i{ color: #cfe5ff; }
+
+/* highlight on hover when collapsed: show tooltip like brightening */
+body.sidebar-collapsed .admin-sidebar .nav-link:hover,
+body.sidebar-collapsed .admin-sidebar .nav-link:focus{
+  background: linear-gradient(90deg, rgba(13,110,253,0.12), rgba(255,255,255,0.02));
+  box-shadow: none;
+  transform: none;
+}
+
+/* smoother transitions */
+.admin-sidebar .nav-link{ transition: background .14s ease, transform .12s ease, box-shadow .12s ease, color .12s ease; }
+
+/* Auth pages */
+.auth-page{ min-height:calc(100vh - 56px); background: linear-gradient(180deg,#f4f7fb,#eef6ff); padding:40px 0; }
+.auth-card{ width:420px; border-radius:12px; }
+.auth-card .form-control{ border-radius:6px; }
+.auth-card .btn-primary{ border-radius:8px; }
+.auth-card .text-muted a{ color:var(--primary); }
+
+/* input group icons for auth */
+.auth-card .input-group-text{ background:transparent; border-right:0; }
+.auth-card .input-group .form-control{ border-left:0; }
+.auth-card .input-group-text i{ color:var(--primary); font-size:1.05rem; }
+
+.auth-card .input-group, .auth-card .form-check{ align-items:center; }
+.auth-card .form-check-input{ margin-top:0.25rem; }
+
+.auth-card .card-header{ display:none; }
+
+/* Auth page refinements */
+.auth-page{ background: linear-gradient(180deg,#f7fbfe,#eef6ff); }
+.auth-card{ width:420px; border-radius:14px; box-shadow:0 10px 30px rgba(11,33,71,0.08); padding:28px; }
+.auth-card .text-center .display-4{ font-size:48px; }
+.auth-card h4{ font-weight:700; margin-bottom:4px; }
+.auth-card p.small{ color:var(--muted); margin-bottom:16px; }
+.auth-card .form-label{ font-weight:600; color:#222; }
+.auth-card .form-control:focus{ box-shadow:0 6px 18px rgba(13,110,253,0.08); border-color:var(--primary); }
+.auth-card .btn-primary{ background:linear-gradient(90deg,var(--primary),#3b82f6); border:0; box-shadow: 0 6px 18px rgba(59,130,246,0.12); font-weight:600; }
+.auth-card .btn-primary i{ vertical-align:middle; }
+
+/* Notification / Alert style like provided image */
+.custom-alert{ display:flex; align-items:center; gap:16px; background:#fff; border-radius:8px; padding:18px 20px; box-shadow:0 10px 28px rgba(11,33,71,0.06); position:relative; overflow:hidden; min-width:320px; }
+.custom-alert .left-stripe{ width:6px; height:100%; position:absolute; left:0; top:0; }
+.custom-alert .icon-circle{ width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; color:#fff; font-size:18px; flex:0 0 40px; margin-left:10px; }
+.custom-alert .content{ padding-left:6px; }
+.custom-alert .title{ font-weight:700; margin:0; }
+.custom-alert .message{ color:#8b95a6; margin:4px 0 0 0; font-size:0.95rem; }
+.custom-alert .close-btn{ margin-left:auto; background:transparent; border:0; color:#98a0a8; font-size:18px; cursor:pointer; }
+
+.custom-alert-success .left-stripe{ background:#25c26b; }
+.custom-alert-success .icon-circle{ background:#25c26b; }
+.custom-alert-info .left-stripe{ background:#2b83f6; }
+.custom-alert-info .icon-circle{ background:#2b83f6; }
+.custom-alert-warning .left-stripe{ background:#f7b500; }
+.custom-alert-warning .icon-circle{ background:#f7b500; }
+
+/* small responsive */
+@media (max-width:576px){
+  .auth-card{ width:94%; padding:18px; }
+  .custom-alert{ min-width:unset; width:calc(100% - 32px); }
+}
+
+/* Image uploader preview */
+.image-uploader input[type=file]{ display:block; }
+.preview-list{ display:flex; gap:12px; flex-wrap:wrap; }
+.preview-item{ width:96px; height:96px; border-radius:8px; overflow:hidden; box-shadow:0 6px 18px rgba(11,33,71,0.06); position:relative; }
+.preview-item img{ width:100%; height:100%; object-fit:cover; display:block; }
+.preview-item .remove-btn{ position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.45); color:#fff; border:0; width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+
+
+@media (max-width:576px){
+  .auth-card{ width:100%; padding:20px; margin:0 12px; }
+}
+
+
+.admin-main{ flex:1; background:#f6f9fc; padding:24px; }
+.admin-topbar{ height:56px; }
+.admin-badge{ position:absolute; top:-6px; right:-6px; font-size:10px; }
+
+/* Collapsed sidebar - keep icons visible */
+body.sidebar-collapsed .admin-sidebar{ width:72px; }
+body.sidebar-collapsed .admin-sidebar .nav-link{ justify-content:center; padding-left:0.6rem; }
+body.sidebar-collapsed .admin-sidebar .nav-link .nav-text{ display:none; }
+
+/* remove overlay behavior - no dimming */
+.sidebar-overlay{ display:none !important; }

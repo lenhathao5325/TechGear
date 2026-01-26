@@ -1,0 +1,77 @@
+﻿@model IEnumerable<TechGear.Models.Product>
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-box"></i>
+        Quản lý Sản phẩm
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Sản phẩm</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
+        <a class="btn btn-primary" asp-action="Create">
+            <i class="bi bi-plus-circle"></i>
+            Thêm sản phẩm mới
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>Tên sản phẩm</th>
+                    <th width="150">Thương hiệu</th>
+                    <th width="150">Danh mục</th>
+                    <th width="120" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    @foreach(var p in Model)
+                    {
+                        <tr>
+                            <td><span class="badge badge-primary">@p.Id</span></td>
+                            <td><strong>@p.Name</strong></td>
+                            <td>@p.Brand?.BrandName</td>
+                            <td>@p.Category?.CategoryName</td>
+                            <td class="text-center">
+                                <div class="table-actions">
+                                    <a class="btn-view" asp-action="Details" asp-route-id="@p.Id" title="Xem chi tiết">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a class="btn-edit" asp-action="Edit" asp-route-id="@p.Id" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn-delete" asp-action="Delete" asp-route-id="@p.Id" title="Xóa">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="5" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 48px; color: #d1d5db;"></i>
+                            <p class="mt-2 text-muted">Không có sản phẩm nào</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

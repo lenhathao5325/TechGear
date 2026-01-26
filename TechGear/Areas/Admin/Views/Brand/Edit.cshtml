@@ -1,0 +1,23 @@
+@model TechGear.Models.Brand
+@{
+    ViewData["Title"] = "S?a th??ng hi?u";
+}
+
+<h3>S?a th??ng hi?u</h3>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="BrandId" />
+    <div class="mb-3">
+        <label class="form-label">Tên</label>
+        <input asp-for="BrandName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Logo URL</label>
+        <input asp-for="LogoUrl" class="form-control" />
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label class="form-check-label">Kích ho?t</label>
+    </div>
+    <button class="btn btn-primary">L?u</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

@@ -1,0 +1,52 @@
+@model TechGear.Models.Order
+@{
+    ViewData["Title"] = "Chi ti?t ??n hàng";
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <h5>??n #@Model.OrderId</h5>
+        <p class="text-muted">@Model.OrderDate.ToString("g")</p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h6>Khách hàng</h6>
+                <p>@Model.User?.UserName</p>
+                <p>@Model.UserAddress?.AddressLine</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <h6>T?ng ti?n</h6>
+                <p>T?m tính: @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.SubTotal)</p>
+                <p>Phí v?n chuy?n: @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.ShippingFee)</p>
+                <p class="fw-bold">T?ng: @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.TotalAmount)</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <h6>S?n ph?m</h6>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>S?n ph?m</th>
+                    <th>Phiên b?n</th>
+                    <th>S? l??ng</th>
+                    <th>??n giá</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var d in Model.OrderDetails)
+                {
+                    <tr>
+                        <td>@d.ProductName</td>
+                        <td>@d.VariantDescription</td>
+                        <td>@d.Quantity</td>
+                        <td>@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", d.UnitPrice)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

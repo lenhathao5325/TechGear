@@ -1,0 +1,16 @@
+@inherits Microsoft.AspNetCore.Mvc.Razor.RazorPage<AlertModel?>
+@using TechGear.Models
+@{ if (Model == null) { return; } }
+<div class="custom-alert custom-alert-@Model.Type.ToString().ToLower()" role="alert">
+    <div class="left-stripe"></div>
+    <div class="icon-circle">
+        @if(Model.Type == AlertType.Success){ <i class="bi bi-check-lg"></i> }
+        else if(Model.Type == AlertType.Info){ <i class="bi bi-info-lg"></i> }
+        else if(Model.Type == AlertType.Warning){ <i class="bi bi-exclamation-lg"></i> }
+    </div>
+    <div class="content">
+        <p class="title">@Model.Title</p>
+        <p class="message">@Model.Message</p>
+    </div>
+    <button class="close-btn" aria-label="Close" onclick="this.parentElement.style.display='none'">&times;</button>
+</div>

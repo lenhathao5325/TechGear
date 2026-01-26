@@ -1,0 +1,13 @@
+@model TechGear.Models.Product
+@{
+    ViewData["Title"] = "Chi ti?t s?n ph?m";
+}
+
+<h3>@Model.Name</h3>
+<p class="text-muted">Th??ng hi?u: @Model.Brand?.BrandName | Danh m?c: @Model.Category?.CategoryName</p>
+<hr />
+<p>@Model.Description</p>
+
+<p>
+    <a class="btn btn-link" asp-action="Index">Quay l?i</a>
+</p>

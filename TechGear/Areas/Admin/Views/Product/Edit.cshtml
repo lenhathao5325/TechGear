@@ -1,0 +1,55 @@
+@model TechGear.Models.Product
+@{
+    ViewData["Title"] = "S?a s?n ph?m";
+}
+
+<h3>S?a s?n ph?m</h3>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label class="form-label">Tên</label>
+        <input asp-for="Name" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mô t?</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Danh m?c</label>
+        <select asp-for="CategoryId" class="form-select">
+            <option value="">-- Ch?n --</option>
+            @foreach(var c in ViewBag.Categories as List<TechGear.Models.Category>)
+            {
+                if(c.CategoryId == Model.CategoryId)
+                {
+                    <option value="@c.CategoryId" selected>@c.CategoryName</option>
+                }
+                else
+                {
+                    <option value="@c.CategoryId">@c.CategoryName</option>
+                }
+            }
+        </select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Th??ng hi?u</label>
+        <select asp-for="BrandId" class="form-select">
+            <option value="">-- Ch?n --</option>
+            @foreach(var b in ViewBag.Brands as List<TechGear.Models.Brand>)
+            {
+                if(b.BrandId == Model.BrandId)
+                {
+                    <option value="@b.BrandId" selected>@b.BrandName</option>
+                }
+                else
+                {
+                    <option value="@b.BrandId">@b.BrandName</option>
+                }
+            }
+        </select>
+    </div>
+
+    <button class="btn btn-primary">L?u</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

@@ -1,0 +1,23 @@
+@model TechGear.Models.Category
+@{
+    ViewData["Title"] = "S?a danh m?c";
+}
+
+<h3>S?a danh m?c</h3>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="CategoryId" />
+    <div class="mb-3">
+        <label class="form-label">Tên</label>
+        <input asp-for="CategoryName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mô t?</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label class="form-check-label">Kích ho?t</label>
+    </div>
+    <button class="btn btn-primary">L?u</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

@@ -1,0 +1,44 @@
+@model TechGear.Models.Combo
+
+<h3>T?o combo m?i</h3>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Tên combo</label>
+        <input asp-for="ComboName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mô t?</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-md-4">
+            <label class="form-label">Giá g?c</label>
+            <input asp-for="OriginalPrice" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Giá bán</label>
+            <input asp-for="FinalPrice" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Gi?m giá</label>
+            <input asp-for="DiscountValue" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">S?n ph?m trong combo</label>
+        <div>
+            @foreach(var v in ViewBag.Variants as List<TechGear.Models.ProductVariant>){
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="selectedVariantIds" value="@v.Id" />
+                    <label class="form-check-label">@v.Product.Name - @v.SKU</label>
+                    <input type="number" name="quantities" value="1" class="form-control form-control-sm w-auto d-inline-block ms-2" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <button class="btn btn-primary">L?u</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

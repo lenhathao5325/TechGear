@@ -1,0 +1,18 @@
+@model TechGear.Models.Order
+@{
+    ViewData["Title"] = "Xóa ??n hàng";
+}
+
+<h3>Xác nh?n xóa</h3>
+<div class="card">
+    <div class="card-body">
+        <h5>??n #@Model.OrderId</h5>
+        <p class="text-muted">T?ng: @String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.TotalAmount)</p>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" name="id" value="@Model.OrderId" />
+            <button type="submit" class="btn btn-danger">Xóa</button>
+            <a class="btn btn-link" asp-action="Index">H?y</a>
+        </form>
+    </div>
+</div>

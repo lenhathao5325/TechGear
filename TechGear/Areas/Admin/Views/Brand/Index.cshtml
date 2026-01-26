@@ -1,0 +1,87 @@
+@model IEnumerable<TechGear.Models.Brand>
+@{
+    ViewData["Title"] = "Quản lý thương hiệu";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-shop"></i>
+        Quản lý Thương hiệu
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Thương hiệu</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
+        <a class="btn btn-primary" asp-action="Create">
+            <i class="bi bi-plus-circle"></i>
+            Thêm thương hiệu mới
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>Tên thương hiệu</th>
+                    <th width="120" class="text-center">Kích hoạt</th>
+                    <th width="120" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    @foreach(var b in Model)
+                    {
+                        <tr>
+                            <td><span class="badge badge-primary">@b.BrandId</span></td>
+                            <td><strong>@b.BrandName</strong></td>
+                            <td class="text-center">
+                                @if (b.IsActive)
+                                {
+                                    <span class="badge badge-success">
+                                        <i class="bi bi-check-circle"></i>
+                                        Kích hoạt
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                        Vô hiệu hóa
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="table-actions">
+                                    <a class="btn-edit" asp-action="Edit" asp-route-id="@b.BrandId" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn-delete" asp-action="Delete" asp-route-id="@b.BrandId" title="Xóa">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 48px; color: #d1d5db;"></i>
+                            <p class="mt-2 text-muted">Không có thương hiệu nào</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

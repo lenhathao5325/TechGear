@@ -1,24 +1,141 @@
-﻿<h1>Admin Dashboard</h1>
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<TechGear.Models.ApplicationUser> UserManager
+
 @{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <div class="card shadow-sm">
-            <div class="card-body">
-                <h6 class="card-title">Users</h6>
-                <h3 class="fw-bold">125</h3>
+@model TechGear.Models.ViewModels.AdminDashboardVM
+
+@{
+    var currentUser = await UserManager.GetUserAsync(User);
+    var userInitials = string.IsNullOrEmpty(currentUser?.FullName) 
+        ? (currentUser?.UserName?.Substring(0, 2) ?? "AD").ToUpper()
+        : currentUser.FullName.Split(' ').Length > 0 
+            ? (currentUser.FullName.Split(' ').First().FirstOrDefault().ToString() + 
+               currentUser.FullName.Split(' ').Last().FirstOrDefault().ToString()).ToUpper()
+            : "AD";
+}
+
+<!-- Admin Header -->
+<div class="admin-header mb-4">
+    <div class="admin-avatar-container">
+        <div class="admin-avatar-placeholder" data-initials="@userInitials">
+            @userInitials
+        </div>
+    </div>
+    <div class="admin-info">
+        <div class="admin-title">@(currentUser?.FullName ?? currentUser?.UserName ?? "Administrator")</div>
+        <div class="admin-email">@currentUser?.Email</div>
+    </div>
+</div>
+
+<!-- Dashboard Stats Cards -->
+<div class="dashboard-stats">
+    <div class="stat-card">
+        <div class="stat-label"><i class="bi bi-cash-coin"></i> Tổng doanh thu</div>
+        <div class="stat-value">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.TotalSales)</div>
+        <div class="stat-change"><i class="bi bi-graph-up"></i> Tháng này</div>
+        <div class="stat-icon revenue"><i class="bi bi-currency-dollar"></i></div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label"><i class="bi bi-bag-fill"></i> Đơn hàng</div>
+        <div class="stat-value">@Model.OrdersCount</div>
+        <div class="stat-change"><i class="bi bi-box-seam"></i> Tổng đơn</div>
+        <div class="stat-icon orders"><i class="bi bi-bag-check-fill"></i></div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label"><i class="bi bi-box"></i> Sản phẩm</div>
+        <div class="stat-value">@Model.ProductsCount</div>
+        <div class="stat-change"><i class="bi bi-collection"></i> Tất cả SP</div>
+        <div class="stat-icon products"><i class="bi bi-box-seam"></i></div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-label"><i class="bi bi-people-fill"></i> Người dùng</div>
+        <div class="stat-value">@Model.UsersCount</div>
+        <div class="stat-change"><i class="bi bi-person-check"></i> Hoạt động</div>
+        <div class="stat-icon users"><i class="bi bi-people-fill"></i></div>
+    </div>
+</div>
+
+<hr class="my-5" />
+
+<div class="row g-4">
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <strong><i class="bi bi-table"></i> Đơn hàng gần đây</strong>
+                <a class="btn btn-sm btn-link" asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="bi bi-arrow-right"></i> Xem tất cả</a>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-custom mb-0">
+                    <thead>
+                        <tr>
+                            <th><i class="bi bi-hash"></i> #</th>
+                            <th><i class="bi bi-person"></i> Khách hàng</th>
+                            <th><i class="bi bi-cash"></i> Tổng tiền</th>
+                            <th><i class="bi bi-info-circle"></i> Trạng thái</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(Model.RecentOrders.Any())
+                        {
+                            @foreach(var o in Model.RecentOrders)
+                            {
+                                <tr>
+                                    <td><strong>@o.OrderId</strong></td>
+                                    <td>@o.UserName</td>
+                                    <td>@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", o.Total)</td>
+                                    <td>
+                                        <span class="badge-status badge-@(o.Status.ToLower() == "pending" ? "pending" : o.Status.ToLower() == "completed" ? "completed" : o.Status.ToLower() == "cancelled" ? "cancelled" : "processing")">
+                                            <i class="bi bi-circle-fill"></i> @o.Status
+                                        </span>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-4">Chưa có đơn hàng nào</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 
-    <div class="col-md-4">
-        <div class="card shadow-sm">
+    <div class="col-lg-6">
+        <div class="dashboard-card">
+            <div class="card-header-custom">
+                <strong><i class="bi bi-exclamation-triangle-fill"></i> Sản phẩm sắp hết</strong>
+                <a class="btn btn-sm btn-link" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-arrow-right"></i> Xem tất cả</a>
+            </div>
             <div class="card-body">
-                <h6 class="card-title">Role</h6>
-                <h3 class="fw-bold">5</h3>
+                @if(Model.LowStockProducts.Any())
+                {
+                    <ul class="list-group-custom">
+                        @foreach(var p in Model.LowStockProducts)
+                        {
+                            <li>
+                                <span><i class="bi bi-box"></i> @p.Name</span>
+                                <span class="badge bg-danger"><i class="bi bi-exclamation-lg"></i> @p.Left còn lại</span>
+                            </li>
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <div class="empty-state">
+                        <i class="bi bi-check-circle"></i>
+                        <p>Tất cả sản phẩm đều có đủ số lượng</p>
+                    </div>
+                }
             </div>
         </div>
     </div>

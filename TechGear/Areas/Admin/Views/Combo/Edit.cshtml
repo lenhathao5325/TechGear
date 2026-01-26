@@ -1,0 +1,83 @@
+@model TechGear.Models.Combo
+
+<h3>Ch?nh s?a combo</h3>
+
+<form method="post" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ComboId" />
+    <div class="mb-3">
+        <label class="form-label">Tên combo</label>
+        <input asp-for="ComboName" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Hình ?nh combo</label>
+        <div class="image-uploader">
+            <input type="file" name="images" id="comboImages" accept="image/*" multiple class="form-control" />
+            <div id="previewList" class="preview-list mt-2"></div>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Mô t?</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+    <div class="mb-3 row">
+        <div class="col-md-4">
+            <label class="form-label">Giá g?c</label>
+            <input asp-for="OriginalPrice" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Giá bán</label>
+            <input asp-for="FinalPrice" class="form-control" />
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Gi?m giá</label>
+            <input asp-for="DiscountValue" class="form-control" />
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">S?n ph?m trong combo</label>
+        <div>
+            @foreach(var v in ViewBag.Variants as List<TechGear.Models.ProductVariant>){
+                var has = Model.ComboItems.Any(ci => ci.ProductVariantId == v.Id);
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="selectedVariantIds" value="@v.Id" @(has?"checked":"") />
+                    <label class="form-check-label">@v.Product.Name - @v.SKU</label>
+                    <input type="number" name="quantities" value="@(has?Model.ComboItems.First(ci => ci.ProductVariantId==v.Id).Quantity:1)" class="form-control form-control-sm w-auto d-inline-block ms-2" />
+                </div>
+            }
+        </div>
+    </div>
+
+    <button class="btn btn-primary">L?u</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>
+
+<script>
+    (function(){
+        var inp = document.getElementById('comboImages');
+        var preview = document.getElementById('previewList');
+        if(!inp || !preview) return;
+
+        function readFiles(files){
+            preview.innerHTML = '';
+            Array.from(files).forEach(function(file, idx){
+                if(!file.type.startsWith('image/')) return;
+                var reader = new FileReader();
+                var container = document.createElement('div'); container.className = 'preview-item';
+                var img = document.createElement('img');
+                var btn = document.createElement('button'); btn.type='button'; btn.className='remove-btn'; btn.innerHTML='&times;';
+                btn.addEventListener('click', function(){
+                    // remove from input.files is complex; simply mark visually removed and skip on server if needed
+                    container.remove();
+                });
+                container.appendChild(img); container.appendChild(btn); preview.appendChild(container);
+
+                reader.onload = function(e){ img.src = e.target.result; }
+                reader.readAsDataURL(file);
+            });
+        }
+
+        inp.addEventListener('change', function(e){ readFiles(e.target.files); }, false);
+    })();
+</script>

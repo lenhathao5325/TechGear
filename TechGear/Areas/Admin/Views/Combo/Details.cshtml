@@ -1,0 +1,18 @@
+@model TechGear.Models.Combo
+
+<h3>Chi ti?t combo</h3>
+
+<div class="card">
+    <div class="card-body">
+        <h5>@Model.ComboName</h5>
+        <p>@Model.Description</p>
+        <p>Giá g?c: @Model.OriginalPrice.ToString("C")</p>
+        <p>Giá bán: @Model.FinalPrice.ToString("C")</p>
+        <h6>S?n ph?m</h6>
+        <ul>
+            @foreach(var ci in Model.ComboItems){
+                <li>@ci.ProductVariant.Product.Name - @ci.ProductVariant.SKU (x@ci.Quantity)</li>
+            }
+        </ul>
+    </div>
+</div>

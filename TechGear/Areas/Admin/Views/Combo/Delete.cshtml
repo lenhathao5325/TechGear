@@ -1,0 +1,10 @@
+@model TechGear.Models.Combo
+
+<h3>Xóa combo</h3>
+
+<form method="post" asp-action="Delete">
+    <input type="hidden" asp-for="ComboId" />
+    <p>B?n có ch?c mu?n xóa combo "@Model.ComboName" không?</p>
+    <button type="submit" class="btn btn-danger">Xóa</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

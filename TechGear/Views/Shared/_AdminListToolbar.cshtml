@@ -1,0 +1,32 @@
+@{
+    var q = Context.Request.Query;
+    var search = (q["search"].ToString() ?? string.Empty).Trim();
+    var status = q["status"].ToString() ?? string.Empty;
+    var pageSize = q["pageSize"].ToString();
+    if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+
+    string RenderSelected(string value) => value == status ? " selected" : string.Empty;
+}
+
+<form method="get" class="row gy-2 gx-2 align-items-center mb-3">
+    <div class="col-auto">
+        <input name="search" value="@search" placeholder="Tìm ki?m..." class="form-control form-control-sm" />
+    </div>
+    <div class="col-auto">
+        <select name="status" class="form-select form-select-sm">
+            @if (string.IsNullOrEmpty(status)) { <option value="" selected>T?t c?</option> } else { <option value="">T?t c?</option> }
+            @if (status == "active") { <option value="active" selected>Ho?t ??ng</option> } else { <option value="active">Ho?t ??ng</option> }
+            @if (status == "inactive") { <option value="inactive" selected>Không ho?t ??ng</option> } else { <option value="inactive">Không ho?t ??ng</option> }
+        </select>
+    </div>
+    <div class="col-auto">
+        <select name="pageSize" class="form-select form-select-sm">
+            @if(pageSize=="10") { <option value="10" selected>10</option> } else { <option value="10">10</option> }
+            @if(pageSize=="25") { <option value="25" selected>25</option> } else { <option value="25">25</option> }
+            @if(pageSize=="50") { <option value="50" selected>50</option> } else { <option value="50">50</option> }
+        </select>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-sm btn-outline-primary">L?c</button>
+    </div>
+</form>

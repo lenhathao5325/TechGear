@@ -1,0 +1,21 @@
+@model TechGear.Models.ApplicationUser
+
+<h3>T?o ng??i dùng</h3>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">H? và tên</label>
+        <input asp-for="FullName" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">M?t kh?u</label>
+        <input asp-for="PasswordHash" class="form-control" />
+    </div>
+
+    <button class="btn btn-primary">T?o</button>
+    <a class="btn btn-link" asp-action="Index">H?y</a>
+</form>

@@ -1,6 +1,14 @@
-﻿<h2>Create Role</h2>
+﻿@{
+    ViewData["Title"] = "Tạo vai trò";
+}
+
+<h3>Tạo vai trò</h3>
 
 <form method="post">
-    <input name="name" class="form-control" placeholder="Role name" />
-    <button type="submit">Save</button>
+    <div class="mb-3">
+        <label class="form-label">Tên vai trò</label>
+        <input name="name" class="form-control" placeholder="Tên vai trò" />
+    </div>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-save me-1"></i>Lưu</button>
+    <a class="btn btn-link" asp-action="Index">Hủy</a>
 </form>
