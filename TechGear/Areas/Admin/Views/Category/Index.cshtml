@@ -17,6 +17,8 @@
 </div>
 
 <div class="ps-3 pe-3">
+    @await Html.PartialAsync("~/Views/Shared/_AdminListToolbar.cshtml")
+
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div></div>
         <a class="btn btn-primary" asp-action="Create">
@@ -84,4 +86,41 @@
             </tbody>
         </table>
     </div>
+
+    @{ 
+        var q = Context.Request.Query;
+        var search = (q["search"].ToString() ?? string.Empty).Trim();
+        var status = q["status"].ToString() ?? string.Empty;
+        var pageSize = q["pageSize"].ToString(); if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+
+        int page = 1;
+        int parsedPage = 0;
+        int.TryParse(q["page"].ToString(), out parsedPage);
+        if (parsedPage > 0) page = parsedPage;
+
+        int totalPages = ViewData["TotalPages"] as int? ?? 1;
+        var action = ViewContext.RouteData.Values["action"] != null ? ViewContext.RouteData.Values["action"].ToString() : string.Empty;
+        var controller = ViewContext.RouteData.Values["controller"] != null ? ViewContext.RouteData.Values["controller"].ToString() : string.Empty;
+        var area = ViewContext.RouteData.Values["area"] != null ? ViewContext.RouteData.Values["area"].ToString() : string.Empty;
+        int start = Math.Max(1, page - 2);
+        int end = Math.Min(totalPages, page + 2);
+    }
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item @(page==1? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page - 1, search = search, status = status, pageSize = pageSize })">&lsaquo;</a>
+                </li>
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i==page? "active":"")"><a class="page-link" href="@Url.Action(action, controller, new { area = area, page = i, search = search, status = status, pageSize = pageSize })">@i</a></li>
+                }
+                <li class="page-item @(page==totalPages? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page + 1, search = search, status = status, pageSize = pageSize })">&rsaquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
 </div>

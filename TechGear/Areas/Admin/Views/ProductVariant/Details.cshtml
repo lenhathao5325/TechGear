@@ -1,0 +1,24 @@
+@{
+    ViewData["Title"] = "Chi tiết biến thể";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-eye"></i> Chi tiết biến thể</h1>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="admin-card">
+        <div class="card-body">
+            <h4>Biến thể #@ViewData["VariantId"]</h4>
+            <p class="text-muted">Tên: <strong>Ví dụ: Màu Đen - Size M</strong></p>
+            <p class="text-muted">SKU: <strong>EX-12345</strong></p>
+            <p class="text-muted">Giá: <strong>1.000.000 đ</strong></p>
+            <p class="text-muted">Số lượng: <strong>10</strong></p>
+
+            <div class="form-actions mt-3">
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@ViewData["VariantId"]"><i class="bi bi-pencil me-2"></i>Chỉnh sửa</a>
+                <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Quay lại</a>
+            </div>
+        </div>
+    </div>
+</div>

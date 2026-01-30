@@ -1,0 +1,20 @@
+@*
+  Global toast container partial.
+  Usage (server-side):
+    TempData["ToastType"] = "success|info|warning|error";
+    TempData["ToastMessage"] = "Message text";
+    TempData["ToastTitle"] = "Optional title";
+  Or call showToast(type, message, title) from client JS.
+*@
+
+<div id="admin-toast-container" class="admin-toast-container" aria-live="polite" aria-atomic="true"></div>
+
+<script src="~/js/admin-toasts.js" asp-append-version="true"></script>
+
+@if(TempData["ToastType"] != null && TempData["ToastMessage"] != null)
+{
+    var tType = TempData["ToastType"].ToString();
+    var tMsg = TempData["ToastMessage"].ToString().Replace("\r\n","\\n").Replace("\"","\\\"");
+    var tTitle = TempData["ToastTitle"]?.ToString().Replace("\r\n","\\n").Replace("\"","\\\"") ?? "";
+    <script>document.addEventListener('DOMContentLoaded', function(){ showToast('@tType','@tMsg','@tTitle'); });</script>
+}

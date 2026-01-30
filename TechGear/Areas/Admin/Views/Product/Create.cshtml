@@ -1,38 +1,112 @@
 @model TechGear.Models.Product
 @{
-    ViewData["Title"] = "T?o s?n ph?m";
+    ViewData["Title"] = "Tạo sản phẩm";
 }
 
-<h3>T?o s?n ph?m</h3>
-<form asp-action="Create" method="post">
-    <div class="mb-3">
-        <label class="form-label">T�n</label>
-        <input asp-for="Name" class="form-control" />
+<div class="admin-header">
+    <div class="container-fluid">
+        <h1><i class="bi bi-plus-circle me-2"></i>Tạo sản phẩm</h1>
+        <p class="text-muted">Thêm sản phẩm mới vào hệ thống</p>
     </div>
-    <div class="mb-3">
-        <label class="form-label">M� t?</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-tag me-2"></i>Tên</label>
+                            <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-list me-2"></i>Danh mục</label>
+                            <select asp-for="CategoryId" class="form-select">
+                                <option value="">-- Chọn --</option>
+                                @{
+                                    var categories = ViewBag.Categories as List<TechGear.Models.Category> ?? new List<TechGear.Models.Category>();
+                                    foreach(var c in categories)
+                                    {
+                                        <option value="@c.CategoryId">@c.CategoryName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-briefcase me-2"></i>Thương hiệu</label>
+                            <select asp-for="BrandId" class="form-select">
+                                <option value="">-- Chọn --</option>
+                                @{
+                                    var brands = ViewBag.Brands as List<TechGear.Models.Brand> ?? new List<TechGear.Models.Brand>();
+                                    foreach(var b in brands)
+                                    {
+                                        <option value="@b.BrandId">@b.BrandName</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- variants section (UI-only) -->
+                        <div class="mb-4">
+                            <label class="form-label"><i class="bi bi-tags me-2"></i>Biến thể</label>
+                            <div class="border rounded p-3 mb-2" style="background:#f8f9fa;">
+                                <p class="text-muted mb-2">Quản lý biến thể sản phẩm. Sử dụng giao diện bên dưới để thêm nhanh biến thể (UI-only) hoặc quản lý chi tiết ở trang Biến thể.</p>
+                                <div id="quick-variants" class="mb-2">
+                                </div>
+                                <div class="d-flex gap-2 flex-wrap align-items-end">
+                                    <input id="variantName" class="form-control form-control-sm flex-grow-1" placeholder="Tên biến thể (Ví dụ: Đen - M)" style="min-width:200px;" />
+                                    <input id="variantSku" class="form-control form-control-sm" placeholder="SKU" style="width:160px;" />
+                                    <input id="variantPrice" class="form-control form-control-sm" placeholder="Giá" style="width:140px;" />
+                                    <button id="addVariantBtn" type="button" class="btn btn-sm btn-outline-primary"><i class="bi bi-plus-circle"></i> Thêm</button>
+                                    <a class="btn btn-sm btn-primary" asp-area="Admin" asp-controller="ProductVariant" asp-action="Index">Quản lý Biến thể</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-image me-2"></i>Hình ảnh</label>
+                            <div class="upload-area border-2 border-dashed p-4 rounded text-center" style="cursor: pointer; border-color: #dee2e6; transition: all 0.3s ease;">
+                                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                                <p class="text-muted mb-1">Kéo hình ảnh vào đây hoặc nhấp để chọn</p>
+                                <small class="text-muted">PNG, JPG, GIF (tối đa 5MB)</small>
+                                <input type="file" name="images" class="d-none" accept="image/*" />
+                            </div>
+                        </div>
+
+                        <!-- Description placed at bottom as requested -->
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-chat-dots me-2"></i>Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả sản phẩm"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-2"></i>Tạo</button>
+                            <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label">Danh m?c</label>
-        <select asp-for="CategoryId" class="form-select">
-            <option value="">-- Ch?n --</option>
-            @foreach(var c in ViewBag.Categories as List<TechGear.Models.Category>)
-            {
-                <option value="@c.CategoryId">@c.CategoryName</option>
-            }
-        </select>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Th??ng hi?u</label>
-        <select asp-for="BrandId" class="form-select">
-            <option value="">-- Ch?n --</option>
-            @foreach(var b in ViewBag.Brands as List<TechGear.Models.Brand>)
-            {
-                <option value="@b.BrandId">@b.BrandName</option>
-            }
-        </select>
-    </div>
-    <button class="btn btn-primary">L?u</button>
-    <a class="btn btn-link" asp-action="Index">H?y</a>
-</form>
+</div>
+
+<script>
+    (function(){
+        var addBtn = document.getElementById('addVariantBtn');
+        var list = document.getElementById('quick-variants');
+        addBtn?.addEventListener('click', function(){
+            var name = document.getElementById('variantName').value.trim();
+            var sku = document.getElementById('variantSku').value.trim();
+            var price = document.getElementById('variantPrice').value.trim();
+            if(!name) return;
+            var row = document.createElement('div');
+            row.className = 'd-flex align-items-center gap-2 mb-2';
+            row.innerHTML = '<div class="flex-grow-1"><strong>'+name+'</strong><div class="text-muted small">'+sku+' • '+price+'</div></div><button type="button" class="btn btn-sm btn-outline-danger">Xóa</button>';
+            list.appendChild(row);
+            document.getElementById('variantName').value='';
+            document.getElementById('variantSku').value='';
+            document.getElementById('variantPrice').value='';
+        });
+    })();
+</script>

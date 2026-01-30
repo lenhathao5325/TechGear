@@ -1,141 +1,179 @@
-﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<TechGear.Models.ApplicationUser> UserManager
-
-@{
+﻿@{
     Layout = "_AdminLayout";
     ViewData["Title"] = "Dashboard";
 }
 
-@model TechGear.Models.ViewModels.AdminDashboardVM
-
-@{
-    var currentUser = await UserManager.GetUserAsync(User);
-    var userInitials = string.IsNullOrEmpty(currentUser?.FullName) 
-        ? (currentUser?.UserName?.Substring(0, 2) ?? "AD").ToUpper()
-        : currentUser.FullName.Split(' ').Length > 0 
-            ? (currentUser.FullName.Split(' ').First().FirstOrDefault().ToString() + 
-               currentUser.FullName.Split(' ').Last().FirstOrDefault().ToString()).ToUpper()
-            : "AD";
-}
-
-<!-- Admin Header -->
-<div class="admin-header mb-4">
-    <div class="admin-avatar-container">
-        <div class="admin-avatar-placeholder" data-initials="@userInitials">
-            @userInitials
+<div class="admin-header">
+    <div class="container-fluid">
+        <div>
+            <h1><i class="bi bi-graph-up me-2"></i>Dashboard quản lý</h1>
+            <p class="text-muted">Tổng quan hệ thống TechGear</p>
         </div>
-    </div>
-    <div class="admin-info">
-        <div class="admin-title">@(currentUser?.FullName ?? currentUser?.UserName ?? "Administrator")</div>
-        <div class="admin-email">@currentUser?.Email</div>
     </div>
 </div>
 
-<!-- Dashboard Stats Cards -->
-<div class="dashboard-stats">
-    <div class="stat-card">
-        <div class="stat-label"><i class="bi bi-cash-coin"></i> Tổng doanh thu</div>
-        <div class="stat-value">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", Model.TotalSales)</div>
-        <div class="stat-change"><i class="bi bi-graph-up"></i> Tháng này</div>
-        <div class="stat-icon revenue"><i class="bi bi-currency-dollar"></i></div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-label"><i class="bi bi-bag-fill"></i> Đơn hàng</div>
-        <div class="stat-value">@Model.OrdersCount</div>
-        <div class="stat-change"><i class="bi bi-box-seam"></i> Tổng đơn</div>
-        <div class="stat-icon orders"><i class="bi bi-bag-check-fill"></i></div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-label"><i class="bi bi-box"></i> Sản phẩm</div>
-        <div class="stat-value">@Model.ProductsCount</div>
-        <div class="stat-change"><i class="bi bi-collection"></i> Tất cả SP</div>
-        <div class="stat-icon products"><i class="bi bi-box-seam"></i></div>
-    </div>
-
-    <div class="stat-card">
-        <div class="stat-label"><i class="bi bi-people-fill"></i> Người dùng</div>
-        <div class="stat-value">@Model.UsersCount</div>
-        <div class="stat-change"><i class="bi bi-person-check"></i> Hoạt động</div>
-        <div class="stat-icon users"><i class="bi bi-people-fill"></i></div>
-    </div>
-</div>
-
-<hr class="my-5" />
-
-<div class="row g-4">
-    <div class="col-lg-6">
-        <div class="dashboard-card">
-            <div class="card-header-custom">
-                <strong><i class="bi bi-table"></i> Đơn hàng gần đây</strong>
-                <a class="btn btn-sm btn-link" asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="bi bi-arrow-right"></i> Xem tất cả</a>
-            </div>
-            <div class="card-body p-0">
-                <table class="table table-custom mb-0">
-                    <thead>
-                        <tr>
-                            <th><i class="bi bi-hash"></i> #</th>
-                            <th><i class="bi bi-person"></i> Khách hàng</th>
-                            <th><i class="bi bi-cash"></i> Tổng tiền</th>
-                            <th><i class="bi bi-info-circle"></i> Trạng thái</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if(Model.RecentOrders.Any())
-                        {
-                            @foreach(var o in Model.RecentOrders)
-                            {
-                                <tr>
-                                    <td><strong>@o.OrderId</strong></td>
-                                    <td>@o.UserName</td>
-                                    <td>@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", o.Total)</td>
-                                    <td>
-                                        <span class="badge-status badge-@(o.Status.ToLower() == "pending" ? "pending" : o.Status.ToLower() == "completed" ? "completed" : o.Status.ToLower() == "cancelled" ? "cancelled" : "processing")">
-                                            <i class="bi bi-circle-fill"></i> @o.Status
-                                        </span>
-                                    </td>
-                                </tr>
-                            }
-                        }
-                        else
-                        {
-                            <tr>
-                                <td colspan="4" class="text-center text-muted py-4">Chưa có đơn hàng nào</td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6">
-        <div class="dashboard-card">
-            <div class="card-header-custom">
-                <strong><i class="bi bi-exclamation-triangle-fill"></i> Sản phẩm sắp hết</strong>
-                <a class="btn btn-sm btn-link" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-arrow-right"></i> Xem tất cả</a>
-            </div>
-            <div class="card-body">
-                @if(Model.LowStockProducts.Any())
-                {
-                    <ul class="list-group-custom">
-                        @foreach(var p in Model.LowStockProducts)
-                        {
-                            <li>
-                                <span><i class="bi bi-box"></i> @p.Name</span>
-                                <span class="badge bg-danger"><i class="bi bi-exclamation-lg"></i> @p.Left còn lại</span>
-                            </li>
-                        }
-                    </ul>
-                }
-                else
-                {
-                    <div class="empty-state">
-                        <i class="bi bi-check-circle"></i>
-                        <p>Tất cả sản phẩm đều có đủ số lượng</p>
+<div class="container-fluid">
+    <!-- Stats Cards -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="admin-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-2"><i class="bi bi-cash-coin me-2"></i>Doanh thu</p>
+                            <h3 class="mb-0">45.2M đ</h3>
+                            <small class="text-success"><i class="bi bi-graph-up"></i> +12% tháng này</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #0d6efd; opacity: 0.2;">
+                            <i class="bi bi-currency-dollar"></i>
+                        </div>
                     </div>
-                }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="admin-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-2"><i class="bi bi-bag-fill me-2"></i>Đơn hàng</p>
+                            <h3 class="mb-0">284</h3>
+                            <small class="text-info"><i class="bi bi-box-seam"></i> 12 chưa xử lý</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #198754; opacity: 0.2;">
+                            <i class="bi bi-bag-check-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="admin-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-2"><i class="bi bi-box me-2"></i>Sản phẩm</p>
+                            <h3 class="mb-0">156</h3>
+                            <small class="text-warning"><i class="bi bi-exclamation-lg"></i> 8 sắp hết</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #ffc107; opacity: 0.2;">
+                            <i class="bi bi-box-seam"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="admin-card">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <div>
+                            <p class="text-muted mb-2"><i class="bi bi-people me-2"></i>Người dùng</p>
+                            <h3 class="mb-0">1,234</h3>
+                            <small class="text-secondary"><i class="bi bi-person-check"></i> 98% hoạt động</small>
+                        </div>
+                        <div style="font-size: 3rem; color: #0dcaf0; opacity: 0.2;">
+                            <i class="bi bi-people-fill"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Orders & Low Stock -->
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="card-header">
+                    <i class="bi bi-bag-check"></i>
+                    <h3>Đơn hàng gần đây</h3>
+                </div>
+                <div class="card-body p-0">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th><i class="bi bi-hash"></i> #</th>
+                                <th><i class="bi bi-person"></i> Khách hàng</th>
+                                <th><i class="bi bi-cash"></i> Tổng tiền</th>
+                                <th><i class="bi bi-info-circle"></i> Trạng thái</th>
+                                <th><i class="bi bi-calendar"></i> Ngày</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>#ORD001</strong></td>
+                                <td>Nguyễn Văn A</td>
+                                <td>1.2M đ</td>
+                                <td><span class="admin-badge badge-active"><i class="bi bi-check-circle"></i> Hoàn thành</span></td>
+                                <td>29/01/2026</td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD002</strong></td>
+                                <td>Trần Thị B</td>
+                                <td>850K đ</td>
+                                <td><span class="admin-badge badge-pending"><i class="bi bi-clock"></i> Chờ xử lý</span></td>
+                                <td>29/01/2026</td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD003</strong></td>
+                                <td>Lê Văn C</td>
+                                <td>2.5M đ</td>
+                                <td><span class="admin-badge badge-active"><i class="bi bi-check-circle"></i> Hoàn thành</span></td>
+                                <td>28/01/2026</td>
+                            </tr>
+                            <tr>
+                                <td><strong>#ORD004</strong></td>
+                                <td>Phạm Thị D</td>
+                                <td>650K đ</td>
+                                <td><span class="admin-badge badge-pending"><i class="bi bi-clock"></i> Chờ xử lý</span></td>
+                                <td>28/01/2026</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-admin btn-admin-outline">
+                        <i class="bi bi-arrow-right"></i> Xem tất cả đơn hàng
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="admin-card">
+                <div class="card-header">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                    <h3>Sản phẩm sắp hết</h3>
+                </div>
+                <div class="card-body">
+                    <ul class="list-unstyled">
+                        <li class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <span><i class="bi bi-box text-primary"></i> Laptop Dell XPS 15</span>
+                            <span class="admin-badge badge-inactive">3 còn lại</span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <span><i class="bi bi-box text-primary"></i> iPhone 15 Pro Max</span>
+                            <span class="admin-badge badge-inactive">5 còn lại</span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                            <span><i class="bi bi-box text-primary"></i> MacBook Air M3</span>
+                            <span class="admin-badge badge-inactive">2 còn lại</span>
+                        </li>
+                        <li class="d-flex justify-content-between align-items-center">
+                            <span><i class="bi bi-box text-primary"></i> iPad Pro 12.9"</span>
+                            <span class="admin-badge badge-inactive">4 còn lại</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="#" class="btn btn-admin btn-admin-outline" style="width: 100%; justify-content: center;">
+                        <i class="bi bi-arrow-right"></i> Quản lý kho
+                    </a>
+                </div>
             </div>
         </div>
     </div>

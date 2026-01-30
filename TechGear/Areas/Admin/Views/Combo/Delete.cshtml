@@ -1,10 +1,34 @@
 @model TechGear.Models.Combo
+@{
+    ViewData["Title"] = "Xóa combo";
+}
 
-<h3>X�a combo</h3>
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-exclamation-triangle me-2"></i>Xóa combo</h1>
+</div>
 
-<form method="post" asp-action="Delete">
-    <input type="hidden" asp-for="ComboId" />
-    <p>B?n c� ch?c mu?n x�a combo "@Model.ComboName" kh�ng?</p>
-    <button type="submit" class="btn btn-danger">X�a</button>
-    <a class="btn btn-link" asp-action="Index">H?y</a>
-</form>
+<div class="ps-3 pe-3">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="admin-card">
+                <div class="card-body">
+                    <div class="alert alert-warning mb-4">
+                        <i class="bi bi-exclamation-circle me-2"></i>
+                        <strong>Chú ý:</strong> Hành động này không thể hoàn tác!
+                    </div>
+
+                    <h5 class="mb-3">Bạn có chắc chắn muốn xóa combo này?</h5>
+                    <p class="text-muted">Combo: <strong>@Model.ComboName</strong></p>
+
+                    <form method="post" asp-action="Delete">
+                        <input type="hidden" asp-for="ComboId" />
+                        <div class="form-actions mt-4">
+                            <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Xóa</button>
+                            <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

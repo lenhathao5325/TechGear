@@ -1,83 +1,100 @@
 @model TechGear.Models.Combo
+@{
+    ViewData["Title"] = "Chỉnh sửa combo";
+}
 
-<h3>Ch?nh s?a combo</h3>
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-pencil me-2"></i>Chỉnh sửa combo</h1>
+    <p class="text-muted">Cập nhật thông tin combo</p>
+</div>
 
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" asp-for="ComboId" />
-    <div class="mb-3">
-        <label class="form-label">T�n combo</label>
-        <input asp-for="ComboName" class="form-control" />
-    </div>
+<div class="ps-3 pe-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <input type="hidden" asp-for="ComboId" />
 
-    <div class="mb-3">
-        <label class="form-label">H�nh ?nh combo</label>
-        <div class="image-uploader">
-            <input type="file" name="images" id="comboImages" accept="image/*" multiple class="form-control" />
-            <div id="previewList" class="preview-list mt-2"></div>
-        </div>
-    </div>
-    <div class="mb-3">
-        <label class="form-label">M� t?</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
-    </div>
-    <div class="mb-3 row">
-        <div class="col-md-4">
-            <label class="form-label">Gi� g?c</label>
-            <input asp-for="OriginalPrice" class="form-control" />
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Gi� b�n</label>
-            <input asp-for="FinalPrice" class="form-control" />
-        </div>
-        <div class="col-md-4">
-            <label class="form-label">Gi?m gi�</label>
-            <input asp-for="DiscountValue" class="form-control" />
-        </div>
-    </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-tag me-2"></i>Tên combo</label>
+                            <input asp-for="ComboName" class="form-control" placeholder="Nhập tên combo" />
+                        </div>
 
-    <div class="mb-3">
-        <label class="form-label">S?n ph?m trong combo</label>
-        <div>
-            @foreach(var v in ViewBag.Variants as List<TechGear.Models.ProductVariant>){
-                var has = Model.ComboItems.Any(ci => ci.ProductVariantId == v.Id);
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="selectedVariantIds" value="@v.Id" @(has?"checked":"") />
-                    <label class="form-check-label">@v.Product.Name - @v.SKU</label>
-                    <input type="number" name="quantities" value="@(has?Model.ComboItems.First(ci => ci.ProductVariantId==v.Id).Quantity:1)" class="form-control form-control-sm w-auto d-inline-block ms-2" />
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-image me-2"></i>Hình ảnh combo</label>
+                            <div class="upload-area border-2 border-dashed p-4 rounded text-center" style="cursor: pointer; border-color: #dee2e6; transition: all 0.3s ease;">
+                                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                                <p class="text-muted mb-1">Kéo hình ảnh vào đây hoặc nhấp để chọn</p>
+                                <small class="text-muted">PNG, JPG, GIF (tối đa 5MB)</small>
+                                <input type="file" name="images" id="comboImages" accept="image/*" multiple class="d-none" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-chat-dots me-2"></i>Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả combo"></textarea>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-cash-coin me-2"></i>Giá gốc</label>
+                                    <input asp-for="OriginalPrice" class="form-control" type="number" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-currency-dollar me-2"></i>Giá bán</label>
+                                    <input asp-for="FinalPrice" class="form-control" type="number" placeholder="0" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label"><i class="bi bi-percent me-2"></i>Giảm giá</label>
+                                    <input asp-for="DiscountValue" class="form-control" type="number" placeholder="0" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label"><i class="bi bi-box me-2"></i>Sản phẩm trong combo</label>
+                            <div class="border rounded p-3" style="background: #f8f9fa;">
+                                @{
+                                    var variants = ViewBag.Variants as List<TechGear.Models.ProductVariant> ?? new List<TechGear.Models.ProductVariant>();
+                                    if (variants.Any())
+                                    {
+                                        foreach(var v in variants)
+                                        {
+                                            var has = Model.ComboItems?.Any(ci => ci.ProductVariantId == v.Id) ?? false;
+                                            var qty = has ? Model.ComboItems.First(ci => ci.ProductVariantId == v.Id).Quantity : 1;
+                                            <div class="mb-3 p-3 bg-white rounded border">
+                                                <div class="d-flex align-items-center">
+                                                    <input class="form-check-input me-3" type="checkbox" name="selectedVariantIds" value="@v.Id" @(has?"checked":"") />
+                                                    <div class="flex-grow-1">
+                                                        <strong>@v.Product?.Name</strong>
+                                                        <small class="text-muted d-block">SKU: @v.SKU</small>
+                                                    </div>
+                                                    <input type="number" name="quantities" value="@qty" min="1" class="form-control form-control-sm" style="width: 80px;" placeholder="Số lượng" />
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p class="text-muted text-center py-3">Không có biến thể sản phẩm</p>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2"></i>Lưu</button>
+                            <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                        </div>
+                    </form>
                 </div>
-            }
+            </div>
         </div>
     </div>
-
-    <button class="btn btn-primary">L?u</button>
-    <a class="btn btn-link" asp-action="Index">H?y</a>
-</form>
-
-<script>
-    (function(){
-        var inp = document.getElementById('comboImages');
-        var preview = document.getElementById('previewList');
-        if(!inp || !preview) return;
-
-        function readFiles(files){
-            preview.innerHTML = '';
-            Array.from(files).forEach(function(file, idx){
-                if(!file.type.startsWith('image/')) return;
-                var reader = new FileReader();
-                var container = document.createElement('div'); container.className = 'preview-item';
-                var img = document.createElement('img');
-                var btn = document.createElement('button'); btn.type='button'; btn.className='remove-btn'; btn.innerHTML='&times;';
-                btn.addEventListener('click', function(){
-                    // remove from input.files is complex; simply mark visually removed and skip on server if needed
-                    container.remove();
-                });
-                container.appendChild(img); container.appendChild(btn); preview.appendChild(container);
-
-                reader.onload = function(e){ img.src = e.target.result; }
-                reader.readAsDataURL(file);
-            });
-        }
-
-        inp.addEventListener('change', function(e){ readFiles(e.target.files); }, false);
-    })();
-</script>
+</div>

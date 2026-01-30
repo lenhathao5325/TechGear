@@ -1,23 +1,39 @@
 @model TechGear.Models.Category
 @{
-    ViewData["Title"] = "S?a danh m?c";
+    ViewData["Title"] = "Chỉnh sửa danh mục";
 }
 
-<h3>S?a danh m?c</h3>
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="CategoryId" />
-    <div class="mb-3">
-        <label class="form-label">T�n</label>
-        <input asp-for="CategoryName" class="form-control" />
+<div class="admin-header">
+    <div class="container-fluid">
+        <h1><i class="bi bi-pencil-square me-2"></i>Chỉnh sửa danh mục</h1>
+        <p class="text-muted">Cập nhật thông tin danh mục</p>
     </div>
-    <div class="mb-3">
-        <label class="form-label">M� t?</label>
-        <textarea asp-for="Description" class="form-control"></textarea>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="CategoryId" />
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-tag me-2"></i>Tên</label>
+                            <input asp-for="CategoryName" class="form-control" placeholder="Nhập tên danh mục" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-chat-dots me-2"></i>Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả danh mục"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-2"></i>Lưu</button>
+                            <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="form-check mb-3">
-        <input asp-for="IsActive" class="form-check-input" />
-        <label class="form-check-label">K�ch ho?t</label>
-    </div>
-    <button class="btn btn-primary">L?u</button>
-    <a class="btn btn-link" asp-action="Index">H?y</a>
-</form>
+</div>

@@ -10,9 +10,11 @@
     <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/TechGear.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/admin-auth.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-ui.css" asp-append-version="true" />
 </head>
 <body>
     @await Html.PartialAsync("~/Views/Shared/_Alert.cshtml", ViewData["Alert"] as TechGear.Models.AlertModel)
+    @await Html.PartialAsync("_Toasts")
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">

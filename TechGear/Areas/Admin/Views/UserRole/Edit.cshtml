@@ -4,15 +4,15 @@
     var currentRole = ViewBag.CurrentRole as string;
 }
 
-<h3>Gán vai trò - @Model.Email</h3>
+<h3>GÃ¡n vai trÃ² - @Model.Email</h3>
 
 <form method="post">
     <input type="hidden" name="userId" value="@Model.Id" />
 
     <div class="mb-3">
-        <label class="form-label">Ch?n vai trò</label>
+        <label class="form-label">Ch?n vai trï¿½</label>
         <select name="selectedRole" class="form-select">
-            <option value="">(Không có)</option>
+            <option value="">(Khï¿½ng cï¿½)</option>
             @foreach(var r in roles){
                 if (string.Equals(r, currentRole))
                 {
@@ -26,6 +26,6 @@
         </select>
     </div>
 
-    <button type="submit" class="btn btn-primary">L?u</button>
+    <button type="submit" class="btn btn-primary">LÆ°u</button>
     <a class="btn btn-link" asp-action="Index">H?y</a>
 </form>

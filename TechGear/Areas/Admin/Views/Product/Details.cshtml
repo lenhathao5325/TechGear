@@ -1,12 +1,47 @@
 @model TechGear.Models.Product
 @{
-    ViewData["Title"] = "Chi ti?t s?n ph?m";
+    ViewData["Title"] = "Chi tiết sản phẩm";
 }
 
-<h3>@Model.Name</h3>
-<p class="text-muted">Th??ng hi?u: @Model.Brand?.BrandName | Danh m?c: @Model.Category?.CategoryName</p>
-<hr />
-<p>@Model.Description</p>
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-eye me-2"></i>Chi tiết sản phẩm</h1>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card mb-4">
+                <div class="card-header">
+                    <i class="bi bi-box"></i>
+                    <h5>@Model.Name</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="text-muted"><i class="bi bi-briefcase me-2"></i>Thương hiệu</p>
+                            <p><strong>@Model.Brand?.BrandName</strong></p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-muted"><i class="bi bi-list me-2"></i>Danh mục</p>
+                            <p><strong>@Model.Category?.CategoryName</strong></p>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <p class="text-muted"><i class="bi bi-chat-dots me-2"></i>Mô tả</p>
+                        <p>@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@Model.Id"><i class="bi bi-pencil me-2"></i>Chỉnh sửa</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@Model.Id"><i class="bi bi-trash me-2"></i>Xóa</a>
+                <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Quay lại</a>
+            </div>
+        </div>
+    </div>
+</div>
 
 <p>
     <a class="btn btn-link" asp-action="Index">Quay l?i</a>

@@ -5,6 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-TechGear-24b34766-8402-445a-9ae8-3674021171a1</UserSecretsId>
+    <LangVersion>latest</LangVersion>
+    <RazorLangVersion>latest</RazorLangVersion>
   </PropertyGroup>
 
   <ItemGroup>
