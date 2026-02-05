@@ -8,7 +8,7 @@ namespace TechGearAPI.Models
         public int ProductOptionValueId { get; set; }
 
         // Navigation
-        public ProductVariantAPI ProductVariant { get; set; }
-        public ProductOptionValueAPI ProductOptionValue { get; set; }
+        public ProductVariantAPI? ProductVariant { get; set; }
+        public ProductOptionValueAPI? ProductOptionValue { get; set; }
     }
 }

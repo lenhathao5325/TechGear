@@ -13,7 +13,7 @@ namespace TechGearAPI.Models
         public int Stock { get; set; }
 
         // Navigation
-        public ProductAPI Product { get; set; }
+        public ProductAPI? Product { get; set; }
         public ICollection<VariantOptionValueAPI> ProductVariantOptions { get; set; } = new List<VariantOptionValueAPI>();
         public ICollection<CartItemAPI> CartItems { get; set; } = new List<CartItemAPI>();
 
