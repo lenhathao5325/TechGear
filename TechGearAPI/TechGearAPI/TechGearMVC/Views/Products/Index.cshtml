@@ -1,0 +1,36 @@
+@model List<TechGearMVC.Models.ProductVM>
+
+<div class="products-header d-flex align-items-center justify-content-between mb-3">
+    <div>
+        <h2 class="m-0">Sản phẩm</h2>
+        <small class="text-muted">Quản lý sản phẩm — hiển thị từ API</small>
+    </div>
+    <div class="d-flex gap-2 align-items-center">
+        <div class="input-group ms-2">
+            <span class="input-group-text"><i class="bi bi-search"></i></span>
+            <input id="productSearch" class="form-control" placeholder="Tìm sản phẩm..." />
+        </div>
+        <a class="btn btn-primary ms-2 d-flex align-items-center" asp-action="Create"><i class="bi bi-plus-lg me-2"></i>Thêm sản phẩm</a>
+    </div>
+</div>
+
+<div id="productsGrid" class="container-products">
+    @foreach(var p in Model)
+    {
+        @await Html.PartialAsync("_ProductCard", p)
+    }
+</div>
+
+@section Scripts {
+    <script>
+        // simple client-side search/filter for cards by name/description
+        document.getElementById('productSearch').addEventListener('input', function(e){
+            const q = e.target.value.toLowerCase();
+            document.querySelectorAll('#productsGrid .card-product').forEach(card=>{
+                const name = card.querySelector('.card-title').innerText.toLowerCase();
+                const desc = (card.querySelector('.card-text')||{innerText:''}).innerText.toLowerCase();
+                card.style.display = (name.includes(q) || desc.includes(q)) ? 'flex' : 'none';
+            });
+        });
+    </script>
+} 
