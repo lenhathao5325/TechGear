@@ -10,91 +10,114 @@
     <title>@ViewData["Title"] - Admin</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <!-- Bootstrap 5 -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/theme.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-dashboard.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-pages.css" asp-append-version="true" />
+    <style>
+        /* Quick inline override for admin layout spacing */
+        .content { padding: 24px; }
+    </style>
 </head>
 
-<body>
-    <!-- TOP NAVBAR -->
-    <nav class="navbar navbar-dark bg-dark px-3">
-        <span class="navbar-brand fw-bold">Admin Panel</span>
+<body class="admin-body">
+    @{
+        var currentUser = await UserManager.GetUserAsync(User);
+        var userInitials = string.IsNullOrEmpty(currentUser?.FullName) 
+            ? (currentUser?.UserName?.Substring(0, 2) ?? "AD").ToUpper()
+            : currentUser.FullName.Split(' ').Length > 0 
+                ? (currentUser.FullName.Split(' ').First().FirstOrDefault().ToString() + 
+                   currentUser.FullName.Split(' ').Last().FirstOrDefault().ToString()).ToUpper()
+                : "AD";
+    }
 
-        @if (SignInManager.IsSignedIn(User))
-        {
-            <div class="d-flex align-items-center">
-                <span class="text-white me-3">
-                    Xin chào, @UserManager.GetUserName(User)
+    <nav class="admin-topbar navbar navbar-expand bg-white border-bottom">
+        <div class="container-fluid">
+            <button id="sidebarToggle" class="btn btn-outline-secondary btn-sm me-2" title="Toggle sidebar" aria-expanded="true" aria-controls="adminSidebar">
+                <span class="hamburger" aria-hidden="true">
+                    <span></span>
+                    <span></span>
+                    <span></span>
                 </span>
+            </button>
 
-                <form asp-area="Identity"
-                      asp-page="/Account/Logout"
-                      method="post"
-                      class="m-0">
-                    <button type="submit" class="btn btn-outline-light btn-sm">
-                        Đăng xuất
-                    </button>
-                </form>
+            <a class="navbar-brand me-3 fw-bold" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                <i class="bi bi-gear-fill text-primary"></i>
+                <span class="ms-1">Quản trị TechGear</span>
+            </a>
+
+            <form class="d-none d-md-flex ms-3 me-auto">
+                <input class="form-control form-control-sm" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <div class="d-flex align-items-center gap-2">
+                <a class="btn btn-light btn-sm position-relative" href="#" title="Thông báo">
+                    <i class="bi bi-bell"></i>
+                    <span class="badge bg-danger rounded-pill admin-badge">3</span>
+                </a>
+
+                <div class="dropdown">
+                    <a class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-person-circle fs-4 me-1"></i>
+                        <strong>@UserManager.GetUserName(User)</strong>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Hồ sơ</a></li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                            <form asp-area="Identity" asp-page="/Account/Logout" method="post" class="m-0">
+                                <button type="submit" class="dropdown-item">Đăng xuất</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
             </div>
-        }
+        </div>
     </nav>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- SIDEBAR -->
-            <aside class="col-md-2 sidebar p-0">
-                <ul class="nav flex-column pt-3">
-                    <li class="nav-item">
-                        <a class="nav-link active"
-                           asp-area="Admin"
-                           asp-controller="Dashboard"
-                           asp-action="Index">
-                            Dashboard
-                        </a>
-                    </li>
+    <div class="admin-container">
+        <aside id="adminSidebar" class="admin-sidebar">
+            <div class="sidebar-header text-center py-3">
+                <div class="sidebar-avatar-placeholder" style="width: 64px; height: 64px; margin: 0 auto;">
+                    @userInitials
+                </div>
+                <div class="mt-2 small text-muted">@(currentUser?.FullName ?? currentUser?.UserName ?? "Administrator")</div>
+            </div>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="UserRole"
-                           asp-action="Index">
-                            Quản lý User
-                        </a>
-                    </li>
+            <nav class="nav flex-column">
+                <a class="nav-link active" asp-area="Admin" asp-controller="Dashboard" asp-action="Index"><i class="bi bi-speedometer2 me-2"></i><span class="nav-text"> Bảng điều khiển</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index"><i class="bi bi-box-seam me-2"></i><span class="nav-text"> Sản phẩm</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index"><i class="bi bi-tags me-2"></i><span class="nav-text"> Danh mục</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Brand" asp-action="Index"><i class="bi bi-building me-2"></i><span class="nav-text"> Thương hiệu</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Order" asp-action="Index"><i class="bi bi-bag-check me-2"></i><span class="nav-text"> Đơn hàng</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Combo" asp-action="Index"><i class="bi bi-gift me-2"></i><span class="nav-text"> Combo</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="UserRole" asp-action="Index"><i class="bi bi-people me-2"></i><span class="nav-text"> Người dùng</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Role" asp-action="Index"><i class="bi bi-shield-lock me-2"></i><span class="nav-text"> Quyền</span></a>
+                <a class="nav-link" asp-area="Admin" asp-controller="Settings" asp-action="Index"><i class="bi bi-gear me-2"></i><span class="nav-text"> Cài đặt</span></a>
+            </nav>
 
-                    <li class="nav-item">
-                        <a class="nav-link"
-                           asp-area="Admin"
-                           asp-controller="Role"
-                           asp-action="Index">
-                            Quản lý Role
-                        </a>
-                    </li>
+            <div class="sidebar-footer mt-auto p-3 small text-muted">
+                © 2026 TechGear
+            </div>
+        </aside>
 
-                    @* <li class="nav-item mt-3">
-                        <a class="nav-link"
-                           asp-area=""
-                           asp-controller="Home"
-                           asp-action="Index">
-                            ← Về Website
-                        </a>
-                    </li> *@
+        <main class="admin-main">
+            <div class="container-fluid">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="mb-0">@ViewData["Title"]</h4>
+                </div>
 
-                </ul>
-            </aside>
-
-            <!-- MAIN CONTENT -->
-            <main class="col-md-10 content">
-                <h4 class="mb-3">@ViewData["Title"]</h4>
-                <hr />
                 @RenderBody()
-            </main>
-        </div>
+            </div>
+        </main>
     </div>
 
-    <!-- Bootstrap 5 JS -->
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/admin-dashboard.js" asp-append-version="true"></script>
+    <!-- Sidebar toggle handled by admin-dashboard.js (adds animation/aria) -->
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

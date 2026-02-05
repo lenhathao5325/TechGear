@@ -1,63 +1,74 @@
 ﻿using TechGear.Models;
 using TechGear.Models.ViewModels;
+using Microsoft.Extensions.Configuration;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TechGear.Areas.Admin.Controllers
 {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     [Authorize(Roles = "Admin")]
     [Area("Admin")]
     public class RoleController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public RoleController(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
-        {
-            _userManager = userManager;
-            _roleManager = roleManager;
-        }
-
-        // Danh sách USER
         public IActionResult Index()
         {
-            var users = _userManager.Users.ToList();
-            return View(users);
+            return View();
         }
 
-        // Gán quyền cho USER
-        public async Task<IActionResult> Edit(string id)
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(object model)
         {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null) return NotFound();
+            if (!ModelState.IsValid) return View(model);
+            return RedirectToAction(nameof(Index));
+        }
 
-            var userRoles = await _userManager.GetRolesAsync(user);
-
-            ViewBag.Roles = _roleManager.Roles.ToList();
-            ViewBag.UserRoles = userRoles;
-
-            return View(user);
+        public IActionResult Edit(string id)
+        {
+            ViewBag.Id = id;
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string userId, List<string> roles)
+        public IActionResult Edit(string id, object model)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            if (user == null) return NotFound();
+            if (!ModelState.IsValid) return View(model);
+            return RedirectToAction(nameof(Index));
+        }
 
-            var currentRoles = await _userManager.GetRolesAsync(user);
+        public IActionResult Delete(string id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
 
-            await _userManager.RemoveFromRolesAsync(user, currentRoles);
-
-            if (roles != null && roles.Any())
-            {
-                await _userManager.AddToRolesAsync(user, roles);
-            }
-
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(string id)
+        {
             return RedirectToAction(nameof(Index));
         }
     }

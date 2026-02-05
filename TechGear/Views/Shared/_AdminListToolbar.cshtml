@@ -1,0 +1,36 @@
+@{
+    var q = Context.Request.Query;
+    var search = (q["search"].ToString() ?? string.Empty).Trim();
+    var status = q["status"].ToString() ?? string.Empty;
+    var pageSize = q["pageSize"].ToString();
+    if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+
+    string RenderSelected(string value) => value == status ? " selected" : string.Empty;
+}
+
+<form method="get" class="filter-toolbar mb-3">
+    <div class="filter-left">
+        <div class="input-group input-group-sm">
+            <input name="search" value="@search" placeholder="Tìm kiếm..." class="form-control" aria-label="Tìm kiếm" />
+            <button type="submit" class="btn btn-sm btn-outline-secondary" title="Tìm"><i class="bi bi-search"></i></button>
+        </div>
+    </div>
+
+    <div class="filter-center">
+        <select name="status" class="form-select form-select-sm me-2">
+            @if (string.IsNullOrEmpty(status)) { <option value="" selected>Tất cả</option> } else { <option value="">Tất cả</option> }
+            @if (status == "active") { <option value="active" selected>Hoạt động</option> } else { <option value="active">Hoạt động</option> }
+            @if (status == "inactive") { <option value="inactive" selected>Không hoạt động</option> } else { <option value="inactive">Không hoạt động</option> }
+        </select>
+
+        <select name="pageSize" class="form-select form-select-sm">
+            @if(pageSize=="10") { <option value="10" selected>10</option> } else { <option value="10">10</option> }
+            @if(pageSize=="25") { <option value="25" selected>25</option> } else { <option value="25">25</option> }
+            @if(pageSize=="50") { <option value="50" selected>50</option> } else { <option value="50">50</option> }
+        </select>
+    </div>
+
+    <div class="filter-right">
+        <button type="submit" name="applyFilter" value="1" class="btn btn-sm btn-primary" title="Bộ lọc"><i class="bi bi-funnel me-1"></i>Lọc</button>
+    </div>
+</form>

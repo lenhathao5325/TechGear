@@ -72,7 +72,7 @@ namespace TechGear.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [Display(Name = "Full Name")]
+            [Display(Name = "Họ và tên")]
             public string FullName { get; set; }
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -88,9 +88,9 @@ namespace TechGear.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "{0} phải dài tối thiểu {2} và tối đa {1} ký tự.", MinimumLength = 6)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Mật khẩu")]
             public string Password { get; set; }
 
             /// <summary>
@@ -98,8 +98,8 @@ namespace TechGear.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Xác nhận mật khẩu")]
+            [Compare("Password", ErrorMessage = "Mật khẩu và xác nhận mật khẩu không khớp.")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -149,13 +149,23 @@ namespace TechGear.Areas.Identity.Pages.Account
                         return LocalRedirect(returnUrl);
                     }
                 }
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(string.Empty, error.Description);
-                }
+                // show errors as alert
+                var errors = result.Errors.Select(e => e.Description).ToArray();
+                ViewData["Alert"] = new AlertModel { Type = AlertType.Warning, Title = "Lỗi", Message = string.Join("; ", errors) };
             }
 
             // If we got this far, something failed, redisplay form
+            // If there are modelstate errors, show them in alert
+            if (!ModelState.IsValid && !ViewData.ContainsKey("Alert"))
+            {
+                var msgs = ModelState.Values.SelectMany(v => v.Errors).Select(e => e.ErrorMessage).Where(s => !string.IsNullOrWhiteSpace(s));
+                var msg = string.Join("; ", msgs);
+                if (!string.IsNullOrWhiteSpace(msg))
+                {
+                    ViewData["Alert"] = new AlertModel { Type = AlertType.Warning, Title = "Lỗi nhập liệu", Message = msg };
+                }
+            }
+
             return Page();
         }
 

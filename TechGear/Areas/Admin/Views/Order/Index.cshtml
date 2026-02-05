@@ -1,0 +1,128 @@
+﻿@model IEnumerable<TechGear.Models.Order>
+@using TechGear.Models.Enums;
+@using static TechGear.Models.Enums.Enums;
+@{
+    ViewData["Title"] = "Quản lý đơn hàng";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-bag"></i>
+        Quản lý Đơn hàng
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Đơn hàng</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ps-3 pe-3">
+    @await Html.PartialAsync("~/Views/Shared/_AdminListToolbar.cshtml")
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
+        <a class="btn btn-secondary" asp-action="Index">
+            <i class="bi bi-arrow-clockwise"></i>
+            Tải lại
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="80">Mã đơn</th>
+                    <th>Người đặt</th>
+                    <th width="120">Tổng tiền</th>
+                    <th width="120">Trạng thái</th>
+                    <th width="140">Ngày đặt</th>
+                    <th width="120" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    @foreach(var o in Model)
+                    {
+                        string statusColor = "badge-secondary";
+                        string statusIcon = "bi-question-circle";
+                        
+                        if (o.Status == OrderStatus.Pending) { statusColor = "badge-warning"; statusIcon = "bi-hourglass-split"; }
+                        else if (o.Status == OrderStatus.Confirmed) { statusColor = "badge-info"; statusIcon = "bi-gear"; }
+                        else if (o.Status == OrderStatus.Shipping) { statusColor = "badge-primary"; statusIcon = "bi-truck"; }
+                        else if (o.Status == OrderStatus.Completed) { statusColor = "badge-success"; statusIcon = "bi-check-circle"; }
+                        else if (o.Status == OrderStatus.Cancelled) { statusColor = "badge-danger"; statusIcon = "bi-x-circle"; }
+                        <tr>
+                            <td><strong>#@o.OrderId</strong></td>
+                            <td>@o.User?.UserName</td>
+                            <td class="text-end fw-bold">@String.Format(new System.Globalization.CultureInfo("vi-VN"), "{0:C0}", o.TotalAmount)</td>
+                            <td>
+                                <span class="badge @statusColor">
+                                    <i class="bi @statusIcon"></i>
+                                    @o.Status
+                                </span>
+                            </td>
+                            <td>@o.OrderDate.ToString("g")</td>
+                            <td class="text-center">
+                                <div class="table-actions">
+                                    <a class="btn-view" asp-action="Details" asp-route-id="@o.OrderId" title="Xem chi tiết">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a class="btn-edit" asp-action="Edit" asp-route-id="@o.OrderId" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn-delete" asp-action="Delete" asp-route-id="@o.OrderId" title="Xóa">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 48px; color: #d1d5db;"></i>
+                            <p class="mt-2 text-muted">Không có đơn hàng nào</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @{ 
+        var q = Context.Request.Query;
+        var search = (q["search"].ToString() ?? string.Empty).Trim();
+        var status = q["status"].ToString() ?? string.Empty;
+        var pageSize = q["pageSize"].ToString(); if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+        int page = int.TryParse(q["page"].ToString(), out var p) ? p : 1;
+        int totalPages = ViewData["TotalPages"] as int? ?? 1;
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+        var area = ViewContext.RouteData.Values["area"]?.ToString();
+        int start = Math.Max(1, page - 2);
+        int end = Math.Min(totalPages, page + 2);
+    }
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item @(page==1? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page - 1, search = search, status = status, pageSize = pageSize })">&lsaquo;</a>
+                </li>
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i==page? "active":"")"><a class="page-link" href="@Url.Action(action, controller, new { area = area, page = i, search = search, status = status, pageSize = pageSize })">@i</a></li>
+                }
+                <li class="page-item @(page==totalPages? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page + 1, search = search, status = status, pageSize = pageSize })">&rsaquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

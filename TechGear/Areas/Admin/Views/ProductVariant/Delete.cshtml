@@ -1,0 +1,22 @@
+@{
+    ViewData["Title"] = "Xóa biến thể";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-trash"></i> Xóa biến thể</h1>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="admin-card">
+        <div class="card-body">
+            <h5>Bạn có chắc muốn xóa biến thể #@ViewData["VariantId"]?</h5>
+            <form method="post" asp-action="DeleteConfirmed">
+                <input type="hidden" name="id" value="@ViewData["VariantId"]" />
+                <div class="form-actions mt-3">
+                    <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-2"></i>Xóa</button>
+                    <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

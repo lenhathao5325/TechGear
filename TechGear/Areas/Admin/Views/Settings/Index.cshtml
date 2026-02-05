@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "Cài đặt";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-gear"></i>
+        Cài đặt Hệ thống
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Cài đặt</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="form-section">
+                <h5 class="form-section-title">
+                    <i class="bi bi-sliders"></i>
+                    Cấu hình Trang
+                </h5>
+                <form>
+                    <div class="form-group">
+                        <label class="form-label">
+                            Tên trang
+                            <span class="required">*</span>
+                        </label>
+                        <input class="form-control" value="TechGear" />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">URL logo</label>
+                        <input class="form-control" placeholder="https://..." />
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">
+                            Tiền tệ mặc định
+                            <span class="required">*</span>
+                        </label>
+                        <select class="form-select">
+                            <option value="VND">VND - ₫</option>
+                            <option value="USD">USD - $</option>
+                            <option value="EUR">EUR - €</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Email liên hệ</label>
+                        <input class="form-control" type="email" placeholder="contact@techgear.vn" />
+                    </div>
+                    <button class="btn btn-primary" type="button">
+                        <i class="bi bi-floppy"></i>
+                        Lưu cấu hình
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="form-section">
+                <h5 class="form-section-title">
+                    <i class="bi bi-lightning"></i>
+                    Hành động nhanh
+                </h5>
+                <button class="btn btn-secondary w-100 mb-2">
+                    <i class="bi bi-arrow-clockwise"></i>
+                    Xóa cache
+                </button>
+                <button class="btn btn-secondary w-100">
+                    <i class="bi bi-shield-lock"></i>
+                    Bảo mật
+                </button>
+            </div>
+
+            <div class="form-section">
+                <h5 class="form-section-title">
+                    <i class="bi bi-info-circle"></i>
+                    Thống kê
+                </h5>
+                <div>
+                    <small class="text-muted d-block">Phiên bản: 1.0.0</small>
+                    <small class="text-muted d-block">ASP.NET Core: 8.0</small>
+                    <small class="text-muted d-block">Cập nhật cuối: 01/01/2024</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="form-section">
+                <h5 class="form-section-title">
+                    <i class="bi bi-window-desktop"></i>
+                    Các giao diện quản lý khác
+                </h5>
+                <div class="d-grid gap-2" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Product" asp-action="Index">
+                        <i class="bi bi-box-seam"></i>
+                        Sản phẩm
+                    </a>
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Category" asp-action="Index">
+                        <i class="bi bi-tag"></i>
+                        Danh mục
+                    </a>
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Brand" asp-action="Index">
+                        <i class="bi bi-shop"></i>
+                        Thương hiệu
+                    </a>
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Order" asp-action="Index">
+                        <i class="bi bi-bag-check"></i>
+                        Đơn hàng
+                    </a>
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Combo" asp-action="Index">
+                        <i class="bi bi-bundle"></i>
+                        Combo
+                    </a>
+                    <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                        <i class="bi bi-speedometer"></i>
+                        Bảng điều khiển
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

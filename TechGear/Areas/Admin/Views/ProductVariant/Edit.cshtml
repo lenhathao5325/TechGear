@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Chỉnh sửa biến thể";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-pencil"></i> Chỉnh sửa biến thể</h1>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="admin-card">
+        <div class="card-body">
+            <form method="post">
+                <input type="hidden" name="Id" value="@ViewData["VariantId"]" />
+
+                <div class="mb-3">
+                    <label class="form-label">Tên biến thể</label>
+                    <input name="Name" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">SKU</label>
+                    <input name="SKU" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Giá (VNĐ)</label>
+                    <input name="Price" class="form-control" />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Số lượng</label>
+                    <input name="Stock" class="form-control" />
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check-circle me-2"></i>Lưu</button>
+                    <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

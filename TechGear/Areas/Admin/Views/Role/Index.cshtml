@@ -1,21 +1,116 @@
 ﻿@using TechGear.Models
 @model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Quản lý Vai trò";
+}
 
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-shield-lock"></i>
+        Quản lý Vai trò
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Vai trò</li>
+        </ol>
+    </nav>
+</div>
 
-<h2>User Permission Management</h2>
+<div class="ps-3 pe-3">
+    @await Html.PartialAsync("~/Views/Shared/_AdminListToolbar.cshtml")
 
-<table class="table">
-    <tr>
-        <th>Email</th>
-        <th>Action</th>
-    </tr>
-    @foreach (var user in Model)
-    {
-        <tr>
-            <td>@user.Email</td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@user.Id">Change Role</a>
-            </td>
-        </tr>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="Role" asp-action="Create">
+            <i class="bi bi-plus-circle"></i>
+            Tạo vai trò mới
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th width="100" class="text-center">Trạng thái</th>
+                    <th width="120" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #f97316, #fb923c); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">
+                                        @((string.IsNullOrEmpty(user.FullName) ? (user.UserName?.Substring(0, 2) ?? "U").ToUpper() : (user.FullName.Split(' ').First().FirstOrDefault().ToString() + user.FullName.Split(' ').Last().FirstOrDefault().ToString()).ToUpper()))
+                                    </div>
+                                    <div>
+                                        <strong>@user.UserName</strong>
+                                        <p style="font-size: 12px; color: #6b7280; margin: 0;">@user.Email</p>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-success" style="background-color: #10b981 !important;">
+                                    <i class="bi bi-check-circle me-1"></i>Hoạt động
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="table-actions">
+                                    <a class="btn-edit" asp-action="Edit" asp-route-id="@user.Id" title="Chỉnh sửa quyền">
+                                        <i class="bi bi-person-badge"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="3" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 48px; color: #d1d5db;"></i>
+                            <p class="mt-2 text-muted">Không có người dùng nào</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @{ 
+        var q = Context.Request.Query;
+        var search = (q["search"].ToString() ?? string.Empty).Trim();
+        var status = q["status"].ToString() ?? string.Empty;
+        var pageSize = q["pageSize"].ToString(); if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+        int page = int.TryParse(q["page"].ToString(), out var p) ? p : 1;
+        int totalPages = ViewData["TotalPages"] as int? ?? 1;
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+        var area = ViewContext.RouteData.Values["area"]?.ToString();
+        int start = Math.Max(1, page - 2);
+        int end = Math.Min(totalPages, page + 2);
     }
-</table>
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item @(page==1? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page - 1, search = search, status = status, pageSize = pageSize })">&lsaquo;</a>
+                </li>
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i==page? "active":"")"><a class="page-link" href="@Url.Action(action, controller, new { area = area, page = i, search = search, status = status, pageSize = pageSize })">@i</a></li>
+                }
+                <li class="page-item @(page==totalPages? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page + 1, search = search, status = status, pageSize = pageSize })">&rsaquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

@@ -83,7 +83,7 @@ namespace TechGear.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Display(Name = "Remember me?")]
+            [Display(Name = "Ghi nhớ")] 
             public bool RememberMe { get; set; }
         }
 
@@ -131,7 +131,9 @@ namespace TechGear.Areas.Identity.Pages.Account
                 }
                 else
                 {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    ModelState.AddModelError(string.Empty, "Đăng nhập không hợp lệ.");
+                    // show alert
+                    ViewData["Alert"] = new AlertModel { Type = AlertType.Warning, Title = "Đăng nhập thất bại", Message = "Email hoặc mật khẩu không đúng." };
                     return Page();
                 }
             }

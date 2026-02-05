@@ -1,0 +1,19 @@
+@model TechGearMVC.Models.ProductVM
+
+<div class="card-product">
+    <div class="card-img-wrap">
+        <img src="@(Model.ProductImages?.FirstOrDefault()?.Url ?? "https://via.placeholder.com/400x300?text=No+Image")" alt="@Model.Name" />
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">@Model.Name</h5>
+        <p class="card-text">@Model.Description</p>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+            <div class="price">@String.Format("{0:C0}", Model.Price)</div>
+            <div class="btn-group" role="group">
+                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary btn-sm" title="Sửa"><i class="bi bi-pencil"></i></a>
+                <a asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-outline-danger btn-sm" title="Xóa"><i class="bi bi-trash"></i></a>
+                <a asp-action="Edit" asp-route-id="@Model.Id" title="Variants" class="btn btn-outline-secondary btn-sm"><i class="bi bi-grid"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

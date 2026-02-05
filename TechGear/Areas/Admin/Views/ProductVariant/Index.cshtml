@@ -1,0 +1,43 @@
+@{
+    ViewData["Title"] = "Quản lý biến thể";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title"><i class="bi bi-tags"></i> Biến thể sản phẩm</h1>
+</div>
+
+<div class="ps-3 pe-3">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            @if(ViewData["ProductId"] != null) {
+                <span class="badge bg-secondary">Sản phẩm #: @ViewData["ProductId"]</span>
+            }
+        </div>
+        <a class="btn btn-primary" asp-action="Create" asp-route-productId="@ViewData["ProductId"]">
+            <i class="bi bi-plus-circle"></i> Thêm biến thể
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="60">ID</th>
+                    <th>Tên biến thể</th>
+                    <th>SKU</th>
+                    <th width="120">Giá</th>
+                    <th width="120">Số lượng</th>
+                    <th width="140" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="6" class="text-center py-4">
+                        <i class="bi bi-inbox" style="font-size: 42px; color: #d1d5db;"></i>
+                        <p class="mt-2 text-muted">Chưa có biến thể. Tạo biến thể mới để quản lý.</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

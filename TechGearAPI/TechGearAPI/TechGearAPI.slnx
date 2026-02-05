@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TechGearAPI/TechGearAPI.csproj" />
+  <Project Path="TechGearMVC/TechGearMVC.csproj" />
+</Solution>

@@ -1,0 +1,54 @@
+/* Admin Auth Pages - Elegant Orange Theme */
+:root{
+    --primary:#f97316;
+    --primary-dark:#ea580c;
+    --muted:#6b7280;
+    --card-bg: #ffffff;
+    --page-bg: linear-gradient(180deg,#fff7ed 0%, #fffbf7 100%);
+}
+
+.auth-page{
+    min-height: calc(100vh - 80px);
+    background: var(--page-bg);
+}
+
+.auth-card{
+    width: 420px;
+    max-width: 94%;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 10px 30px rgba(14, 28, 37, 0.08);
+    border: 1px solid rgba(234,88,12,0.06);
+}
+
+.auth-card .display-4{
+    color: var(--primary);
+}
+
+.auth-card h4{margin-bottom:4px;font-weight:700}
+.auth-card p{color:var(--muted);margin-bottom:16px}
+
+.input-group-text{background:transparent;border-right:0;color:var(--muted)}
+
+.form-control{
+    border-radius:8px;
+    border:1px solid #ececec;
+    padding:10px 12px;
+}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 6px 18px rgba(249,115,22,0.12)}
+
+.btn-primary{
+    background: linear-gradient(90deg,var(--primary) 0%, #fb923c 100%);
+    border:none;color:white;padding:10px 14px;border-radius:8px;font-weight:700;
+    box-shadow: 0 8px 18px rgba(249,115,22,0.18);
+}
+
+.btn-primary:hover{background: linear-gradient(90deg,#ea580c 0%, var(--primary) 100%)}
+
+.auth-footer{font-size:13px;color:var(--muted);margin-top:12px}
+
+/* small screens */
+@media (max-width:576px){
+    .auth-card{padding:18px}
+}
