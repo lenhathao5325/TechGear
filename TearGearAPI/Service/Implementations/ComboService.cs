@@ -1,10 +1,10 @@
-﻿using TechGearAPI.Service.Helpers;
+﻿using TechGearAPI.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
-using TechGearAPI.Data;
-using TechGearAPI.Service.Interfaces;
+using TearGearAPI.Data;
+using TechGearAPI.Services.Interfaces;
 using TechGearAPI.Models;
 
-namespace TechGearAPI.Service.Implementations
+namespace TechGearAPI.Services.Implementations
 {
     public class ComboService : IComboService
     {
