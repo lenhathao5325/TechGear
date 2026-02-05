@@ -1,14 +1,13 @@
-using TechGear.Data;
-//using TechGear.Services.Implementations;
-//using TechGear.Services.Interfaces;
-using TechGear.Models;
-//using TechGear.Services;
+using CloudinaryDotNet;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TechGear.Data;
+using Microsoft.Extensions.Options;
+using System.Configuration;
 using TechGear.Models;
 
+
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
@@ -19,12 +18,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
-builder.Services.Configure<CloudinarySettings>(
-builder.Configuration.GetSection("CloudinarySettings"));
-//builder.Services.AddScoped<IComboService, ComboService>();
 
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

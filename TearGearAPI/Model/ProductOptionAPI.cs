@@ -10,7 +10,7 @@ namespace TechGearAPI.Models
         public string Name { get; set; }   // Color, Size...
 
         // Navigation
-        public ProductAPI Product { get; set; }
-        public ICollection<ProductOptionValueAPI> ProductOptionValues { get; set; } = new List<ProductOptionValueAPI>();
+        public ProductAPI? Product { get; set; }
+        public ICollection<ProductOptionValueAPI>? ProductOptionValues { get; set; } = new List<ProductOptionValueAPI>();
     }
 }

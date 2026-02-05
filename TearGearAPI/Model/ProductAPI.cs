@@ -18,9 +18,9 @@ namespace TechGearAPI.Models
         public string? ImageUrl { get; set; }
 
         // Navigation
-        public CategoryAPI Category { get; set; }
+        public CategoryAPI?  Category { get; set; }
 
-        public BrandAPI Brand { get; set; }
+        public BrandAPI? Brand { get; set; }
         public ICollection<ProductImageAPI> Images { get; set; } = new List<ProductImageAPI>();
         public ICollection<ProductOptionAPI> ProductOptions { get; set; } = new List<ProductOptionAPI>();
         public ICollection<ProductVariantAPI> ProductVariants { get; set; } = new List<ProductVariantAPI>();
