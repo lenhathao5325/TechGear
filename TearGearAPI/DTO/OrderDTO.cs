@@ -1,4 +1,4 @@
-﻿namespace TearGearAPI.DTO
+namespace TearGearAPI.DTO
 {
     public class OrderDTO
     {
