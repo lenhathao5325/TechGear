@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TearGearAPI.Data;
-using TearGearAPI.Model;
 using TechGearAPI.Models;
 
 var builder = WebApplication.CreateBuilder(args);

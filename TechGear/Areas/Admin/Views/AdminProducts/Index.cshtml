@@ -49,9 +49,10 @@
                     <thead class="bg-light text-secondary">
                         <tr>
                             <th class="ps-4">@Html.DisplayNameFor(model => model.Name)</th>
-                            <th>@Html.DisplayNameFor(model => model.Category)</th>
-                            <th>@Html.DisplayNameFor(model => model.Brand)</th>
+                            <th>Danh mục</th>
+                            <th>Thương hiệu</th>
                             <th>@Html.DisplayNameFor(model => model.Description)</th>
+                            <th>Hình ảnh</th>
                             <th class="text-end pe-4">Thao tác</th>
                         </tr>
                     </thead>
@@ -64,12 +65,12 @@
                                 </td>
                                 <td>
                                     <span class="badge bg-info text-dark bg-opacity-10 border border-info px-3">
-                                        @(item.Category != null ? item.Category.CategoryName : "N/A")
+                                        @(item.CategoryName ?? "N/A")
                                     </span>
                                 </td>
                                 <td>
                                     <span class="badge bg-warning text-dark bg-opacity-10 border border-warning px-3">
-                                        @(item.Brand != null ? item.Brand.BrandName : "N/A")
+                                        @(item.BrandName ?? "N/A")
                                     </span>
                                 </td>
                                 <td>

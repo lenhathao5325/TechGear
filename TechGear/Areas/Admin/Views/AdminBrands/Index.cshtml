@@ -67,7 +67,7 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            bool isLocked = item.Products != null && item.Products.Any();
+                            bool isLocked = item.ProductCount.HasValue && item.ProductCount > 0;
 
                             <tr>
                                 <td class="ps-4">

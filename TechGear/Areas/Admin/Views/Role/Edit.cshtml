@@ -1,4 +1,8 @@
-﻿@model TechGear.Models.ApplicationUser
+﻿@* TechGear MVC no longer uses Identity - User management is handled by API *@
+@* This view is disabled *@
+
+@*
+@model TechGear.Models.ApplicationUser
 @{
     var roles = ViewBag.Roles as List<Microsoft.AspNetCore.Identity.IdentityRole>;
     var userRoles = ViewBag.UserRoles as IList<string>;
@@ -22,3 +26,9 @@
 
     <button type="submit">Save</button>
 </form>
+*@
+
+<div class="alert alert-warning">
+    <h4>Identity Disabled</h4>
+    <p>TechGear MVC no longer uses ASP.NET Core Identity. User role management should be handled through the API.</p>
+</div>

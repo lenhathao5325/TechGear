@@ -1,7 +1,6 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Model;
 using TechGearAPI.Models;
 
 namespace TearGearAPI.Data
@@ -12,7 +11,6 @@ namespace TearGearAPI.Data
             : base(options)
         {
         }
-        public virtual DbSet<Reservation> Reservations { get; set; }
         public DbSet<BrandAPI> brandAPIs { get; set; }
         public DbSet<ComboAPI> comboAPIs { get; set; }
         public DbSet<ComboItemAPI> comboItems { get; set; }

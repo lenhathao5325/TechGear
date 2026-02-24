@@ -1,8 +1,8 @@
-﻿@model TechGear.Models.Product
+@model TechGear.Models.Product
 
 @{
     ViewData["Title"] = Model.Name;
-    // Giả lập giá gốc cao hơn 10% để tạo hiệu ứng giảm giá
+    // Gi? l?p gi� g?c cao hon 10% d? t?o hi?u ?ng gi?m gi�
     // var originalPrice = Model.Price * 1.1;
 }
 
@@ -10,8 +10,8 @@
 
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb small">
-            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Trang chủ</a></li>
-            <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">@Model.Category?.CategoryName</a></li>
+            <li class="breadcrumb-item"><a href="/" class="text-decoration-none text-muted">Trang ch?</a></li>
+            <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted">@Model.CategoryName</a></li>
             <li class="breadcrumb-item active text-dark" aria-current="page">@Model.Name</li>
         </ol>
     </nav>
@@ -40,40 +40,40 @@
                 <div class="text-warning">
                     <i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i>
                 </div>
-                <span class="text-muted border-start ps-3">Mã SP: <strong>TG-@Model.Id</strong></span>
-                <span class="text-muted border-start ps-3">Thương hiệu: <a href="#" class="text-orange text-decoration-none">@Model.Brand?.BrandName</a></span>
+                <span class="text-muted border-start ps-3">M� SP: <strong>TG-@Model.Id</strong></span>
+                <span class="text-muted border-start ps-3">Thuong hi?u: <a href="#" class="text-orange text-decoration-none">@Model.BrandName</a></span>
             </div>
 
             @* <div class="bg-light p-3 rounded mb-4 d-flex align-items-center gap-3">
-                <h2 class="fw-bold text-danger mb-0">@Model.Price.ToString("N0")₫</h2>
-                <span class="text-decoration-line-through text-muted fs-5">@originalPrice.ToString("N0")₫</span>
+                <h2 class="fw-bold text-danger mb-0">@Model.Price.ToString("N0")?</h2>
+                <span class="text-decoration-line-through text-muted fs-5">@originalPrice.ToString("N0")?</span>
                 <span class="badge bg-danger rounded-pill">-10%</span>
             </div> *@
 
             <div class="mb-4">
-                <p class="mb-2 fw-bold"><i class="fa fa-cogs me-2"></i>Thông số tóm tắt:</p>
+                <p class="mb-2 fw-bold"><i class="fa fa-cogs me-2"></i>Th�ng s? t�m t?t:</p>
                 <ul class="row row-cols-2 list-unstyled small text-muted g-2">
-                    <li class="col"><i class="fa fa-check text-success me-1"></i> Chính hãng 100%</li>
-                    <li class="col"><i class="fa fa-check text-success me-1"></i> Bảo hành 12 tháng</li>
+                    <li class="col"><i class="fa fa-check text-success me-1"></i> Ch�nh h�ng 100%</li>
+                    <li class="col"><i class="fa fa-check text-success me-1"></i> B?o h�nh 12 th�ng</li>
                     <li class="col"><i class="fa fa-check text-success me-1"></i> Full VAT</li>
-                    <li class="col"><i class="fa fa-check text-success me-1"></i> Hỗ trợ trả góp 0%</li>
+                    <li class="col"><i class="fa fa-check text-success me-1"></i> H? tr? tr? g�p 0%</li>
                 </ul>
             </div>
 
             <div class="policy-box mb-4">
-                <h6 class="fw-bold text-orange mb-3"><i class="fa fa-gift me-2"></i>ƯU ĐÃI ĐẶC QUYỀN</h6>
+                <h6 class="fw-bold text-orange mb-3"><i class="fa fa-gift me-2"></i>UU ��I �?C QUY?N</h6>
                 <div class="d-flex flex-column gap-2">
                     <div class="gift-item d-flex gap-2">
                         <i class="fa fa-check-circle text-success mt-1"></i>
-                        <span>Tặng Balo Gaming cao cấp trị giá 500k</span>
+                        <span>T?ng Balo Gaming cao c?p tr? gi� 500k</span>
                     </div>
                     <div class="gift-item d-flex gap-2">
                         <i class="fa fa-check-circle text-success mt-1"></i>
-                        <span>Giảm thêm <strong>200k</strong> khi mua kèm màn hình</span>
+                        <span>Gi?m th�m <strong>200k</strong> khi mua k�m m�n h�nh</span>
                     </div>
                     <div class="gift-item d-flex gap-2">
                         <i class="fa fa-check-circle text-success mt-1"></i>
-                        <span>Hỗ trợ cài đặt phần mềm trọn đời</span>
+                        <span>H? tr? c�i d?t ph?n m?m tr?n d?i</span>
                     </div>
                 </div>
             </div>
@@ -82,13 +82,13 @@
                 <div class="flex-grow-1">
                     <button class="btn btn-danger w-100 py-3 text-uppercase fw-bold">
                         <span class="fs-5 d-block">Mua ngay</span>
-                        <span class="small fw-normal">Giao hàng tận nơi hoặc nhận tại cửa hàng</span>
+                        <span class="small fw-normal">Giao h�ng t?n noi ho?c nh?n t?i c?a h�ng</span>
                     </button>
                 </div>
                 <div>
                     <button class="btn btn-outline-warning py-3 px-4 d-flex flex-column align-items-center h-100 justify-content-center">
                         <i class="fa fa-cart-plus fs-4"></i>
-                        <span class="small fw-bold mt-1">Thêm giỏ</span>
+                        <span class="small fw-bold mt-1">Th�m gi?</span>
                     </button>
                 </div>
             </div>
@@ -97,11 +97,11 @@
                 <div class="row text-center row-cols-3 small">
                     <div class="col">
                         <i class="fa fa-shield-alt text-orange fs-5 mb-1"></i>
-                        <div class="fw-bold">Bảo hành uy tín</div>
+                        <div class="fw-bold">B?o h�nh uy t�n</div>
                     </div>
                     <div class="col border-start border-end">
                         <i class="fa fa-sync text-orange fs-5 mb-1"></i>
-                        <div class="fw-bold">Đổi trả 15 ngày</div>
+                        <div class="fw-bold">�?i tr? 15 ng�y</div>
                     </div>
                     <div class="col">
                         <i class="fa fa-truck text-orange fs-5 mb-1"></i>
@@ -119,13 +119,13 @@
 
                 <ul class="nav nav-tabs mb-4" id="productTab" role="tablist">
                     <li class="nav-item">
-                        <button class="nav-link active fs-5" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button">Mô tả sản phẩm</button>
+                        <button class="nav-link active fs-5" id="desc-tab" data-bs-toggle="tab" data-bs-target="#desc" type="button">M� t? s?n ph?m</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link fs-5" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button">Thông số kỹ thuật</button>
+                        <button class="nav-link fs-5" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button">Th�ng s? k? thu?t</button>
                     </li>
                     <li class="nav-item">
-                        <button class="nav-link fs-5" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button">Đánh giá (0)</button>
+                        <button class="nav-link fs-5" id="review-tab" data-bs-toggle="tab" data-bs-target="#review" type="button">��nh gi� (0)</button>
                     </li>
                 </ul>
 
@@ -133,9 +133,9 @@
 
                     <div class="tab-pane fade show active" id="desc">
                         <div class="content-body text-secondary" style="line-height: 1.8;">
-                            <h5 class="fw-bold text-dark mb-3">Đánh giá chi tiết @Model.Name</h5>
+                            <h5 class="fw-bold text-dark mb-3">��nh gi� chi ti?t @Model.Name</h5>
                             <p>@Model.Description</p>
-                            <p>Sản phẩm <strong>@Model.Name</strong> mang đến hiệu năng vượt trội với thiết kế hiện đại...</p>
+                            <p>S?n ph?m <strong>@Model.Name</strong> mang d?n hi?u nang vu?t tr?i v?i thi?t k? hi?n d?i...</p>
                             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
                         </div>
                     </div>
@@ -143,28 +143,28 @@
                     <div class="tab-pane fade" id="specs">
                         <div class="row justify-content-center">
                             <div class="col-lg-8">
-                                <h5 class="fw-bold mb-3">Cấu hình chi tiết</h5>
+                                <h5 class="fw-bold mb-3">C?u h�nh chi ti?t</h5>
                                 <table class="table table-striped table-hover tech-specs-table border">
                                     <tbody>
                                         <tr>
-                                            <th>Thương hiệu</th>
-                                            <td>@Model.Brand?.BrandName</td>
+                                            <th>Thuong hi?u</th>
+                                            <td>@Model.BrandName</td>
                                         </tr>
                                         <tr>
-                                            <th>Tên sản phẩm</th>
+                                            <th>T�n s?n ph?m</th>
                                             <td>@Model.Name</td>
                                         </tr>
                                         <tr>
-                                            <th>Bảo hành</th>
-                                            <td>12 Tháng</td>
+                                            <th>B?o h�nh</th>
+                                            <td>12 Th�ng</td>
                                         </tr>
                                         <tr>
-                                            <th>Màu sắc</th>
-                                            <td>Đen / Xám</td>
+                                            <th>M�u s?c</th>
+                                            <td>�en / X�m</td>
                                         </tr>
                                         <tr>
-                                            <th>Chất liệu</th>
-                                            <td>Nhôm nguyên khối</td>
+                                            <th>Ch?t li?u</th>
+                                            <td>Nh�m nguy�n kh?i</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -178,8 +178,8 @@
                     @* <div class="tab-pane fade" id="review">
                         <div class="text-center py-5">
                             <i class="fa fa-comment-dots fa-3x text-muted mb-3 opacity-25"></i>
-                            <p class="text-muted">Chưa có đánh giá nào cho sản phẩm này.</p>
-                            <button class="btn btn-orange">Viết đánh giá ngay</button>
+                            <p class="text-muted">Chua c� d�nh gi� n�o cho s?n ph?m n�y.</p>
+                            <button class="btn btn-orange">Vi?t d�nh gi� ngay</button>
                         </div>
                     </div> *@
 
@@ -189,7 +189,7 @@
     </div>
 
     <div class="mt-5">
-        <h4 class="fw-bold mb-4">Sản phẩm liên quan</h4>
+        <h4 class="fw-bold mb-4">S?n ph?m li�n quan</h4>
     </div>
 
 </div>

@@ -1,6 +1,9 @@
-﻿@using TechGear.Models
-@model IEnumerable<ApplicationUser>
+﻿@* TechGear MVC no longer uses Identity - User management is handled by API *@
+@* This view is disabled *@
 
+@*
+@using TechGear.Models
+@model IEnumerable<ApplicationUser>
 
 <h2>User Permission Management</h2>
 
@@ -19,3 +22,9 @@
         </tr>
     }
 </table>
+*@
+
+<div class="alert alert-warning">
+    <h4>Identity Disabled</h4>
+    <p>TechGear MVC no longer uses ASP.NET Core Identity. User management should be handled through the API.</p>
+</div>

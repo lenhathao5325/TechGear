@@ -48,6 +48,7 @@
                         <tr>
                             <th class="ps-4">Tên danh mục</th>
                             <th>Mô tả</th>
+                            <th class="text-center">Số sản phẩm</th>
                             <th class="text-center">Trạng thái</th>
                             <th class="text-end pe-4">Hành động</th>
                         </tr>
@@ -56,7 +57,7 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
-                            bool isLocked = item.Products != null && item.Products.Any();
+                            bool isLocked = item.ProductCount.HasValue && item.ProductCount > 0;
 
                             <tr>
                                 <td class="ps-4 fw-bold text-dark">
@@ -67,6 +68,12 @@
                                     <div class="truncate-desc" title="@item.Description">
                                         @item.Description
                                     </div>
+                                </td>
+
+                                <td class="text-center">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 border border-primary">
+                                        @(item.ProductCount ?? 0)
+                                    </span>
                                 </td>
 
                                 <td class="text-center">
