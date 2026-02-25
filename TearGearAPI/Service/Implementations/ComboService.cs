@@ -1,6 +1,6 @@
 ﻿using TechGearAPI.Services.Helpers;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.Services.Interfaces;
 using TechGearAPI.Models;
 

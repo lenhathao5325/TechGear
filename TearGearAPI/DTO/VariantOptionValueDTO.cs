@@ -1,4 +1,4 @@
-﻿namespace TearGearAPI.DTO
+﻿namespace TechGearAPI.DTO
 {
     public class VariantOptionValueDTO
     {

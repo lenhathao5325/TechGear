@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TearGearAPI.Data;
-using TearGearAPI.DTO;
+using TechGearAPI.Data;
+using TechGearAPI.DTO;
 using TechGearAPI.Models;
 
 [Route("api/[controller]")]
