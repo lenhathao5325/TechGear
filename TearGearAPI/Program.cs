@@ -1,7 +1,7 @@
 ﻿using CloudinaryDotNet;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 
 using TechGearAPI.Models;
 using TechGearAPI.Service.CloudinaryService;

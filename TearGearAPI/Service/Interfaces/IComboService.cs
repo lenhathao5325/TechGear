@@ -1,6 +1,6 @@
 ﻿using TechGearAPI.Models;
 
-namespace TechGearAPI.Services.Interfaces
+namespace TechGearAPI.Service.Interfaces
 {
     public interface IComboService
     {

@@ -1,4 +1,4 @@
-namespace TearGearAPI.DTO
+namespace TechGearAPI.DTO
 {
     /// <summary>
     /// DTO ?? c?p nh?t S? L??NG c?a chi ti?t ??n hàng

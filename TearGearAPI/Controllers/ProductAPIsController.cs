@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
-using TearGearAPI.DTO;
+using TechGearAPI.Data;
+using TechGearAPI.DTO;
 using TechGearAPI.Models;
 
-namespace TearGearAPI.Controllers
+namespace TechGearAPI.Controllers
 {
     [Route("api/products")]
     [ApiController]
@@ -22,13 +22,89 @@ namespace TearGearAPI.Controllers
         public async Task<IActionResult> GetProducts()
         {
             var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
                 .Select(p => new
                 {
                     p.Id,
                     p.Name,
                     p.Description,
                     p.ImageUrl,
+                    p.CategoryId,
+                    p.BrandId,
+                    Category = p.Category.CategoryName,
+                    Brand = p.Brand.BrandName
+                })
+                .ToListAsync();
 
+            return Ok(products);
+        }
+
+        // ================= GET LATEST PRODUCTS =================
+        [HttpGet("latest/{count}")]
+        public async Task<IActionResult> GetLatestProducts(int count = 12)
+        {
+            var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .OrderByDescending(p => p.Id)
+                .Take(count)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.ImageUrl,
+                    p.CategoryId,
+                    p.BrandId,
+                    Category = p.Category.CategoryName,
+                    Brand = p.Brand.BrandName
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
+
+        // ================= GET PRODUCTS BY CATEGORY =================
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> GetProductsByCategory(int categoryId)
+        {
+            var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Where(p => p.CategoryId == categoryId)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.ImageUrl,
+                    p.CategoryId,
+                    p.BrandId,
+                    Category = p.Category.CategoryName,
+                    Brand = p.Brand.BrandName
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
+
+        // ================= GET PRODUCTS BY BRAND =================
+        [HttpGet("brand/{brandId}")]
+        public async Task<IActionResult> GetProductsByBrand(int brandId)
+        {
+            var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Where(p => p.BrandId == brandId)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.ImageUrl,
+                    p.CategoryId,
+                    p.BrandId,
                     Category = p.Category.CategoryName,
                     Brand = p.Brand.BrandName
                 })
@@ -42,6 +118,10 @@ namespace TearGearAPI.Controllers
         public async Task<IActionResult> GetProduct(int id)
         {
             var product = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Images)
+                .Include(p => p.ProductVariants)
                 .Where(p => p.Id == id)
                 .Select(p => new
                 {

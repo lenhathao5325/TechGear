@@ -1,4 +1,4 @@
-﻿using static TechGearAPI.Models.Enums.EnumsAPI;
+using static TechGearAPI.Models.Enums.EnumsAPI;
 
 namespace TechGearAPI.Models
 {
@@ -13,7 +13,7 @@ namespace TechGearAPI.Models
 
         public decimal OriginalPrice { get; set; }
 
-        // Giá sau khi áp dụng giảm
+        // Gi� sau khi �p d?ng gi?m
         public decimal FinalPrice { get; set; }
 
         public DiscountType DiscountType { get; set; }

@@ -1,4 +1,4 @@
-﻿using TechGearAPI.Models;
+using TechGearAPI.Models;
 using static TechGearAPI.Models.Enums.EnumsAPI;
 
 namespace TechGearAPI.Models

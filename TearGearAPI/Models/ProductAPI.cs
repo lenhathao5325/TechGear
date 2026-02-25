@@ -1,4 +1,4 @@
-﻿using TechGearAPI.Models;
+using TechGearAPI.Models;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,12 +8,12 @@ namespace TechGearAPI.Models
     {
         public int Id { get; set; }
 
-        [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
+        [Required(ErrorMessage = "T�n s?n ph?m kh�ng du?c d? tr?ng")]
         public string Name { get; set; }
         public string? Description { get; set; }
-        [Required(ErrorMessage = "Vui lòng chọn danh mục")]
+        [Required(ErrorMessage = "Vui l�ng ch?n danh m?c")]
         public int? CategoryId { get; set; }
-        [Required(ErrorMessage = "Vui lòng chọn thương hiệu")]
+        [Required(ErrorMessage = "Vui l�ng ch?n thuong hi?u")]
         public int? BrandId { get; set; } 
         public string? ImageUrl { get; set; }
 

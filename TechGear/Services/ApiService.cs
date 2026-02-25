@@ -51,47 +51,47 @@ namespace TechGear.Services
 
         public async Task<List<Product>> GetProductsAsync()
         {
-            return await GetAsync<List<Product>>("/ProductAPIs") ?? new List<Product>();
+            return await GetAsync<List<Product>>("/products") ?? new List<Product>();
         }
 
         public async Task<List<Product>> GetLatestProductsAsync(int count = 12)
         {
-            return await GetAsync<List<Product>>($"/ProductAPIs/latest/{count}") ?? new List<Product>();
+            return await GetAsync<List<Product>>($"/products/latest/{count}") ?? new List<Product>();
         }
 
         public async Task<Product?> GetProductByIdAsync(int id)
         {
-            return await GetAsync<Product>($"/ProductAPIs/{id}");
+            return await GetAsync<Product>($"/products/{id}");
         }
 
         public async Task<List<Product>> GetProductsByCategoryAsync(int categoryId)
         {
-            return await GetAsync<List<Product>>($"/ProductAPIs/category/{categoryId}") ?? new List<Product>();
+            return await GetAsync<List<Product>>($"/products/category/{categoryId}") ?? new List<Product>();
         }
 
         public async Task<List<Product>> GetProductsByBrandAsync(int brandId)
         {
-            return await GetAsync<List<Product>>($"/ProductAPIs/brand/{brandId}") ?? new List<Product>();
+            return await GetAsync<List<Product>>($"/products/brand/{brandId}") ?? new List<Product>();
         }
 
         public async Task<List<Category>> GetCategoriesAsync()
         {
-            return await GetAsync<List<Category>>("/CategoryAPIs") ?? new List<Category>();
+            return await GetAsync<List<Category>>("/categories") ?? new List<Category>();
         }
 
         public async Task<Category?> GetCategoryByIdAsync(int id)
         {
-            return await GetAsync<Category>($"/CategoryAPIs/{id}");
+            return await GetAsync<Category>($"/categories/{id}");
         }
 
         public async Task<List<Brand>> GetBrandsAsync()
         {
-            return await GetAsync<List<Brand>>("/BrandAPIs") ?? new List<Brand>();
+            return await GetAsync<List<Brand>>("/brands") ?? new List<Brand>();
         }
 
         public async Task<Brand?> GetBrandByIdAsync(int id)
         {
-            return await GetAsync<Brand>($"/BrandAPIs/{id}");
+            return await GetAsync<Brand>($"/brands/{id}");
         }
     }
 }

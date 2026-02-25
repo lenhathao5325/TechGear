@@ -2,7 +2,7 @@
 using static TechGearAPI.Models.Enums.EnumsAPI;
 
 
-namespace TechGearAPI.Services.Helpers
+namespace TechGearAPI.Service.Helpers
 {
     public static class ComboPriceCalculator
     {

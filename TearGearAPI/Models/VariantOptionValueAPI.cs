@@ -1,4 +1,4 @@
-﻿namespace TechGearAPI.Models
+namespace TechGearAPI.Models
 {
     public class VariantOptionValueAPI
     {

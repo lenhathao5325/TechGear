@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
-using TearGearAPI.DTO;
+using TechGearAPI.Data;
+using TechGearAPI.DTO;
 using TechGearAPI.Models;
 using static TechGearAPI.Models.Enums.EnumsAPI;
 
-namespace TearGearAPI.Controllers
+namespace TechGearAPI.Controllers
 {
     [Route("api/orders")]
     [ApiController]

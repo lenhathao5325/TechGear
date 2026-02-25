@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.Models;
 
-namespace TearGearAPI.Controllers
+namespace TechGearAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

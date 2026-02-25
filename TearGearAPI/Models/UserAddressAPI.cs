@@ -1,4 +1,4 @@
-﻿using CloudinaryDotNet.Actions;
+using CloudinaryDotNet.Actions;
 using TechGearAPI.Models;
 
 namespace TechGearAPI.Models

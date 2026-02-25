@@ -1,4 +1,4 @@
-﻿using TechGearAPI.Models;
+using TechGearAPI.Models;
 
 namespace TechGearAPI.Models
 {

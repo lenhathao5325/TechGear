@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using TechGearAPI.Models;
 
-namespace TearGearAPI.Data
+namespace TechGearAPI.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUserAPI>
     {

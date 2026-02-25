@@ -1,7 +1,6 @@
-﻿using TearGearAPI.Model;
 using static TechGearAPI.Models.Enums.EnumsAPI;
 
-namespace TearGearAPI.DTO
+namespace TechGearAPI.DTO
 {
     public class ComboDTO
     {

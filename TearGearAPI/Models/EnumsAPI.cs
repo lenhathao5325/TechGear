@@ -1,4 +1,4 @@
-﻿namespace TechGearAPI.Models.Enums
+namespace TechGearAPI.Models.Enums
 {
     public class EnumsAPI
     {

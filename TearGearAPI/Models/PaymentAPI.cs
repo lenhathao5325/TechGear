@@ -1,4 +1,4 @@
-﻿namespace TechGearAPI.Models
+namespace TechGearAPI.Models
 {
     public class PaymentAPI
     {
@@ -7,10 +7,10 @@
         public int OrderId { get; set; }
         public decimal Amount { get; set; }
 
-        // 1: Tiền mặt | 2: Chuyển khoản | 3: COD
+        // 1: Ti?n m?t | 2: Chuy?n kho?n | 3: COD
         public int Method { get; set; }
 
-        // 1: Chưa thanh toán | 2: Đã thanh toán | 3: Hoàn tiền
+        // 1: Chua thanh to�n | 2: �� thanh to�n | 3: Ho�n ti?n
         public int Status { get; set; }
 
         public string? TransactionId { get; set; }

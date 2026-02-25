@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.Models;
 
-namespace TearGearAPI.Controllers
+namespace TechGearAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/brands")]
     [ApiController]
     public class BrandAPIsController : ControllerBase
     {
@@ -16,14 +16,14 @@ namespace TearGearAPI.Controllers
             _context = context;
         }
 
-        // GET: api/BrandAPIs
+        // GET: api/brands
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BrandAPI>>> GetBrands()
         {
             return await _context.brandAPIs.ToListAsync();
         }
 
-        // GET: api/BrandAPIs/5
+        // GET: api/brands/5
         [HttpGet("{id}")]
         public async Task<ActionResult<BrandAPI>> GetBrand(int id)
         {

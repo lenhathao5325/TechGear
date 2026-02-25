@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace TearGearAPI.Migrations
+namespace TechGearAPI.Migrations
 {
     /// <inheritdoc />
     public partial class Seed5Data : Migration
@@ -471,7 +471,7 @@ namespace TearGearAPI.Migrations
                 keyColumn: "ComboId",
                 keyValue: 1,
                 columns: new[] { "ComboName", "Description", "DiscountValue", "FinalPrice" },
-                values: new object[] { "Combo Laptop Basic", "Laptop + ưu đãi", 10m, 20000000m });
+                values: new object[] { "Combo Laptop Basic", "Laptop + uu d�i", 10m, 20000000m });
 
             migrationBuilder.UpdateData(
                 table: "orderAPIs",

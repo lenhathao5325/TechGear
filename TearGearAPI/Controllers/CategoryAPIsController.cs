@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.Models;
 
-namespace TearGearAPI.Controllers
+namespace TechGearAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/categories")]
     [ApiController]
     public class CategoryAPIsController : ControllerBase
     {
@@ -16,14 +16,14 @@ namespace TearGearAPI.Controllers
             _context = context;
         }
 
-        // GET: api/CategoryAPIs
+        // GET: api/categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryAPI>>> GetCategories()
         {
             return await _context.categoryAPIs.ToListAsync();
         }
 
-        // GET: api/CategoryAPIs/5
+        // GET: api/categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<CategoryAPI>> GetCategory(int id)
         {

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.14.36811.4
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechGear", "TechGear\TechGear.csproj", "{9354F5EC-F326-4401-A3BD-DBBD6B4A4830}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TearGearAPI", "TearGearAPI\TearGearAPI.csproj", "{A438B1C3-5271-4C42-8AD2-8D5D64DEB791}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TechGearAPI", "TearGearAPI\TechGearAPI.csproj", "{A438B1C3-5271-4C42-8AD2-8D5D64DEB791}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

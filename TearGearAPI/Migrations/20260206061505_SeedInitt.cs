@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TearGearAPI.Migrations
+namespace TechGearAPI.Migrations
 {
     /// <inheritdoc />
     public partial class SeedInitt : Migration
@@ -29,7 +29,7 @@ namespace TearGearAPI.Migrations
             migrationBuilder.InsertData(
                 table: "comboAPIs",
                 columns: new[] { "ComboId", "ComboItemId", "ComboName", "CreatedAt", "Description", "DiscountType", "DiscountValue", "FinalPrice", "IsActive", "OriginalPrice" },
-                values: new object[] { 1, 0, "Combo Laptop Basic", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Laptop + ưu đãi", 1, 10m, 20000000m, true, 22000000m });
+                values: new object[] { 1, 0, "Combo Laptop Basic", new DateTime(2026, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Laptop + uu d�i", 1, 10m, 20000000m, true, 22000000m });
 
             migrationBuilder.InsertData(
                 table: "productAPIs",

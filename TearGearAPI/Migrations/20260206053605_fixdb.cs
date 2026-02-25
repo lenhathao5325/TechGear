@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TearGearAPI.Migrations
+namespace TechGearAPI.Migrations
 {
     /// <inheritdoc />
     public partial class fixdb : Migration
