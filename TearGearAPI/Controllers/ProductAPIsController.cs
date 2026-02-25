@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TechGearAPI.Data;
-using TechGearAPI.DTO;
+using TearGearAPI.Data;
+using TearGearAPI.DTO;
 using TechGearAPI.Models;
 
 namespace TechGearAPI.Controllers
@@ -142,7 +142,7 @@ namespace TechGearAPI.Controllers
 
                     Variants = p.ProductVariants.Select(v => new
                     {
-                        v.ProductVariantId,
+                        v.Id,
                         v.Price,
                     })
                 })

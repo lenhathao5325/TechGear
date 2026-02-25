@@ -1,6 +1,4 @@
-using System.Collections.Generic;
-
-namespace TechGearAPI.DTO
+namespace TearGearAPI.DTO
 {
     public class ProductDTO
     {
