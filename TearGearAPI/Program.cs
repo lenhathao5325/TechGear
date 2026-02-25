@@ -2,34 +2,31 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using TearGearAPI.Data;
-using TearGearAPI.Model;
+
 using TechGearAPI.Models;
+using TechGearAPI.Service.CloudinaryService;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 // Add DbContext with proper generic type specification
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.Converters.Add(
             new System.Text.Json.Serialization.JsonStringEnumConverter());
-    });
-builder.Services.AddControllers()
-    .AddJsonOptions(options =>
-    {
         options.JsonSerializerOptions.ReferenceHandler =
             System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
     });
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 // Add Identity services
 builder.Services.AddDefaultIdentity<ApplicationUserAPI>()
@@ -48,18 +45,18 @@ builder.Services.AddCors(options =>
         });
 });
 
-//builder.Services.Configure<CloudinarySettings>(
-//builder.Configuration.GetSection("CloudinarySettings"));
+builder.Services.Configure<CloudinarySettings>(
+builder.Configuration.GetSection("CloudinarySettings"));
 //builder.Services.AddScoped<IComboService, ComboService>();
-// ------------------- Cloudinary -------------------
-//var cloudCfg = configuration.GetSection("CloudinarySettings");
-//var cloudinary = new Cloudinary(new Account(
-//    cloudCfg["CloudName"],
-//    cloudCfg["ApiKey"],
-//    cloudCfg["ApiSecret"]
-//));
-//builder.Services.AddSingleton(cloudinary);
-//builder.Services.AddScoped<CloudinaryService>();
+//-------------------Cloudinary------------------ -
+var cloudCfg = builder.Configuration.GetSection("CloudinarySettings");
+var cloudinary = new Cloudinary(new Account(
+    cloudCfg["CloudName"],
+    cloudCfg["ApiKey"],
+    cloudCfg["ApiSecret"]
+));
+builder.Services.AddSingleton(cloudinary);
+builder.Services.AddScoped<CloudinaryService>();
 
 
 var app = builder.Build();
