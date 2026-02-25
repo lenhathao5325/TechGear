@@ -7,7 +7,7 @@ namespace TechGear.Models.ViewModels
 {
     public class ProductVM
     {
-  public int Id { get; set; }
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Tên sản phẩm là bắt buộc")]
         public string Name { get; set; }
@@ -19,6 +19,9 @@ namespace TechGear.Models.ViewModels
 
         [Required(ErrorMessage = "Vui lòng chọn thương hiệu")]
         public int BrandId { get; set; }
+
+        // Image URL from existing product
+        public string? ImageUrl { get; set; }
 
         // Upload ảnh
         public IFormFile? ImageFile { get; set; }

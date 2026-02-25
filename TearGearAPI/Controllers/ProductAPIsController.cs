@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
-using TearGearAPI.DTO;
+using TechGearAPI.Data;
+using TechGearAPI.DTO;
 using TechGearAPI.Models;
 
 namespace TechGearAPI.Controllers
@@ -24,6 +24,7 @@ namespace TechGearAPI.Controllers
             var products = await _context.productAPIs
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
                 .Select(p => new
                 {
                     p.Id,
@@ -32,8 +33,11 @@ namespace TechGearAPI.Controllers
                     p.ImageUrl,
                     p.CategoryId,
                     p.BrandId,
-                    Category = p.Category.CategoryName,
-                    Brand = p.Brand.BrandName
+                    CategoryName = p.Category.CategoryName,
+                    BrandName = p.Brand.BrandName,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0
                 })
                 .ToListAsync();
 
@@ -47,6 +51,7 @@ namespace TechGearAPI.Controllers
             var products = await _context.productAPIs
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
                 .OrderByDescending(p => p.Id)
                 .Take(count)
                 .Select(p => new
@@ -57,8 +62,11 @@ namespace TechGearAPI.Controllers
                     p.ImageUrl,
                     p.CategoryId,
                     p.BrandId,
-                    Category = p.Category.CategoryName,
-                    Brand = p.Brand.BrandName
+                    CategoryName = p.Category.CategoryName,
+                    BrandName = p.Brand.BrandName,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0
                 })
                 .ToListAsync();
 
@@ -72,6 +80,7 @@ namespace TechGearAPI.Controllers
             var products = await _context.productAPIs
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
                 .Where(p => p.CategoryId == categoryId)
                 .Select(p => new
                 {
@@ -81,8 +90,11 @@ namespace TechGearAPI.Controllers
                     p.ImageUrl,
                     p.CategoryId,
                     p.BrandId,
-                    Category = p.Category.CategoryName,
-                    Brand = p.Brand.BrandName
+                    CategoryName = p.Category.CategoryName,
+                    BrandName = p.Brand.BrandName,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0
                 })
                 .ToListAsync();
 
@@ -96,6 +108,7 @@ namespace TechGearAPI.Controllers
             var products = await _context.productAPIs
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
                 .Where(p => p.BrandId == brandId)
                 .Select(p => new
                 {
@@ -105,8 +118,11 @@ namespace TechGearAPI.Controllers
                     p.ImageUrl,
                     p.CategoryId,
                     p.BrandId,
-                    Category = p.Category.CategoryName,
-                    Brand = p.Brand.BrandName
+                    CategoryName = p.Category.CategoryName,
+                    BrandName = p.Brand.BrandName,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0
                 })
                 .ToListAsync();
 
@@ -132,8 +148,8 @@ namespace TechGearAPI.Controllers
                     p.CategoryId,
                     p.BrandId,
 
-                    Category = p.Category.CategoryName,
-                    Brand = p.Brand.BrandName,
+                    CategoryName = p.Category.CategoryName,
+                    BrandName = p.Brand.BrandName,
 
                     Images = p.Images.Select(i => new
                     {

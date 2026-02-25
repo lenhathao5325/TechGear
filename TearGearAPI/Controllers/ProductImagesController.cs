@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.DTO;
 using TechGearAPI.Models;
 

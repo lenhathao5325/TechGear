@@ -1,12 +1,58 @@
-﻿@* TechGear MVC no longer uses Identity - Authentication is handled by API *@
-@* This partial view is disabled. Implement custom login via API calls if needed *@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
 
-@* 
-<a class="text-white text-decoration-none me-3" href="/Account/Login" style="font-size: 13px;">
-    <i class="fa fa-user me-1"></i> Đăng nhập
-</a>
+@{
+    var email = HttpContextAccessor.HttpContext.Session.GetString("Email");
+    var fullName = HttpContextAccessor.HttpContext.Session.GetString("FullName");
+    var isLoggedIn = !string.IsNullOrEmpty(email);
+}
 
-<a class="text-white text-decoration-none" href="/Account/Register" style="font-size: 13px;">
-    <i class="fa fa-key me-1"></i> Đăng ký
-</a>
-*@
+@if (isLoggedIn)
+{
+    <div class="dropdown">
+        <a class="text-dark text-decoration-none dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <div class="rounded-circle bg-orange d-flex align-items-center justify-content-center me-2" style="width: 35px; height: 35px;">
+                <i class="fa fa-user text-white"></i>
+            </div>
+            <div class="d-none d-lg-block">
+                <div class="fw-bold" style="font-size: 0.9rem; line-height: 1.2;">@(fullName ?? email.Split('@')[0])</div>
+                <small class="text-muted" style="font-size: 0.75rem;">Thành viên</small>
+            </div>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end shadow border-0" style="min-width: 200px;">
+            <li>
+                <a class="dropdown-item" asp-controller="Auth" asp-action="Profile">
+                    <i class="fa fa-user-circle me-2 text-orange"></i>Tài khoản của tôi
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fa fa-box me-2 text-orange"></i>Đơn hàng
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="#">
+                    <i class="fa fa-heart me-2 text-orange"></i>Yêu thích
+                </a>
+            </li>
+            <li><hr class="dropdown-divider"></li>
+            <li>
+                <a class="dropdown-item text-danger" asp-controller="Auth" asp-action="Logout">
+                    <i class="fa fa-sign-out-alt me-2"></i>Đăng xuất
+                </a>
+            </li>
+        </ul>
+    </div>
+}
+else
+{
+    <div class="d-flex align-items-center gap-3">
+        <a class="text-dark text-decoration-none" asp-controller="Auth" asp-action="Login">
+            <i class="fa fa-user me-1"></i> Đăng nhập
+        </a>
+        <span class="text-muted">|</span>
+        <a class="text-dark text-decoration-none" asp-controller="Auth" asp-action="Register">
+            <i class="fa fa-user-plus me-1"></i> Đăng ký
+        </a>
+    </div>
+}

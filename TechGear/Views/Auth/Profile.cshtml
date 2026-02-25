@@ -1,0 +1,264 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "Thông tin tài khoản";
+    Layout = "_Layout";
+    
+    var fullName = Context.Session.GetString("FullName") ?? "Người dùng";
+    var email = Context.Session.GetString("Email") ?? "";
+    var phoneNumber = Context.Session.GetString("PhoneNumber") ?? "";
+}
+
+<style>
+    .profile-container {
+        max-width: 900px;
+        margin: 30px auto;
+    }
+
+    .profile-card {
+        background: #fff;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-bottom: 20px;
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+        padding: 30px;
+        color: white;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        color: #ff6a00;
+        margin-right: 20px;
+    }
+
+    .profile-info h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .profile-info p {
+        margin: 5px 0 0 0;
+        opacity: 0.9;
+    }
+
+    .profile-body {
+        padding: 30px;
+    }
+
+    .section-title {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: #333;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #ff6a00;
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #555;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        padding: 12px 15px;
+        transition: all 0.3s ease;
+    }
+
+        .form-control:focus {
+            border-color: #ff6a00;
+            box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.15);
+        }
+
+    .btn-primary {
+        background: linear-gradient(135deg, #ff6a00 0%, #ee0979 100%);
+        border: none;
+        color: white;
+        padding: 10px 25px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 106, 0, 0.4);
+        }
+
+    .nav-tabs {
+        border-bottom: 2px solid #e0e0e0;
+    }
+
+    .nav-tabs .nav-link {
+        color: #555;
+        font-weight: 600;
+        border: none;
+        padding: 12px 25px;
+    }
+
+        .nav-tabs .nav-link.active {
+            color: #ff6a00;
+            border-bottom: 3px solid #ff6a00;
+            background: transparent;
+        }
+
+        .nav-tabs .nav-link:hover {
+            color: #ff6a00;
+        }
+
+    .alert {
+        border-radius: 8px;
+        border: none;
+    }
+</style>
+
+<div class="profile-container">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success d-flex align-items-center" role="alert">
+            <i class="fa fa-check-circle me-2"></i>
+            <div>@TempData["SuccessMessage"]</div>
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="fa fa-exclamation-triangle me-2"></i>
+            <div>@TempData["ErrorMessage"]</div>
+        </div>
+    }
+
+    <div class="profile-card">
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fa fa-user"></i>
+            </div>
+            <div class="profile-info">
+                <h3>@fullName</h3>
+                <p><i class="fa fa-envelope me-2"></i>@email</p>
+                @if (!string.IsNullOrEmpty(phoneNumber))
+                {
+                    <p><i class="fa fa-phone me-2"></i>@phoneNumber</p>
+                }
+            </div>
+        </div>
+
+        <div class="profile-body">
+            <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="info-tab" data-bs-toggle="tab" data-bs-target="#info" type="button">
+                        <i class="fa fa-user me-2"></i>Thông tin cá nhân
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button">
+                        <i class="fa fa-lock me-2"></i>Đổi mật khẩu
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="profileTabsContent">
+                <!-- Thông tin cá nhân -->
+                <div class="tab-pane fade show active" id="info" role="tabpanel">
+                    <h5 class="section-title">
+                        <i class="fa fa-edit me-2"></i>Cập nhật thông tin
+                    </h5>
+                    <form method="post" asp-action="UpdateProfile">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fa fa-user me-1"></i>Họ và tên
+                                </label>
+                                <input type="text" class="form-control" name="FullName" value="@fullName" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">
+                                    <i class="fa fa-envelope me-1"></i>Email
+                                </label>
+                                <input type="email" class="form-control" value="@email" disabled />
+                                <small class="text-muted">Email không thể thay đổi</small>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fa fa-phone me-1"></i>Số điện thoại
+                            </label>
+                            <input type="tel" class="form-control" name="PhoneNumber" value="@phoneNumber" placeholder="Nhập số điện thoại" pattern="[0-9]{10,11}" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-save me-2"></i>Lưu thay đổi
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Đổi mật khẩu -->
+                <div class="tab-pane fade" id="password" role="tabpanel">
+                    <h5 class="section-title">
+                        <i class="fa fa-key me-2"></i>Thay đổi mật khẩu
+                    </h5>
+                    <form method="post" asp-action="ChangePassword">
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fa fa-lock me-1"></i>Mật khẩu hiện tại
+                            </label>
+                            <input type="password" class="form-control" name="CurrentPassword" placeholder="Nhập mật khẩu hiện tại" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fa fa-lock me-1"></i>Mật khẩu mới
+                            </label>
+                            <input type="password" class="form-control" name="NewPassword" id="newPassword" placeholder="Nhập mật khẩu mới" required minlength="6" />
+                            <small class="text-muted">Tối thiểu 6 ký tự</small>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fa fa-lock me-1"></i>Xác nhận mật khẩu mới
+                            </label>
+                            <input type="password" class="form-control" name="ConfirmNewPassword" placeholder="Nhập lại mật khẩu mới" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-key me-2"></i>Đổi mật khẩu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center">
+        <a asp-controller="Home" asp-action="Index" class="text-decoration-none">
+            <i class="fa fa-arrow-left me-2"></i>Quay về trang chủ
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-hide alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+}

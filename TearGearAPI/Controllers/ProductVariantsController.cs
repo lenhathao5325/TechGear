@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TearGearAPI.DTO;
-using TearGearAPI.Model;
 using TechGearAPI.Models;
 
 namespace TearGearAPI.Controllers

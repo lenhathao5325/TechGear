@@ -1,23 +1,34 @@
-using CloudinaryDotNet;
+﻿using CloudinaryDotNet;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Configuration;
 using TechGear.Models;
 using TechGear.Services;
+using System.Text;
 
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;
 
+// Set console output encoding to UTF-8
+Console.OutputEncoding = Encoding.UTF8;
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-//builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//   .AddRoles<IdentityRole>()
-//   .AddEntityFrameworkStores<ApplicationDbContext>();
+// Add Session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 
 builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddRazorRuntimeCompilation(); // Enable runtime compilation for Razor views
 
 // Add HttpClient for API calls
 builder.Services.AddHttpClient("TechGearAPI", client =>
@@ -34,11 +45,12 @@ builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
-
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

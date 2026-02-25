@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace TearGearAPI.Migrations
+namespace TechGearAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddData : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,21 +104,6 @@ namespace TearGearAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_comboAPIs", x => x.ComboId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Reservations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartLocation = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    EndLocation = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Reservations", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -344,7 +329,8 @@ namespace TearGearAPI.Migrations
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     SKU = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    Stock = table.Column<int>(type: "int", nullable: false)
+                    Stock = table.Column<int>(type: "int", nullable: false),
+                    ProductVariantId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -726,9 +712,6 @@ namespace TearGearAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "productImageAPIs");
-
-            migrationBuilder.DropTable(
-                name: "Reservations");
 
             migrationBuilder.DropTable(
                 name: "variantOptionValueAPIs");

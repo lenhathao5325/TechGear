@@ -1,144 +1,572 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+<!DOCTYPE html>
 <html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin - @ViewData["Title"]</title>
+    <title>@ViewData["Title"] - TechGear Admin</title>
+    
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-dark: #1e40af;
+            --secondary-color: #64748b;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --info-color: #3b82f6;
+            --dark-bg: #0f172a;
+            --sidebar-bg: #1e293b;
+            --sidebar-hover: #334155;
+            --content-bg: #f1f5f9;
+            --white: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+        }
+
         body {
-            background-color: #f8f9fa;
-            overflow-x: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--content-bg);
+            color: var(--text-primary);
+            font-size: 14px;
+            line-height: 1.5;
         }
 
-        /* Sidebar Styles */
-        #sidebar-wrapper {
+        /* Wrapper */
+        #wrapper {
+            display: flex;
             min-height: 100vh;
-            margin-left: -15rem;
-            transition: margin .25s ease-out;
-            background-color: #2c3e50; /* Màu nền tối */
+        }
+
+        /* Sidebar */
+        #sidebar-wrapper {
+            width: 260px;
+            background: linear-gradient(180deg, var(--sidebar-bg) 0%, var(--dark-bg) 100%);
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1000;
+            box-shadow: var(--shadow-xl);
+        }
+
+        #sidebar-wrapper::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #sidebar-wrapper::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        #sidebar-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 3px;
+        }
+
+        .sidebar-heading {
+            padding: 1.5rem 1.25rem;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .sidebar-heading .logo {
+            width: 40px;
+            height: 40px;
+            background: var(--primary-color);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
             color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
         }
 
-            #sidebar-wrapper .sidebar-heading {
-                padding: 1.2rem;
-                font-size: 1.2rem;
-                font-weight: bold;
-                background: #1a252f;
-                color: #ff6a00; /* Màu cam chủ đạo */
-                text-align: center;
-                letter-spacing: 1px;
-            }
-
-            #sidebar-wrapper .list-group {
-                width: 15rem;
-            }
-
-        #wrapper.toggled #sidebar-wrapper {
-            margin-left: 0;
+        .sidebar-heading .brand-text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
         }
 
-        /* Sidebar Links */
+        .sidebar-heading .brand-name {
+            font-size: 1.125rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: -0.5px;
+        }
+
+        .sidebar-heading .brand-subtitle {
+            font-size: 0.7rem;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 500;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            padding: 1rem 0;
+        }
+
+        .nav-section-title {
+            padding: 1.5rem 1.25rem 0.5rem;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
         .list-group-item-action {
-            background-color: transparent;
-            color: #b8c7ce;
+            background: transparent;
             border: none;
-            padding: 15px 25px;
-            font-size: 0.95rem;
-            border-left: 4px solid transparent; /* Chuẩn bị cho hover */
+            color: #94a3b8;
+            padding: 0.75rem 1.25rem;
+            margin: 0.25rem 0.75rem;
+            border-radius: 10px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            position: relative;
+            overflow: hidden;
         }
 
-            .list-group-item-action:hover, .list-group-item-action.active {
-                background-color: #34495e;
-                color: #fff;
-                border-left: 4px solid #ff6a00; /* Viền cam khi hover */
-                text-decoration: none;
-            }
+        .list-group-item-action i {
+            width: 20px;
+            text-align: center;
+            font-size: 1rem;
+            transition: transform 0.2s ease;
+        }
 
-            .list-group-item-action i {
-                width: 25px;
-                text-align: center;
-                margin-right: 5px;
-            }
+        .list-group-item-action:hover {
+            background: var(--sidebar-hover);
+            color: white;
+            transform: translateX(4px);
+            text-decoration: none;
+        }
+
+        .list-group-item-action:hover i {
+            transform: scale(1.1);
+        }
+
+        .list-group-item-action.active {
+            background: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .list-group-item-action.active::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: white;
+            border-radius: 0 4px 4px 0;
+        }
 
         /* Page Content */
         #page-content-wrapper {
-            min-width: 100vw;
+            flex: 1;
+            margin-left: 260px;
+            transition: margin-left 0.3s ease;
+            background: var(--content-bg);
+            min-height: 100vh;
         }
 
-       @@media (min-width: 768px) {
-            #sidebar-wrapper
+        /* Top Navbar */
+        .top-navbar {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.875rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 999;
+            box-shadow: var(--shadow-sm);
+        }
 
-        {
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        #menu-toggle {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: white;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        #menu-toggle:hover {
+            background: var(--content-bg);
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .breadcrumb-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        .breadcrumb-nav i {
+            font-size: 0.75rem;
+        }
+
+        .navbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .navbar-user {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            background: var(--content-bg);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .navbar-user:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .navbar-user:hover .user-info span {
+            color: white;
+        }
+
+        .user-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.2;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1.5rem;
+        }
+
+        .page-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .page-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .page-description {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+        }
+
+        /* Cards */
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--shadow-sm);
+            background: white;
+            transition: all 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .card-body {
+            padding: 1.25rem;
+        }
+
+        /* Alerts */
+        .alert {
+            border-radius: 10px;
+            border: none;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .alert i {
+            font-size: 1.25rem;
+        }
+
+        .alert-success {
+            background: #f0fdf4;
+            color: #166534;
+            border-left: 4px solid var(--success-color);
+        }
+
+        .alert-danger {
+            background: #fef2f2;
+            color: #991b1b;
+            border-left: 4px solid var(--danger-color);
+        }
+
+        /* Buttons */
+        .btn {
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Responsive */
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: -260px;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
             margin-left: 0;
         }
 
-        #page-content-wrapper {
-            min-width: 0;
-            width: 100%;
-        }
+        @@media (max-width: 768px) {
+            #sidebar-wrapper {
+                margin-left: -260px;
+            }
 
-        #wrapper.toggled #sidebar-wrapper {
-            margin-left: -15rem;
-        }
+            #page-content-wrapper {
+                margin-left: 0;
+                width: 100%;
+            }
 
+            #wrapper.toggled #sidebar-wrapper {
+                margin-left: 0;
+            }
+
+            .user-info {
+                display: none;
+            }
+
+            .breadcrumb-nav {
+                display: none;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <div class="border-end" id="sidebar-wrapper">
-            <div class="sidebar-heading border-bottom border-secondary">
-                <i class="fa fa-cogs"></i> TECHGEAR
+    <div id="wrapper">
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <div class="sidebar-heading">
+                <div class="logo">
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-name">TechGear</span>
+                    <span class="brand-subtitle">Admin Panel</span>
+                </div>
             </div>
-            <div class="list-group list-group-flush">
 
-                <a href="/Admin/Dashboard" class="list-group-item list-group-item-action">
-                    <i class="fa fa-tachometer-alt"></i> Dashboard
+            <div class="sidebar-nav">
+                <div class="nav-section-title">Tổng quan</div>
+                <a class="list-group-item-action" asp-area="Admin" asp-controller="Dashboard" asp-action="Index">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Dashboard</span>
                 </a>
 
-                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">
-                    <i class="fa fa-folder-open"></i> Quản lý Danh mục
+                <div class="nav-section-title">Quản lý sản phẩm</div>
+                <a class="list-group-item-action" asp-area="Admin" asp-controller="AdminCategories" asp-action="Index">
+                    <i class="fas fa-th-large"></i>
+                    <span>Danh mục</span>
+                </a>
+                <a class="list-group-item-action" asp-area="Admin" asp-controller="AdminBrands" asp-action="Index">
+                    <i class="fas fa-certificate"></i>
+                    <span>Thương hiệu</span>
+                </a>
+                <a class="list-group-item-action" asp-area="Admin" asp-controller="AdminProducts" asp-action="Index">
+                    <i class="fas fa-box-open"></i>
+                    <span>Sản phẩm</span>
                 </a>
 
-                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminBrands" asp-action="Index">
-                    <i class="fa fa-copyright"></i> Quản lý Thương hiệu
+                @{ 
+                    var userRole = Context.Session.GetString("UserRole"); 
+                    var isAdmin = userRole == "Admin"; 
+                }
+
+                @if (isAdmin) 
+                {
+                    <div class="nav-section-title">Bán hàng</div>
+                    <a class="list-group-item-action" asp-area="Admin" asp-controller="AdminOrders" asp-action="Index">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Đơn hàng</span>
+                    </a>
+                    <a class="list-group-item-action" href="#">
+                        <i class="fas fa-users"></i>
+                        <span>Khách hàng</span>
+                    </a>
+                } 
+                else 
+                {
+                    <div class="nav-section-title">Bán hàng</div>
+                    <a class="list-group-item-action disabled" style="opacity: 0.5; cursor: not-allowed;" title="Chỉ Admin mới có quyền truy cập">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span>Đơn hàng</span>
+                        <i class="fas fa-lock" style="margin-left: auto; font-size: 0.75rem;"></i>
+                    </a>
+                    <a class="list-group-item-action disabled" style="opacity: 0.5; cursor: not-allowed;" title="Chỉ Admin mới có quyền truy cập">
+                        <i class="fas fa-users"></i>
+                        <span>Khách hàng</span>
+                        <i class="fas fa-lock" style="margin-left: auto; font-size: 0.75rem;"></i>
+                    </a>
+                }
+
+                <div class="nav-section-title">Hệ thống</div>
+                <a class="list-group-item-action" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="fas fa-globe"></i>
+                    <span>Trang bán hàng</span>
                 </a>
-
-                <a class="list-group-item list-group-item-action" asp-area="Admin" asp-controller="AdminProducts" asp-action="Index">
-                    <i class="fa fa-box-open"></i> Quản lý Sản phẩm
+                <a class="list-group-item-action" asp-area="" asp-controller="Auth" asp-action="Logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Đăng xuất</span>
                 </a>
-
-                <a href="/Admin/Orders" class="list-group-item list-group-item-action">
-                    <i class="fa fa-shopping-cart"></i> Quản lý Đơn hàng
-                </a>
-
-                <a href="/Admin/Users" class="list-group-item list-group-item-action">
-                    <i class="fa fa-users"></i> Quản lý User
-                </a>
-
-              @*   <a href="/" class="list-group-item list-group-item-action mt-4 border-top border-secondary text-warning">
-                    <i class="fa fa-home"></i> Về trang bán hàng
-                </a> *@
-
             </div>
         </div>
 
+        <!-- Page Content -->
         <div id="page-content-wrapper">
-            <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm px-4 py-3">
-                <button class="btn btn-outline-secondary btn-sm" id="menu-toggle"><i class="fa fa-bars"></i></button>
+            <!-- Top Navbar -->
+            <nav class="top-navbar">
+                <div class="navbar-left">
+                    <button class="btn" id="menu-toggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <div class="breadcrumb-nav">
+                        <i class="fas fa-home"></i>
+                        <i class="fas fa-chevron-right"></i>
+                        <span>@ViewData["Title"]</span>
+                    </div>
+                </div>
 
-                <div class="ms-auto fw-bold text-secondary d-flex align-items-center">
-                    <span class="me-2">Xin chào, Admin!</span>
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=random&color=fff&background=ff6a00" class="rounded-circle border border-2 border-warning" width="35">
+                <div class="navbar-right">
+                    @{
+                        var userName = Context.Session.GetString("FullName") ?? "Admin";
+                        var currentUserRole = Context.Session.GetString("UserRole") ?? "Admin";
+                        var roleDisplay = currentUserRole == "Admin" ? "Quản trị viên" : (currentUserRole == "Staff" ? "Nhân viên" : "Người dùng");
+                    }
+                    <div class="navbar-user">
+                        <img src="https://ui-avatars.com/api/?name=@userName&background=2563eb&color=fff&size=128" 
+                             alt="@userName" class="user-avatar">
+                        <div class="user-info">
+                            <span class="user-name">@userName</span>
+                            <span class="user-role">@roleDisplay</span>
+                        </div>
+                    </div>
                 </div>
             </nav>
 
-            <div class="container-fluid py-4 px-4">
+            <!-- Main Content -->
+            <div class="main-content">
+                @if (TempData["Success"] != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fas fa-check-circle"></i>
+                        <span>@TempData["Success"]</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <span>@TempData["Error"]</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                }
+                
                 @RenderBody()
             </div>
         </div>
@@ -147,9 +575,25 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $("#menu-toggle").click(function(e) {
-            e.preventDefault();
-            $("#wrapper").toggleClass("toggled");
+        $(document).ready(function() {
+            // Toggle sidebar
+            $("#menu-toggle").click(function(e) {
+                e.preventDefault();
+                $("#wrapper").toggleClass("toggled");
+            });
+
+            // Active menu item
+            var path = window.location.pathname;
+            $('.list-group-item-action').each(function() {
+                if ($(this).attr('href') === path) {
+                    $(this).addClass('active');
+                }
+            });
+
+            // Auto dismiss alerts
+            setTimeout(function() {
+                $('.alert').fadeOut('slow');
+            }, 5000);
         });
     </script>
     @await RenderSectionAsync("Scripts", required: false)

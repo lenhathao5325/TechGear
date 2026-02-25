@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -23,8 +24,9 @@ namespace TechGearAPI.Controllers
             _context = context;
         }
 
-        // GET: api/OrderDetailAPIs - L?y t?t c? chi ti?t ??n h�ng
+        // GET: api/OrderDetailAPIs - Lấy tất cả chi tiết đơn hàng
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult GetOrderDetailAPIs()
         {
             var data = _context.orderDetailAPIs
@@ -42,8 +44,9 @@ namespace TechGearAPI.Controllers
             return Ok(data);
         }
 
-        // GET: api/OrderDetailAPIs/5 - L?y chi ti?t ??n h�ng theo ID
+        // GET: api/OrderDetailAPIs/5 - Lấy chi tiết đơn hàng theo ID
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public IActionResult GetOrderDetailAPI(int id)
         {
             var orderDetail = _context.orderDetailAPIs
@@ -52,7 +55,7 @@ namespace TechGearAPI.Controllers
 
             if (orderDetail == null)
             {
-                return NotFound(new { error = $"Chi ti?t ??n h�ng v?i id {id} kh�ng t?n t?i" });
+                return NotFound(new { error = $"Chi tiết đơn hàng với id {id} không tồn tại" });
             }
 
             var response = new
@@ -70,14 +73,15 @@ namespace TechGearAPI.Controllers
             return Ok(response);
         }
 
-        // GET: api/OrderDetailAPIs/order/5 - L?y t?t c? chi ti?t c?a m?t ??n h�ng
+        // GET: api/OrderDetailAPIs/order/5 - Lấy tất cả chi tiết của một đơn hàng
         [HttpGet("order/{orderId}")]
+        [AllowAnonymous]
         public IActionResult GetOrderDetailsByOrderId(int orderId)
         {
             var orderExists = _context.orderAPIs.Any(o => o.OrderId == orderId);
             if (!orderExists)
             {
-                return BadRequest(new { error = "??n h�ng kh�ng t?n t?i" });
+                return BadRequest(new { error = "Đơn hàng không tồn tại" });
             }
 
             var data = _context.orderDetailAPIs
@@ -97,61 +101,62 @@ namespace TechGearAPI.Controllers
 
             if (!data.Any())
             {
-                return Ok(new { message = "??n h�ng n�y ch?a c� chi ti?t s?n ph?m", data = new List<object>() });
+                return Ok(new { message = "Đơn hàng này chưa có chi tiết sản phẩm", data = new List<object>() });
             }
 
             return Ok(data);
         }
 
-        // POST: api/OrderDetailAPIs - Th�m s?n ph?m v�o ??n h�ng
-        // Ch? cho ph�p th�m khi Order.Status == Pending
+        // POST: api/OrderDetailAPIs - Thêm sản phẩm vào đơn hàng
+        // Chỉ cho phép thêm khi Order.Status == Pending
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create([FromBody] CreateOrderDetailDTO dto)
         {
             // Validation
             if (dto.Quantity <= 0)
             {
-                return BadRequest(new { error = "S? l??ng ph?i l?n h?n 0" });
+                return BadRequest(new { error = "Số lượng phải lớn hơn 0" });
             }
 
             if (dto.UnitPrice <= 0)
             {
-                return BadRequest(new { error = "Gi� s?n ph?m ph?i l?n h?n 0" });
+                return BadRequest(new { error = "Giá sản phẩm phải lớn hơn 0" });
             }
 
-            // Ki?m tra Order t?n t?i
+            // Kiểm tra Order tồn tại
             var order = _context.orderAPIs.FirstOrDefault(o => o.OrderId == dto.OrderId);
             if (order == null)
             {
-                return BadRequest(new { error = "??n h�ng kh�ng t?n t?i" });
+                return BadRequest(new { error = "Đơn hàng không tồn tại" });
             }
 
-            // Ch? cho ph�p th�m khi Order ? tr?ng th�i Pending
+            // Chỉ cho phép thêm khi Order ở trạng thái Pending
             if (order.Status != OrderStatus.Pending)
             {
                 return BadRequest(new
                 {
-                    error = $"Ch? c� th? th�m s?n ph?m khi ??n h�ng ? tr?ng th�i Pending. Tr?ng th�i hi?n t?i: {order.Status}",
+                    error = $"Chỉ có thể thêm sản phẩm khi đơn hàng ở trạng thái Pending. Trạng thái hiện tại: {order.Status}",
                     currentStatus = order.Status
                 });
             }
 
-            // Ki?m tra ProductVariant t?n t?i
+            // Kiểm tra ProductVariant tồn tại
             var productVariant = _context.productVariantAPIs
                 .Include(pv => pv.Product)
                 .FirstOrDefault(pv => pv.Id == dto.ProductVariantId);
 
             if (productVariant == null)
             {
-                return BadRequest(new { error = "Phi�n b?n s?n ph?m kh�ng t?n t?i" });
+                return BadRequest(new { error = "Phiên bản sản phẩm không tồn tại" });
             }
 
-            // Ki?m tra stock (n?u c?n)
+            // Kiểm tra stock (nếu cần)
             if (productVariant.Stock < dto.Quantity)
             {
                 return BadRequest(new
                 {
-                    error = "S? l??ng s?n ph?m kh�ng ??",
+                    error = "Số lượng sản phẩm không đủ",
                     availableStock = productVariant.Stock,
                     requestedQuantity = dto.Quantity
                 });
@@ -159,13 +164,13 @@ namespace TechGearAPI.Controllers
 
             try
             {
-                // Ki?m tra xem s?n ph?m n�y ?� c� trong ??n h�ng ch?a
+                // Kiểm tra xem sản phẩm này đã có trong đơn hàng chưa
                 var existingDetail = _context.orderDetailAPIs
                     .FirstOrDefault(od => od.OrderId == dto.OrderId && od.ProductVariantId == dto.ProductVariantId);
 
                 if (existingDetail != null)
                 {
-                    return BadRequest(new { error = "S?n ph?m n�y ?� c� trong ??n h�ng. H�y c?p nh?t s? l??ng thay v� th�m l?i" });
+                    return BadRequest(new { error = "Sản phẩm này đã có trong đơn hàng. Hãy cập nhật số lượng thay vì thêm lại" });
                 }
 
                 var orderDetail = new OrderDetailAPI
@@ -175,12 +180,12 @@ namespace TechGearAPI.Controllers
                     ProductName = productVariant.Product?.Name ?? "Unknown",
                     VariantDescription = productVariant.SKU,
                     Quantity = dto.Quantity,
-                    UnitPrice = dto.UnitPrice  // Snapshot gi� t?i th?i ?i?m mua
+                    UnitPrice = dto.UnitPrice  // Snapshot giá tại thời điểm mua
                 };
 
                 _context.orderDetailAPIs.Add(orderDetail);
 
-                // C?p nh?t SubTotal v� TotalAmount c?a Order
+                // Cập nhật SubTotal và TotalAmount của Order
                 var totalDetailPrice = _context.orderDetailAPIs
                     .Where(od => od.OrderId == dto.OrderId)
                     .Sum(od => od.Quantity * od.UnitPrice);
@@ -192,7 +197,7 @@ namespace TechGearAPI.Controllers
 
                 var response = new
                 {
-                    message = "Th�m s?n ph?m v�o ??n h�ng th�nh c�ng",
+                    message = "Thêm sản phẩm vào đơn hàng thành công",
                     orderDetail = new
                     {
                         orderDetail.OrderDetailId,
@@ -210,19 +215,20 @@ namespace TechGearAPI.Controllers
             catch (DbUpdateException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { error = "L?i khi l?u d? li?u", details = ex.InnerException?.Message });
+                    new { error = "Lỗi khi lưu dữ liệu", details = ex.InnerException?.Message });
             }
         }
 
-        // PUT: api/OrderDetailAPIs/5 - C?p nh?t S? L??NG
-        // Ch? cho ph�p c?p nh?t Quantity khi Order.Status == Pending
-        // KH�NG cho ph�p s?a OrderId, ProductVariantId, ProductName, VariantDescription, UnitPrice
+        // PUT: api/OrderDetailAPIs/5 - Cập nhật Số Lượng
+        // Chỉ cho phép cập nhật Quantity khi Order.Status == Pending
+        // KHÔNG cho phép sửa OrderId, ProductVariantId, ProductName, VariantDescription, UnitPrice
         [HttpPut("{id}")]
+        [AllowAnonymous]
         public IActionResult UpdateQuantity(int id, [FromBody] UpdateOrderDetailQuantityDTO dto)
         {
             if (dto.Quantity <= 0)
             {
-                return BadRequest(new { error = "S? l??ng ph?i l?n h?n 0" });
+                return BadRequest(new { error = "Số lượng phải lớn hơn 0" });
             }
 
             var orderDetail = _context.orderDetailAPIs
@@ -231,26 +237,26 @@ namespace TechGearAPI.Controllers
 
             if (orderDetail == null)
             {
-                return NotFound(new { error = $"Chi ti?t ??n h�ng v?i id {id} kh�ng t?n t?i" });
+                return NotFound(new { error = $"Chi tiết đơn hàng với id {id} không tồn tại" });
             }
 
-            // Ch? cho ph�p c?p nh?t khi Order ? tr?ng th�i Pending
+            // Chỉ cho phép cập nhật khi Order ở trạng thái Pending
             if (orderDetail.Order.Status != OrderStatus.Pending)
             {
                 return BadRequest(new
                 {
-                    error = $"Ch? c� th? c?p nh?t s? l??ng khi ??n h�ng ? tr?ng th�i Pending. Tr?ng th�i hi?n t?i: {orderDetail.Order.Status}",
+                    error = $"Chỉ có thể cập nhật số lượng khi đơn hàng ở trạng thái Pending. Trạng thái hiện tại: {orderDetail.Order.Status}",
                     currentStatus = orderDetail.Order.Status
                 });
             }
 
-            // Ki?m tra stock
+            // Kiểm tra stock
             var productVariant = _context.productVariantAPIs.FirstOrDefault(pv => pv.Id == orderDetail.ProductVariantId);
             if (productVariant != null && productVariant.Stock < dto.Quantity)
             {
                 return BadRequest(new
                 {
-                    error = "S? l??ng s?n ph?m kh�ng ??",
+                    error = "Số lượng sản phẩm không đủ",
                     availableStock = productVariant.Stock,
                     requestedQuantity = dto.Quantity
                 });
@@ -263,7 +269,7 @@ namespace TechGearAPI.Controllers
                 orderDetail.Quantity = dto.Quantity;
                 _context.orderDetailAPIs.Update(orderDetail);
 
-                // C?p nh?t SubTotal v� TotalAmount c?a Order
+                // Cập nhật SubTotal và TotalAmount của Order
                 var totalDetailPrice = _context.orderDetailAPIs
                     .Where(od => od.OrderId == orderDetail.OrderId)
                     .Sum(od => (decimal)od.Quantity * od.UnitPrice);
@@ -275,7 +281,7 @@ namespace TechGearAPI.Controllers
 
                 var response = new
                 {
-                    message = "C?p nh?t s? l??ng s?n ph?m th�nh c�ng",
+                    message = "Cập nhật số lượng sản phẩm thành công",
                     orderDetail = new
                     {
                         orderDetail.OrderDetailId,
@@ -301,13 +307,14 @@ namespace TechGearAPI.Controllers
             catch (DbUpdateException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { error = "L?i khi c?p nh?t d? li?u", details = ex.InnerException?.Message });
+                    new { error = "Lỗi khi cập nhật dữ liệu", details = ex.InnerException?.Message });
             }
         }
 
-        // DELETE: api/OrderDetailAPIs/5 - X�a chi ti?t ??n h�ng
-        // Ch? cho ph�p x�a khi Order.Status == Pending
+        // DELETE: api/OrderDetailAPIs/5 - Xóa chi tiết đơn hàng
+        // Chỉ cho phép xóa khi Order.Status == Pending
         [HttpDelete("{id}")]
+        [AllowAnonymous]
         public IActionResult Delete(int id)
         {
             var orderDetail = _context.orderDetailAPIs
@@ -316,15 +323,15 @@ namespace TechGearAPI.Controllers
 
             if (orderDetail == null)
             {
-                return NotFound(new { error = $"Chi ti?t ??n h�ng v?i id {id} kh�ng t?n t?i" });
+                return NotFound(new { error = $"Chi tiết đơn hàng với id {id} không tồn tại" });
             }
 
-            // Ch? cho ph�p x�a khi Order ? tr?ng th�i Pending
+            // Chỉ cho phép xóa khi Order ở trạng thái Pending
             if (orderDetail.Order.Status != OrderStatus.Pending)
             {
                 return BadRequest(new
                 {
-                    error = $"Ch? c� th? x�a chi ti?t khi ??n h�ng ? tr?ng th�i Pending. Tr?ng th�i hi?n t?i: {orderDetail.Order.Status}",
+                    error = $"Chỉ có thể xóa chi tiết khi đơn hàng ở trạng thái Pending. Trạng thái hiện tại: {orderDetail.Order.Status}",
                     currentStatus = orderDetail.Order.Status
                 });
             }
@@ -336,7 +343,7 @@ namespace TechGearAPI.Controllers
 
                 _context.orderDetailAPIs.Remove(orderDetail);
 
-                // C?p nh?t SubTotal v� TotalAmount c?a Order
+                // Cập nhật SubTotal và TotalAmount của Order
                 var totalDetailPrice = _context.orderDetailAPIs
                     .Where(od => od.OrderId == orderId)
                     .Sum(od => (decimal)od.Quantity * od.UnitPrice);
@@ -352,7 +359,7 @@ namespace TechGearAPI.Controllers
 
                 return Ok(new
                 {
-                    message = $"X�a chi ti?t ??n h�ng v?i id {id} th�nh c�ng",
+                    message = $"Xóa chi tiết đơn hàng với id {id} thành công",
                     removedPrice = removedPrice,
                     updatedOrder = order != null ? new
                     {
@@ -366,7 +373,7 @@ namespace TechGearAPI.Controllers
             catch (DbUpdateException ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError,
-                    new { error = "L?i khi x�a d? li?u", details = ex.InnerException?.Message });
+                    new { error = "Lỗi khi xóa dữ liệu", details = ex.InnerException?.Message });
             }
         }
 

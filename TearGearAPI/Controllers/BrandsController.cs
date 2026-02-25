@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TearGearAPI.Data;
+using TechGearAPI.Data;
 using TechGearAPI.DTO;
 using TechGearAPI.DTOs;
 using TechGearAPI.Models;
@@ -15,14 +15,14 @@ namespace TearGearAPI.Controllers
         public BrandsController(ApplicationDbContext context) => _context = context;
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() => Ok(await _context.brandAPIs.Select(b => new BrandDTO { Id = b.BrandId, Name = b.BrandName }).ToListAsync());
+        public async Task<IActionResult> GetAll() => Ok(await _context.brandAPIs.Select(b => new { BrandId = b.BrandId, BrandName = b.BrandName, IsActive = b.IsActive }).ToListAsync());
 
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             var b = await _context.brandAPIs.FindAsync(id);
             if (b == null) return NotFound();
-            return Ok(new BrandDTO { Id = b.BrandId, Name = b.BrandName });
+            return Ok(new { BrandId = b.BrandId, BrandName = b.BrandName, IsActive = b.IsActive });
         }
 
         [HttpPost]
@@ -31,8 +31,7 @@ namespace TearGearAPI.Controllers
             var b = new BrandAPI { BrandName = dto.Name };
             _context.brandAPIs.Add(b);
             await _context.SaveChangesAsync();
-            dto.Id = b.BrandId;
-            return CreatedAtAction(nameof(Get), new { id = b.BrandId }, dto);
+            return CreatedAtAction(nameof(Get), new { id = b.BrandId }, new { BrandId = b.BrandId, BrandName = b.BrandName });
         }
 
         [HttpPut("{id}")]
@@ -42,7 +41,7 @@ namespace TearGearAPI.Controllers
             if (b == null) return NotFound();
             b.BrandName = dto.Name;
             await _context.SaveChangesAsync();
-            return Ok(dto);
+            return Ok(new { BrandId = b.BrandId, BrandName = b.BrandName });
         }
 
         [HttpDelete("{id}")]

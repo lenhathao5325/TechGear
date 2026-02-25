@@ -9,9 +9,20 @@ namespace TechGear.Models
     public class Product
     {
         public int Id { get; set; }
+        public int ProductId 
+        { 
+            get => Id; 
+            set => Id = value; 
+        }
 
         [Required(ErrorMessage = "Tên sản phẩm không được để trống")]
         public string Name { get; set; }
+        
+        public string ProductName 
+        { 
+            get => Name; 
+            set => Name = value; 
+        }
         
         public string? Description { get; set; }
         
@@ -22,6 +33,11 @@ namespace TechGear.Models
         public int? BrandId { get; set; }
         
         public string? ImageUrl { get; set; }
+        
+        [Required(ErrorMessage = "Vui lòng nhập giá sản phẩm")]
+        public decimal BasePrice { get; set; }
+        
+        public bool IsActive { get; set; } = true;
         
         // Flattened properties from related entities for display
         public string? CategoryName { get; set; }

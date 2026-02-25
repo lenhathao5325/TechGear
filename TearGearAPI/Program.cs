@@ -1,8 +1,9 @@
 ﻿using CloudinaryDotNet;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using TechGearAPI.Data;
-
 using TechGearAPI.Models;
 using TechGearAPI.Service.CloudinaryService;
 
@@ -33,6 +34,27 @@ builder.Services.AddDefaultIdentity<ApplicationUserAPI>()
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddAuthentication("Bearer")
+    .AddJwtBearer(option =>
+    {
+        var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+
+        option.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        };
+    });
+//Add Authorization
+builder.Services.AddAuthorization();
+
 //cấu hình cors
 builder.Services.AddCors(options =>
 {
@@ -44,6 +66,7 @@ builder.Services.AddCors(options =>
                   .AllowAnyHeader();
         });
 });
+
 
 builder.Services.Configure<CloudinarySettings>(
 builder.Configuration.GetSection("CloudinarySettings"));
@@ -61,6 +84,18 @@ builder.Services.AddScoped<CloudinaryService>();
 
 var app = builder.Build();
 
+// Seed Roles and Users
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    
+    // Seed roles
+    await RoleSeeder.SeedRoles(services);
+    
+    // Seed admin, staff and test users
+    await ApplicationDbContextSeed.SeedAdminAndStaff(services);
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -71,6 +106,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseCors("AllowMVC");
+
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

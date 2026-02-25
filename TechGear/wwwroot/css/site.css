@@ -121,6 +121,27 @@ a {
             background: rgba(255,255,255,0.1);
         }
 
+/* User Dropdown Menu */
+.dropdown-menu {
+    border-radius: 10px;
+    padding: 10px 0;
+}
+
+.dropdown-item {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+        padding-left: 25px;
+    }
+
+    .dropdown-item i {
+        width: 20px;
+    }
+
 /* =========================================
    3. PRODUCT CARD (HOME & LIST)
    ========================================= */
@@ -451,3 +472,8 @@ footer.tech-footer {
     .login-black a:hover {
         color: #ff6a00 !important; /* hover cam cho giống GearVN */
     }
+
+/* User Dropdown Additional Styles */
+.dropdown-toggle::after {
+    margin-left: 8px;
+}
