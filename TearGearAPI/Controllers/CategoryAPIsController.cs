@@ -1,40 +1,58 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using TechGearAPI.Data;
+using TearGearAPI.Data;
+using TearGearAPI.DTO;
+using TechGearAPI.DTO;
 using TechGearAPI.Models;
 
-namespace TechGearAPI.Controllers
+namespace TearGearAPI.Controllers
 {
-    [Route("api/categories")]
     [ApiController]
-    public class CategoryAPIsController : ControllerBase
+    [Route("api/[controller]")]
+    public class CategoriesController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
+        public CategoriesController(ApplicationDbContext context) => _context = context;
 
-        public CategoryAPIsController(ApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        // GET: api/categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryAPI>>> GetCategories()
+        public async Task<IActionResult> GetAll() => Ok(await _context.categoryAPIs.Select(c => new CategoryDTO { Id = c.CategoryId, Name = c.CategoryName }).ToListAsync());
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(int id)
         {
-            return await _context.categoryAPIs.ToListAsync();
+            var c = await _context.categoryAPIs.FindAsync(id);
+            if (c == null) return NotFound();
+            return Ok(new CategoryDTO { Id = c.CategoryId, Name = c.CategoryName });
         }
 
-        // GET: api/categories/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryAPI>> GetCategory(int id)
+        [HttpPost]
+        public async Task<IActionResult> Create(CategoryDTO dto)
         {
-            var category = await _context.categoryAPIs.FindAsync(id);
+            var c = new CategoryAPI { CategoryName = dto.Name };
+            _context.categoryAPIs.Add(c);
+            await _context.SaveChangesAsync();
+            dto.Id = c.CategoryId;
+            return CreatedAtAction(nameof(Get), new { id = c.CategoryId }, dto);
+        }
 
-            if (category == null)
-            {
-                return NotFound();
-            }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, CategoryDTO dto)
+        {
+            var c = await _context.categoryAPIs.FindAsync(id);
+            if (c == null) return NotFound();
+            c.CategoryName = dto.Name;
+            await _context.SaveChangesAsync();
+            return Ok(dto);
+        }
 
-            return category;
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var c = await _context.categoryAPIs.FindAsync(id);
+            if (c == null) return NotFound();
+            _context.categoryAPIs.Remove(c);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
     }
 }

@@ -48,7 +48,7 @@ namespace TechGearAPI.Controllers
         public IActionResult AddToCart(CartItemDTO dto)
         {
             var variant = _context.productVariantAPIs
-                .FirstOrDefault(p => p.ProductVariantId == dto.ProductVariantId);
+                .FirstOrDefault(p => p.Id == dto.ProductVariantId);
 
             if (variant == null)
                 return BadRequest("Variant không tồn tại");
