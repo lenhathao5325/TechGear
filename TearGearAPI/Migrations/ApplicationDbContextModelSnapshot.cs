@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TearGearAPI.Data;
 
@@ -12,11 +11,9 @@ using TearGearAPI.Data;
 namespace TearGearAPI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260206053605_fixdb")]
-    partial class fixdb
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -659,9 +656,6 @@ namespace TearGearAPI.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductVariantId")
                         .HasColumnType("int");
 
                     b.Property<string>("SKU")
