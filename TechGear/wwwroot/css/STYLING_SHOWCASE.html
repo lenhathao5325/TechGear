@@ -1,0 +1,402 @@
+<!-- ADMIN STYLING SHOWCASE - Visualization Guide -->
+
+# 🎨 TechGear Admin - Professional CSS Styling Guide
+
+## Component Showcase
+
+### 📌 Page Headers
+
+```html
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-box"></i>
+        Quản lý Sản phẩm
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Sản phẩm</li>
+        </ol>
+    </nav>
+</div>
+```
+
+**Features:**
+- Orange gradient top border (4px)
+- Large page title with icon
+- Breadcrumb navigation
+- Professional spacing
+
+---
+
+### 🎯 Buttons
+
+```html
+<!-- Primary Button -->
+<a class="btn btn-primary">
+    <i class="bi bi-plus-circle"></i>
+    Thêm sản phẩm mới
+</a>
+
+<!-- Secondary Button -->
+<button class="btn btn-secondary">
+    <i class="bi bi-arrow-clockwise"></i>
+    Tải lại
+</button>
+
+<!-- Danger Button -->
+<a class="btn btn-danger">
+    <i class="bi bi-trash"></i>
+    Xóa
+</a>
+
+<!-- Icon Button -->
+<a class="btn btn-icon btn-edit">
+    <i class="bi bi-pencil"></i>
+</a>
+```
+
+**Styles:**
+- Primary: Orange gradient background
+- Secondary: Light gray with border
+- Danger: Red background
+- All with hover animations
+- Icon spacing consistent
+
+---
+
+### 📊 Tables
+
+```html
+<div class="admin-table">
+    <table class="table">
+        <thead>
+            <tr>
+                <th width="50">ID</th>
+                <th>Tên sản phẩm</th>
+                <th width="120" class="text-center">Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><span class="badge badge-primary">1</span></td>
+                <td><strong>Product Name</strong></td>
+                <td class="text-center">
+                    <div class="table-actions">
+                        <a class="btn-view" title="Xem chi tiết">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a class="btn-edit" title="Chỉnh sửa">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a class="btn-delete" title="Xóa">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+```
+
+**Features:**
+- Orange gradient header
+- Hover row highlighting
+- Action buttons with icons
+- Badge styling for IDs
+- Responsive design
+
+---
+
+### 🎫 Badges & Status
+
+```html
+<!-- Status Badge - Active -->
+<span class="badge badge-success">
+    <i class="bi bi-check-circle"></i>
+    Kích hoạt
+</span>
+
+<!-- Status Badge - Inactive -->
+<span class="badge badge-danger">
+    <i class="bi bi-x-circle"></i>
+    Vô hiệu hóa
+</span>
+
+<!-- Status Badge - Pending -->
+<span class="badge badge-warning">
+    <i class="bi bi-hourglass-split"></i>
+    Đang chờ
+</span>
+
+<!-- Status Badge - Processing -->
+<span class="badge badge-info">
+    <i class="bi bi-gear"></i>
+    Đang xử lý
+</span>
+```
+
+**Colors:**
+- Success: Green (#10b981)
+- Danger: Red (#ef4444)
+- Warning: Yellow (#f59e0b)
+- Info: Blue (#3b82f6)
+
+---
+
+### 📝 Forms
+
+```html
+<div class="form-section">
+    <h5 class="form-section-title">
+        <i class="bi bi-sliders"></i>
+        Cấu hình Trang
+    </h5>
+    
+    <div class="form-group">
+        <label class="form-label">
+            Tên trang
+            <span class="required">*</span>
+        </label>
+        <input class="form-control" value="TechGear" />
+    </div>
+    
+    <div class="form-group">
+        <label class="form-label">Tiền tệ mặc định</label>
+        <select class="form-select">
+            <option value="VND">VND - ₫</option>
+            <option value="USD">USD - $</option>
+        </select>
+    </div>
+    
+    <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="activeCheck" />
+        <label class="form-check-label" for="activeCheck">
+            Kích hoạt
+        </label>
+    </div>
+    
+    <button class="btn btn-primary">
+        <i class="bi bi-floppy"></i>
+        Lưu
+    </button>
+</div>
+```
+
+**Features:**
+- Orange focus state
+- Validation colors
+- Icon titles
+- Required indicator
+- Grouped sections
+
+---
+
+### 🔔 Alerts
+
+```html
+<!-- Success Alert -->
+<div class="alert alert-success">
+    <i class="bi bi-check-circle"></i>
+    <div>
+        <strong>Thành công!</strong>
+        Lưu dữ liệu thành công.
+    </div>
+</div>
+
+<!-- Error Alert -->
+<div class="alert alert-danger">
+    <i class="bi bi-x-circle"></i>
+    <div>
+        <strong>Lỗi!</strong>
+        Có lỗi xảy ra.
+    </div>
+</div>
+
+<!-- Warning Alert -->
+<div class="alert alert-warning">
+    <i class="bi bi-exclamation-triangle"></i>
+    <div>
+        <strong>Cảnh báo!</strong>
+        Hãy chú ý.
+    </div>
+</div>
+
+<!-- Info Alert -->
+<div class="alert alert-info">
+    <i class="bi bi-info-circle"></i>
+    <div>
+        <strong>Thông tin!</strong>
+        Đây là thông báo.
+    </div>
+</div>
+```
+
+**Features:**
+- Smooth animations (0.3s)
+- Icon indicators
+- Color-coded
+- Dismissible option
+
+---
+
+### 📱 Responsive Behavior
+
+#### Desktop (1200px+)
+- Full-width tables
+- Multi-column layouts
+- All controls visible
+- Optimal spacing
+
+#### Tablet (768px - 991px)
+- Stacked layouts
+- Reduced font sizes
+- Touch-friendly buttons
+- Optimized spacing
+
+#### Mobile (320px - 575px)
+- Single column
+- Large touch targets
+- Compact tables
+- Minimal whitespace
+
+---
+
+### 🎭 Color Scheme
+
+```css
+PRIMARY ORANGE:
+  - #f97316 (Main)
+  - #fb923c (Light)
+  - #ea580c (Dark)
+
+SECONDARY AMBER:
+  - #fbbf24 (Accent)
+
+STATUS COLORS:
+  - #10b981 (Success - Green)
+  - #ef4444 (Danger - Red)
+  - #f59e0b (Warning - Yellow)
+  - #3b82f6 (Info - Blue)
+
+GRAYSCALE:
+  - #ffffff (White)
+  - #f3f4f6 (Light Gray)
+  - #d1d5db (Medium Gray)
+  - #6b7280 (Dark Gray)
+  - #1f2937 (Near Black)
+```
+
+---
+
+### 🚀 CSS Variables
+
+```css
+:root {
+    --primary-color: #f97316;
+    --primary-light: #fb923c;
+    --primary-dark: #ea580c;
+    --secondary-color: #fbbf24;
+    --success-color: #10b981;
+    --danger-color: #ef4444;
+    --warning-color: #f59e0b;
+    --info-color: #3b82f6;
+    --light: #f3f4f6;
+    --dark: #1f2937;
+    --gradient-primary: linear-gradient(135deg, #f97316 0%, #fb923c 50%, #fbbf24 100%);
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.15);
+    --shadow-orange: 0 4px 12px rgba(249, 115, 22, 0.25);
+}
+```
+
+---
+
+### ✨ Animations
+
+**Button Hover:**
+- `transform: translateY(-2px)`
+- `box-shadow` enhanced
+- Duration: 0.3s
+
+**Badge Pulse:**
+- Opacity: 1 → 0.5 → 1
+- Duration: 2s infinite
+- For pending items
+
+**Loading Spinner:**
+- 360° rotation
+- Duration: 0.8s infinite
+- Linear animation
+
+**Skeleton Loading:**
+- Gradient animation
+- Duration: 1.5s infinite
+- Smooth background movement
+
+---
+
+### 🎯 Key CSS Classes
+
+| Class | Purpose |
+|-------|---------|
+| `.admin-page-header` | Page title area |
+| `.admin-page-title` | Large page title |
+| `.admin-breadcrumb` | Navigation breadcrumbs |
+| `.form-control` | Input field |
+| `.form-section` | Grouped form area |
+| `.btn` | Base button |
+| `.btn-primary` | Orange button |
+| `.admin-table` | Styled table |
+| `.badge` | Status badge |
+| `.alert` | Alert message |
+| `.modal-content` | Modal dialog |
+| `.admin-search-bar` | Search bar |
+| `.admin-card` | Card component |
+
+---
+
+### 🔧 Implementation Notes
+
+1. **All CSS is pure CSS3** - No SCSS/LESS needed
+2. **Bootstrap 5 compatible** - Uses Bootstrap grid/utilities
+3. **Bootstrap Icons integrated** - 1000+ icons available
+4. **Mobile-first approach** - Built responsive from ground up
+5. **CSS Variables for theming** - Easy color customization
+6. **Smooth animations** - 60fps performance
+7. **Accessibility features** - ARIA labels, semantic HTML
+8. **No JavaScript required** - Pure CSS functionality
+
+---
+
+### 📁 CSS Files
+
+- **admin-pages.css** (21.5 KB) - Main styling for all components
+- **admin-layout.css** (7.1 KB) - Sidebar, topbar, layout
+- **admin-dashboard.css** (15.5 KB) - Dashboard specific styling
+
+---
+
+**Total CSS: ~44 KB** - Professional styling for entire Admin Area
+
+---
+
+## 🎓 Usage Examples
+
+All updated pages include:
+1. Professional page headers with icons
+2. Breadcrumb navigation
+3. Styled tables with action buttons
+4. Professional form elements
+5. Status badges and indicators
+6. Empty state messages
+7. Responsive layouts
+8. Bootstrap Icons throughout
+
+---
+
+**Status: ✅ PRODUCTION READY**
+
+All Admin pages now feature professional, consistent styling with the orange color scheme!

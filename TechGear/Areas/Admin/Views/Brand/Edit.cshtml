@@ -1,0 +1,49 @@
+@model TechGear.Models.Brand
+@{
+    ViewData["Title"] = "Chỉnh sửa thương hiệu";
+}
+
+<div class="admin-header">
+    <div class="container-fluid">
+        <h1><i class="bi bi-pencil-square me-2"></i>Chỉnh sửa thương hiệu</h1>
+        <p class="text-muted">Cập nhật thông tin thương hiệu</p>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="admin-card">
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="BrandId" />
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-tag me-2"></i>Tên</label>
+                            <input asp-for="BrandName" class="form-control" placeholder="Nhập tên thương hiệu" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-image me-2"></i>Logo</label>
+                            <div class="upload-area border-2 border-dashed p-4 rounded text-center" style="cursor: pointer; border-color: #dee2e6; transition: all 0.3s ease;">
+                                <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                                <p class="text-muted mb-1">Kéo ảnh logo vào đây hoặc nhấp để chọn</p>
+                                <small class="text-muted">PNG, JPG, GIF (tối đa 5MB)</small>
+                                <input type="file" name="logo" class="d-none" accept="image/*" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-chat-dots me-2"></i>Mô tả</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả thương hiệu"></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-success"><i class="bi bi-check-circle me-2"></i>Lưu</button>
+                            <a class="btn btn-cancel" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,42 +1,26 @@
-﻿using TechGear.Models;
-using TechGear.Models.ViewModels;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
-namespace DemoIdentity.Areas.Admin.Controllers
+namespace TechGear.Areas.Admin.Controllers
 {
     [Area("Admin")]
     [Authorize(Roles = "Admin")]
     public class UserRoleController : Controller
     {
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly UserManager<ApplicationUser> _userManager;
-
-        public UserRoleController(
-            UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager)
+        public IActionResult Index()
         {
-            _userManager = userManager;
-            _roleManager = roleManager;
+            return View();
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Create() => View();
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(object input)
         {
-            var users = _userManager.Users.ToList();
-            var model = new List<UserRoleVM>();
-
-            foreach (var user in users)
-            {
-                model.Add(new UserRoleVM
-                {
-                    UserId = user.Id,
-                    Email = user.Email,
-                    Roles = await _userManager.GetRolesAsync(user)
-                });
-            }
-
-            return View(model);
+            if (!ModelState.IsValid) return View(input);
+            return RedirectToAction(nameof(Index));
         }
     }
 }

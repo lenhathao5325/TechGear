@@ -1,0 +1,126 @@
+﻿@model IEnumerable<TechGear.Models.Category>
+@{
+    ViewData["Title"] = "Quản lý danh mục";
+}
+
+<div class="admin-page-header ps-3 pe-3">
+    <h1 class="admin-page-title">
+        <i class="bi bi-tag"></i>
+        Quản lý Danh mục
+    </h1>
+    <nav aria-label="breadcrumb">
+        <ol class="admin-breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+            <li class="breadcrumb-item active">Danh mục</li>
+        </ol>
+    </nav>
+</div>
+
+<div class="ps-3 pe-3">
+    @await Html.PartialAsync("~/Views/Shared/_AdminListToolbar.cshtml")
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div></div>
+        <a class="btn btn-primary" asp-action="Create">
+            <i class="bi bi-plus-circle"></i>
+            Thêm danh mục mới
+        </a>
+    </div>
+
+    <div class="admin-table">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th width="50">ID</th>
+                    <th>Tên danh mục</th>
+                    <th width="120" class="text-center">Kích hoạt</th>
+                    <th width="120" class="text-center">Hành động</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model?.Any() == true)
+                {
+                    @foreach(var c in Model)
+                    {
+                        <tr>
+                            <td><span class="badge badge-primary">@c.CategoryId</span></td>
+                            <td><strong>@c.CategoryName</strong></td>
+                            <td class="text-center">
+                                @if (c.IsActive)
+                                {
+                                    <span class="badge badge-success">
+                                        <i class="bi bi-check-circle"></i>
+                                        Kích hoạt
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-danger">
+                                        <i class="bi bi-x-circle"></i>
+                                        Vô hiệu hóa
+                                    </span>
+                                }
+                            </td>
+                            <td class="text-center">
+                                <div class="table-actions">
+                                    <a class="btn-edit" asp-action="Edit" asp-route-id="@c.CategoryId" title="Chỉnh sửa">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <a class="btn-delete" asp-action="Delete" asp-route-id="@c.CategoryId" title="Xóa">
+                                        <i class="bi bi-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td colspan="4" class="text-center py-4">
+                            <i class="bi bi-inbox" style="font-size: 48px; color: #d1d5db;"></i>
+                            <p class="mt-2 text-muted">Không có danh mục nào</p>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    @{ 
+        var q = Context.Request.Query;
+        var search = (q["search"].ToString() ?? string.Empty).Trim();
+        var status = q["status"].ToString() ?? string.Empty;
+        var pageSize = q["pageSize"].ToString(); if (string.IsNullOrEmpty(pageSize)) pageSize = "10";
+
+        int page = 1;
+        int parsedPage = 0;
+        int.TryParse(q["page"].ToString(), out parsedPage);
+        if (parsedPage > 0) page = parsedPage;
+
+        int totalPages = ViewData["TotalPages"] as int? ?? 1;
+        var action = ViewContext.RouteData.Values["action"] != null ? ViewContext.RouteData.Values["action"].ToString() : string.Empty;
+        var controller = ViewContext.RouteData.Values["controller"] != null ? ViewContext.RouteData.Values["controller"].ToString() : string.Empty;
+        var area = ViewContext.RouteData.Values["area"] != null ? ViewContext.RouteData.Values["area"].ToString() : string.Empty;
+        int start = Math.Max(1, page - 2);
+        int end = Math.Min(totalPages, page + 2);
+    }
+
+    @if (totalPages > 1)
+    {
+        <nav aria-label="Page navigation" class="mt-3">
+            <ul class="pagination pagination-sm justify-content-end">
+                <li class="page-item @(page==1? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page - 1, search = search, status = status, pageSize = pageSize })">&lsaquo;</a>
+                </li>
+                @for (int i = start; i <= end; i++)
+                {
+                    <li class="page-item @(i==page? "active":"")"><a class="page-link" href="@Url.Action(action, controller, new { area = area, page = i, search = search, status = status, pageSize = pageSize })">@i</a></li>
+                }
+                <li class="page-item @(page==totalPages? "disabled":"")">
+                    <a class="page-link" href="@Url.Action(action, controller, new { area = area, page = page + 1, search = search, status = status, pageSize = pageSize })">&rsaquo;</a>
+                </li>
+            </ul>
+        </nav>
+    }
+</div>

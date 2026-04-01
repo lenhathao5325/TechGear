@@ -1,0 +1,20 @@
+@model TechGear.Models.Order
+@{
+    ViewData["Title"] = "Chỉnh sửa đơn hàng";
+}
+
+<h3><i class="bi bi-pencil me-2"></i>Chỉnh sửa đơn hàng</h3>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="OrderId" />
+    <div class="mb-3">
+        <label class="form-label"><i class="bi bi-info-circle me-2"></i>Trạng thái</label>
+        <select asp-for="Status" class="form-select">
+            @foreach(var s in Enum.GetValues(typeof(TechGear.Models.Enums.Enums.OrderStatus)))
+            {
+                <option value="@s">@s</option>
+            }
+        </select>
+    </div>
+    <button class="btn btn-primary"><i class="bi bi-check-circle me-2"></i>Lưu</button>
+    <a class="btn btn-link" asp-action="Index"><i class="bi bi-x-circle me-2"></i>Hủy</a>
+</form>

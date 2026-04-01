@@ -1,0 +1,66 @@
+@model TechGear.Models.Brand
+@{
+    ViewData["Title"] = "Tạo thương hiệu";
+}
+
+<div class="admin-header">
+    <div class="container-fluid">
+        <div>
+            <h1><i class="bi bi-bag-plus me-2"></i>Tạo thương hiệu mới</h1>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid">
+    <div class="admin-card">
+        <div class="card-header">
+            <i class="bi bi-info-circle"></i>
+            <h3>Thông tin thương hiệu</h3>
+        </div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                <div class="form-section">
+                    <label class="form-label">
+                        <i class="bi bi-type text-primary"></i> Tên thương hiệu
+                        <span class="required">*</span>
+                    </label>
+                    <input asp-for="BrandName" class="form-control" placeholder="Nhập tên thương hiệu..." />
+                    <span asp-validation-for="BrandName" class="text-danger small"></span>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">
+                        <i class="bi bi-image text-primary"></i> Logo
+                    </label>
+                    <div class="upload-area border-2 border-dashed p-4 rounded text-center" style="cursor: pointer; border-color: #dee2e6; transition: all 0.3s ease;">
+                        <i class="bi bi-cloud-upload" style="font-size: 2rem; color: #6c757d; margin-bottom: 10px;"></i>
+                        <p class="text-muted mb-1">Kéo ảnh logo vào đây hoặc nhấp để chọn</p>
+                        <small class="text-muted">PNG, JPG, GIF (tối đa 5MB)</small>
+                        <input type="file" name="logo" class="d-none" accept="image/*" />
+                    </div>
+                    <small class="text-muted-admin">Ảnh logo của thương hiệu</small>
+                </div>
+
+                <div class="form-section">
+                    <label class="form-label">
+                        <i class="bi bi-file-text text-primary"></i> Mô tả
+                    </label>
+                    <textarea asp-for="Description" class="form-control" placeholder="Nhập mô tả thương hiệu..." rows="4"></textarea>
+                    <span asp-validation-for="Description" class="text-danger small"></span>
+                </div>
+            </form>
+        </div>
+        <div class="card-footer">
+            <div class="action-row">
+                <a class="btn btn-admin btn-admin-cancel" asp-action="Index">
+                    <i class="bi bi-x-circle"></i> Hủy
+                </a>
+                <button form="" type="submit" class="btn btn-admin btn-admin-primary" onclick="document.querySelector('form').submit();">
+                    <i class="bi bi-check-circle"></i> Lưu thương hiệu
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
