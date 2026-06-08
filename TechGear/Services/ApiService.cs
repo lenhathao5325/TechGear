@@ -80,6 +80,33 @@ namespace TechGear.Services
             }
         }
 
+        // Multipart POST (for file uploads)
+        public async Task<T?> PostMultipartAsync<T>(string endpoint, MultipartFormDataContent formData)
+        {
+            try
+            {
+                var client = CreateClient();
+                var response = await client.PostAsync(endpoint, formData);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var content = await response.Content.ReadAsStringAsync();
+                    return JsonSerializer.Deserialize<T>(content, _jsonOptions);
+                }
+                else
+                {
+                    var errorContent = await response.Content.ReadAsStringAsync();
+                    _logger.LogError($"API POST multipart to {endpoint} failed: {response.StatusCode} - {errorContent}");
+                    return default;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error calling POST multipart API {endpoint}: {ex.Message}");
+                return default;
+            }
+        }
+
         // Generic PUT method
         public async Task<bool> PutAsync<T>(string endpoint, object data)
         {

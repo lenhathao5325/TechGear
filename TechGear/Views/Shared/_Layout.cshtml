@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -13,7 +14,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/chatbot.css" asp-append-version="true" />
 </head>
+
 <body class="d-flex flex-column min-vh-100">
 
     <div class="bg-light text-muted small py-1 border-bottom">
@@ -34,215 +37,260 @@
             <div class="row align-items-center g-3">
 
                 <div class="col-lg-3 col-md-4 text-center text-md-start">
-                    <a asp-controller="Home" asp-action="Index" class="text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start brand-logo">
-                        <div class="rounded-circle bg-orange p-2 d-flex align-items-center justify-content-center me-2" style="width: 45px; height: 45px;">
+                    <a asp-controller="Home" asp-action="Index"
+                       class="text-decoration-none d-flex align-items-center justify-content-center justify-content-md-start brand-logo">
+                        <div class="rounded-circle bg-orange p-2 d-flex align-items-center justify-content-center me-2"
+                             style="width: 45px; height: 45px;">
                             <i class="fa fa-gamepad text-white fs-5"></i>
                         </div>
                         <div class="lh-1">
-                            <div class="fw-bold fs-4 text-dark" style="letter-spacing: -1px;">TECH<span class="text-orange">GEAR</span></div>
-                            <small class="text-muted fw-light" style="font-size: 0.75rem;">GAMING WORLD</small>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="col-lg-5 col-md-12 order-3 order-lg-2">
-                    <form class="input-group search-container">
-                        <input class="form-control py-2" type="search" placeholder="Tìm kiếm linh kiện, laptop..." aria-label="Search" />
-                        <button class="btn btn-search" type="submit">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </form>
-                </div>
-
-                <div class="col-lg-4 col-md-8 order-2 order-lg-3 d-flex justify-content-end align-items-center gap-4">
-
-                    <div class="d-none d-xl-block login-black">
-                        <partial name="_LoginPartial" />
-                    </div>
-
-
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="#" class="text-dark icon-hover text-decoration-none text-center" title="Yêu thích">
-                            <i class="fa-regular fa-heart fs-4"></i>
-                        </a>
-
-                        @{
-                            var isLoggedIn = Context.Session.GetString("JWToken") != null;
-                            var userRole = Context.Session.GetString("UserRole");
-                            var isUser = userRole == "User" || string.IsNullOrEmpty(userRole);
-                        }
-
-                        @if (isLoggedIn && isUser)
-                        {
-                            <a asp-controller="Cart" asp-action="Index" class="text-dark icon-hover position-relative text-decoration-none text-center" title="Giỏ hàng">
-                                <div class="position-relative d-inline-block">
-                                    <i class="fa fa-shopping-bag fs-4"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge" id="cart-count">
-                                        0
-                                    </span>
-                                </div>
-                                <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
-                            </a>
-                        }
-                        else if (!isLoggedIn)
-                        {
-                            <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="/Cart" class="text-dark icon-hover position-relative text-decoration-none text-center" title="Đăng nhập để xem giỏ hàng">
-                                <div class="position-relative d-inline-block">
-                                    <i class="fa fa-shopping-bag fs-4"></i>
-                                </div>
-                                <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
-                            </a>
-                        }
-                        else
-                        {
-                            <div class="text-muted text-center" title="Chỉ User mới có giỏ hàng">
-                                <div class="position-relative d-inline-block">
-                                    <i class="fa fa-shopping-bag fs-4"></i>
-                                </div>
-                                <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
+                            <div class="fw-bold fs-4 text-dark" style="letter-spacing: -1px;">TECH<span
+                                class="text-orange">GEAR</span></div>
+                                <small class="text-muted fw-light" style="font-size: 0.75rem;">GAMING WORLD</small>
                             </div>
-                        }
+                        </a>
                     </div>
-                </div>
 
-            </div>
-        </div>
+                    <div class="col-lg-5 col-md-12 order-3 order-lg-2">
+                        <form class="input-group search-container">
+                            <input class="form-control py-2" type="search" placeholder="Tìm kiếm linh kiện, laptop..."
+                                   aria-label="Search" />
+                            <button class="btn btn-search" type="submit">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </form>
+                    </div>
 
-        <div class="main-nav">
-            <div class="container">
-                <nav class="navbar navbar-expand-lg navbar-dark p-0">
+                    <div class="col-lg-4 col-md-8 order-2 order-lg-3 d-flex justify-content-end align-items-center gap-4">
 
-                    <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
+                        <div class="d-none d-xl-block login-black">
+                            <partial name="_LoginPartial" />
+                        </div>
 
-                    <div class="collapse navbar-collapse" id="mainMenu">
-                        <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
 
-                            <li class="nav-item dropdown category-dropdown me-3">
-                                <a class="nav-link dropdown-toggle btn-category fw-bold text-white px-3 py-2"
-                                   href="#"
-                                   role="button"
-                                   data-bs-toggle="dropdown"
-                                   aria-expanded="false">
-                                    <i class="fa fa-bars me-2"></i>Danh mục sản phẩm
+                        <div class="d-flex align-items-center gap-3">
+                            <a href="#" class="text-dark icon-hover text-decoration-none text-center" title="Yêu thích">
+                                <i class="fa-regular fa-heart fs-4"></i>
+                            </a>
+
+                            @{
+                                var isLoggedIn = Context.Session.GetString("JWToken") != null;
+                                var userRole = Context.Session.GetString("UserRole");
+                                var isUser = userRole == "User" || string.IsNullOrEmpty(userRole);
+                            }
+
+                            @if (isLoggedIn && isUser)
+                            {
+                                <a asp-controller="Cart" asp-action="Index"
+                                   class="text-dark icon-hover position-relative text-decoration-none text-center"
+                                   title="Giỏ hàng">
+                                    <div class="position-relative d-inline-block">
+                                        <i class="fa fa-shopping-bag fs-4"></i>
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill cart-badge"
+                                            id="cart-count">
+                                            0
+                                        </span>
+                                    </div>
+                                    <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
                                 </a>
+                            }
+                            else if (!isLoggedIn)
+                            {
+                                <a asp-controller="Auth" asp-action="Login" asp-route-returnUrl="/Cart"
+                                   class="text-dark icon-hover position-relative text-decoration-none text-center"
+                                   title="Đăng nhập để xem giỏ hàng">
+                                    <div class="position-relative d-inline-block">
+                                        <i class="fa fa-shopping-bag fs-4"></i>
+                                    </div>
+                                    <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
+                                </a>
+                            }
+                            else
+                            {
+                                <div class="text-muted text-center" title="Chỉ User mới có giỏ hàng">
+                                    <div class="position-relative d-inline-block">
+                                        <i class="fa fa-shopping-bag fs-4"></i>
+                                    </div>
+                                    <span class="d-none d-xl-inline ms-1 fw-bold small">Giỏ hàng</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
 
-                                <ul class="dropdown-menu category-menu shadow border-0">
-                                    @* Category list *@
-                                    @await Component.InvokeAsync("CategoryBar")
+                </div>
+            </div>
 
-                                    <li>
-                                        <hr class="dropdown-divider">
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item text-center fw-bold text-orange"
-                                           asp-controller="Products"
-                                           asp-action="Index">
-                                            Xem tất cả sản phẩm
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+            <div class="main-nav">
+                <div class="container">
+                    <nav class="navbar navbar-expand-lg navbar-dark p-0">
+
+                        <button class="navbar-toggler my-2" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#mainMenu">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+
+                        <div class="collapse navbar-collapse" id="mainMenu">
+                            <ul class="navbar-nav me-auto mb-2 mb-lg-0 align-items-lg-center">
+
+                                <li class="nav-item dropdown category-dropdown me-3">
+                                    <a class="nav-link dropdown-toggle btn-category fw-bold text-white px-3 py-2" href="#"
+                                       role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-bars me-2"></i>Danh mục sản phẩm
+                                    </a>
+
+                                    <ul class="dropdown-menu category-menu shadow border-0">
+                                        @* Category list *@
+                                        @await Component.InvokeAsync("CategoryBar")
+
+                                        <li>
+                                            <hr class="dropdown-divider">
+                                        </li>
+                                        <li>
+                                            <a class="dropdown-item text-center fw-bold text-orange"
+                                               asp-controller="Products" asp-action="Index">
+                                                Xem tất cả sản phẩm
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
 
 
-                            <li class="nav-item">
-                                <a class="nav-link active" asp-controller="Home" asp-action="Index">Trang chủ</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Products" asp-action="Index">Sản phẩm</a>
-                            </li>
-                            @* <li class="nav-item">
+                                <li class="nav-item">
+                                    <a class="nav-link active" asp-controller="Home" asp-action="Index">Trang chủ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="Products" asp-action="Index">Sản phẩm</a>
+                                </li>
+                                @* <li class="nav-item">
                                 <a class="nav-link" href="#">PC Đồ họa</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" href="#">Tin công nghệ</a>
                             </li> *@
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Liên hệ</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">Liên hệ</a>
+                                </li>
+                            </ul>
+
+                            <div class="d-none d-lg-block text-white">
+                                <i class="fa fa-headset me-1"></i> Tư vấn: <strong>1900 6750</strong>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow-1">
+            <div class="container my-4">
+                @RenderBody()
+            </div>
+        </main>
+
+        <footer class="tech-footer pt-5 pb-3 mt-auto">
+            <div class="container">
+                <div class="row g-4">
+                    <div class="col-lg-4 col-md-6">
+                        <h6 class="fw-bold text-orange mb-3"><i class="fa fa-microchip me-2"></i>TECH GEAR</h6>
+                        <p class="small lh-lg">
+                            Hệ thống bán lẻ linh kiện máy tính, laptop gaming cao cấp hàng đầu.
+                            Chất lượng đảm bảo - Bảo hành uy tín.
+                        </p>
+                        <div class="d-flex gap-3 mt-3">
+                            <a href="#" class="text-white fs-5"><i class="fab fa-facebook"></i></a>
+                            <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
+                            <a href="#" class="text-white fs-5"><i class="fab fa-tiktok"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6">
+                        <h6>Về TechGear</h6>
+                        <ul class="list-unstyled small">
+                            <li>Giới thiệu</li>
+                            <li>Tuyển dụng</li>
+                            <li>Tin tức công nghệ</li>
+                            <li>Liên hệ</li>
                         </ul>
+                    </div>
 
-                        <div class="d-none d-lg-block text-white">
-                            <i class="fa fa-headset me-1"></i> Tư vấn: <strong>1900 6750</strong>
+                    <div class="col-lg-2 col-md-6">
+                        <h6>Hỗ trợ</h6>
+                        <ul class="list-unstyled small">
+                            <li>Hướng dẫn mua hàng</li>
+                            <li>Chính sách bảo hành</li>
+                            <li>Chính sách đổi trả</li>
+                            <li>Kiểm tra đơn hàng</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6">
+                        <h6>Tổng đài hỗ trợ</h6>
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="fa fa-headset fa-2x text-orange me-3"></i>
+                            <div>
+                                <div class="small">Mua hàng (8h00 - 22h00)</div>
+                                <div class="fs-4 fw-bold text-white">1900 6750</div>
+                            </div>
                         </div>
-                    </div>
-                </nav>
-            </div>
-        </div>
-    </header>
-
-    <main class="flex-grow-1">
-        <div class="container my-4">
-            @RenderBody()
-        </div>
-    </main>
-
-    <footer class="tech-footer pt-5 pb-3 mt-auto">
-        <div class="container">
-            <div class="row g-4">
-                <div class="col-lg-4 col-md-6">
-                    <h6 class="fw-bold text-orange mb-3"><i class="fa fa-microchip me-2"></i>TECH GEAR</h6>
-                    <p class="small lh-lg">
-                        Hệ thống bán lẻ linh kiện máy tính, laptop gaming cao cấp hàng đầu.
-                        Chất lượng đảm bảo - Bảo hành uy tín.
-                    </p>
-                    <div class="d-flex gap-3 mt-3">
-                        <a href="#" class="text-white fs-5"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-youtube"></i></a>
-                        <a href="#" class="text-white fs-5"><i class="fab fa-tiktok"></i></a>
+                        <div class="small">Email: support@techgear.vn</div>
                     </div>
                 </div>
 
-                <div class="col-lg-2 col-md-6">
-                    <h6>Về TechGear</h6>
-                    <ul class="list-unstyled small">
-                        <li>Giới thiệu</li>
-                        <li>Tuyển dụng</li>
-                        <li>Tin tức công nghệ</li>
-                        <li>Liên hệ</li>
-                    </ul>
-                </div>
+                <hr class="border-secondary my-4" />
 
-                <div class="col-lg-2 col-md-6">
-                    <h6>Hỗ trợ</h6>
-                    <ul class="list-unstyled small">
-                        <li>Hướng dẫn mua hàng</li>
-                        <li>Chính sách bảo hành</li>
-                        <li>Chính sách đổi trả</li>
-                        <li>Kiểm tra đơn hàng</li>
-                    </ul>
-                </div>
-
-                <div class="col-lg-4 col-md-6">
-                    <h6>Tổng đài hỗ trợ</h6>
-                    <div class="d-flex align-items-center mb-3">
-                        <i class="fa fa-headset fa-2x text-orange me-3"></i>
-                        <div>
-                            <div class="small">Mua hàng (8h00 - 22h00)</div>
-                            <div class="fs-4 fw-bold text-white">1900 6750</div>
-                        </div>
+                <div class="row small align-items-center">
+                    <div class="col-md-6 text-center text-md-start">
+                        &copy; @DateTime.Now.Year <strong>TechGear</strong>. All Rights Reserved.
                     </div>
-                    <div class="small">Email: support@techgear.vn</div>
+                    <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
+                        <i class="fab fa-cc-visa fa-2x mx-1"></i>
+                        <i class="fab fa-cc-mastercard fa-2x mx-1"></i>
+                        <i class="fab fa-cc-paypal fa-2x mx-1"></i>
+                    </div>
                 </div>
             </div>
+        </footer>
 
-            <hr class="border-secondary my-4" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        @await RenderSectionAsync("Scripts", required: false)
 
-            <div class="row small align-items-center">
-                <div class="col-md-6 text-center text-md-start">
-                    &copy; @DateTime.Now.Year <strong>TechGear</strong>. All Rights Reserved.
+        <!-- ===== CHATBOT SO SÁNH SẢN PHẨM ===== -->
+        <button id="chatbot-toggle" title="TechBot - So sánh sản phẩm">
+            <i class="fa fa-robot"></i>
+            <span class="badge-pulse"></span>
+        </button>
+
+        <div id="chatbot-window">
+            <div class="chatbot-header">
+                <div class="avatar"><i class="fa fa-robot"></i></div>
+                <div>
+                    <div class="title">TechBot</div>
+                    <div class="subtitle">So sánh &amp; Tìm kiếm sản phẩm</div>
                 </div>
-                <div class="col-md-6 text-center text-md-end mt-2 mt-md-0">
-                    <i class="fab fa-cc-visa fa-2x mx-1"></i>
-                    <i class="fab fa-cc-mastercard fa-2x mx-1"></i>
-                    <i class="fab fa-cc-paypal fa-2x mx-1"></i>
-                </div>
+                <button class="close-btn" id="chatbot-close" title="Đóng"><i class="fa fa-times"></i></button>
+            </div>
+
+            <div class="chatbot-suggestions">
+                <span class="chatbot-chip" data-msg="so sánh laptop gaming với laptop văn phòng">So sánh laptop</span>
+                <span class="chatbot-chip" data-msg="tìm chuột gaming">Tìm chuột</span>
+                <span class="chatbot-chip" data-msg="tìm bàn phím">Tìm bàn phím</span>
+                <span class="chatbot-chip" data-msg="tìm màn hình">Tìm màn hình</span>
+            </div>
+
+            <div id="chatbot-messages" class="chatbot-messages"></div>
+
+            <div id="chatbot-pending"></div>
+
+            <div class="chatbot-input-row">
+                <input id="chatbot-input" type="text" placeholder='Nhập: "so sánh laptop với PC"...' autocomplete="off" />
+                <button id="chatbot-send" class="chatbot-send-btn" title="Gửi">
+                    <i class="fa fa-paper-plane"></i>
+                </button>
             </div>
         </div>
-    </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    @await RenderSectionAsync("Scripts", required: false)
-</body>
+        <script src="~/js/chatbot.js" asp-append-version="true"></script>
+    </body>
+
 </html>

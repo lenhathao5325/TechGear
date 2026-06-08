@@ -30,86 +30,131 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="mb-3">
-                                    <label asp-for="BrandName" class="form-label fw-bold">Tên thương hiệu <span class="text-danger">*</span></label>
-                                    <input asp-for="BrandName" class="form-control" placeholder="Ví dụ: MSI, Asus, Logitech..." />
-                                    <span asp-validation-for="BrandName" class="text-danger small"></span>
-                                </div>
+                                    <label asp-for="BrandName" class="form-label fw-bold">Tên thương hiệu <span
+                                        class="text-danger">*</span></label>
+                                        <input asp-for="BrandName" class="form-control"
+                                               placeholder="Ví dụ: MSI, Asus, Logitech..." />
+                                        <span asp-validation-for="BrandName" class="text-danger small"></span>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label asp-for="Description" class="form-label fw-bold">Mô tả</label>
-                                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Nhập mô tả về thương hiệu..."></textarea>
-                                    <span asp-validation-for="Description" class="text-danger small"></span>
-                                </div>
+                                    <div class="mb-3">
+                                        <div class="d-flex align-items-center justify-content-between mb-1">
+                                            <label asp-for="Description" class="form-label fw-bold mb-0">Mô tả</label>
+                                            <button type="button" id="btnGenDesc" class="btn btn-sm btn-outline-primary">
+                                                <i class="fa fa-magic me-1"></i>Tạo mô tả tự động
+                                            </button>
+                                        </div>
+                                        <textarea asp-for="Description" class="form-control" rows="4" id="descriptionField"
+                                                  placeholder="Nhập mô tả hoặc nhấn 'Tạo mô tả tự động'..."></textarea>
+                                        <span asp-validation-for="Description" class="text-danger small"></span>
+                                        <div id="genDescStatus" class="small mt-1" style="display:none"></div>
+                                    </div>
 
-                                <div class="mb-3">
-                                    <label class="form-label fw-bold d-block">Trạng thái</label>
-                                    <div class="form-check form-switch">
-                                        <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckChecked" checked>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">Đang hoạt động</label>
+                                    <div class="mb-3">
+                                        <label class="form-label fw-bold d-block">Trạng thái</label>
+                                        <div class="form-check form-switch">
+                                            <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch"
+                                                   id="flexSwitchCheckChecked" checked>
+                                            <label class="form-check-label" for="flexSwitchCheckChecked">Đang hoạt
+                                                động</label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <label asp-for="LogoFile" class="form-label fw-bold">Logo thương hiệu</label>
+
+                                        <div class="card border-dashed mb-3 text-center d-flex justify-content-center align-items-center"
+                                             style="height: 200px; border: 2px dashed #ccc; background: #f9f9f9; overflow: hidden;">
+                                            <img id="logoPreview" src="#" alt="Logo Preview"
+                                                 style="display:none; max-width: 100%; max-height: 100%; object-fit: contain;" />
+                                            <div id="uploadPlaceholder" class="text-muted">
+                                                <i class="fa fa-image fa-3x mb-2"></i><br>
+                                                <small>Chưa chọn ảnh</small>
+                                            </div>
+                                        </div>
+
+                                        <input asp-for="LogoFile" type="file" class="form-control form-control-sm"
+                                               accept="image/*" onchange="previewImage(this)" />
+                                        <span asp-validation-for="LogoFile" class="text-danger small"></span>
+                                        <small class="text-muted fst-italic mt-1 d-block">Định dạng: .jpg, .png, .jpeg</small>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="col-md-4">
-                                <label asp-for="LogoFile" class="form-label fw-bold">Logo thương hiệu</label>
+                                <hr class="my-4" />
 
-                                <div class="card border-dashed mb-3 text-center d-flex justify-content-center align-items-center" style="height: 200px; border: 2px dashed #ccc; background: #f9f9f9; overflow: hidden;">
-                                    <img id="logoPreview" src="#" alt="Logo Preview" style="display:none; max-width: 100%; max-height: 100%; object-fit: contain;" />
-                                    <div id="uploadPlaceholder" class="text-muted">
-                                        <i class="fa fa-image fa-3x mb-2"></i><br>
-                                        <small>Chưa chọn ảnh</small>
-                                    </div>
+                                <div class="d-flex justify-content-end gap-2">
+                                    <a asp-action="Index" class="btn btn-secondary">
+                                        <i class="fa fa-arrow-left"></i> Quay lại
+                                    </a>
+                                    <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
+                                        <i class="fa fa-save"></i> Lưu thương hiệu
+                                    </button>
                                 </div>
-
-                                <input asp-for="LogoFile" type="file" class="form-control form-control-sm" accept="image/*" onchange="previewImage(this)" />
-                                <span asp-validation-for="LogoFile" class="text-danger small"></span>
-                                <small class="text-muted fst-italic mt-1 d-block">Định dạng: .jpg, .png, .jpeg</small>
-                            </div>
+                            </form>
                         </div>
-
-                        <hr class="my-4" />
-
-                        <div class="d-flex justify-content-end gap-2">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fa fa-arrow-left"></i> Quay lại
-                            </a>
-                            <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
-                                <i class="fa fa-save"></i> Lưu thương hiệu
-                            </button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+        @section Scripts {
+            @{
+                await Html.RenderPartialAsync("_ValidationScriptsPartial");
+            }
 
-    <script>
-        // Hàm hiển thị ảnh xem trước ngay khi chọn file
-        function previewImage(input) {
-            var preview = document.getElementById('logoPreview');
-            var placeholder = document.getElementById('uploadPlaceholder');
-
-            if (input.files && input.files[0]) {
-                var reader = new FileReader();
-
-                reader.onload = function (e) {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    placeholder.style.display = 'none';
+            <script>
+                // Hàm hiển thị ảnh xem trước ngay khi chọn file
+                function previewImage(input) {
+                    var preview = document.getElementById('logoPreview');
+                    var placeholder = document.getElementById('uploadPlaceholder');
+                    if (input.files && input.files[0]) {
+                        var reader = new FileReader();
+                        reader.onload = function (e) {
+                            preview.src = e.target.result;
+                            preview.style.display = 'block';
+                            placeholder.style.display = 'none';
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    } else {
+                        preview.src = '#';
+                        preview.style.display = 'none';
+                        placeholder.style.display = 'block';
+                    }
                 }
 
-                reader.readAsDataURL(input.files[0]);
-            } else {
-                preview.src = '#';
-                preview.style.display = 'none';
-                placeholder.style.display = 'block';
-            }
+                // Auto-generate description
+                document.getElementById('btnGenDesc').addEventListener('click', async function () {
+                    const name = document.querySelector('[name="BrandName"]').value.trim();
+                    if (!name) {
+                        showGenStatus('warning', '<i class="fa fa-exclamation-triangle me-1"></i>Vui lòng nhập tên thương hiệu trước.');
+                        return;
+                    }
+                    const btn = this;
+                    btn.disabled = true;
+                    btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i>Đang tạo...';
+                    try {
+                        const res = await fetch('http://localhost:5089/api/generate-description/brand', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name })
+                        });
+                        if (!res.ok) throw new Error();
+                        const data = await res.json();
+                        document.getElementById('descriptionField').value = data.description;
+                        showGenStatus('success', '<i class="fa fa-check-circle me-1"></i>Mô tả đã được tạo. Bạn có thể chỉnh sửa thêm.');
+                    } catch {
+                        showGenStatus('danger', '<i class="fa fa-times-circle me-1"></i>Không thể tạo mô tả. Vui lòng thử lại.');
+                    } finally {
+                        btn.disabled = false;
+                        btn.innerHTML = '<i class="fa fa-magic me-1"></i>Tạo mô tả tự động';
+                    }
+                });
+                function showGenStatus(type, html) {
+                    const el = document.getElementById('genDescStatus');
+                    el.className = 'small mt-1 text-' + type;
+                    el.innerHTML = html;
+                    el.style.display = html ? '' : 'none';
+                }
+            </script>
         }
-    </script>
-}

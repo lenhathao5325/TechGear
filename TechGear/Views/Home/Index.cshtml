@@ -57,7 +57,9 @@
 
                     <div class="product-img-wrap bg-light mx-2 mt-2 rounded">
                         <a asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">
-                            <img src="@item.ImageUrl" alt="@item.Name" />
+                            <img src="@(string.IsNullOrEmpty(item.ImageUrl) ? "/images/no-image.svg" : item.ImageUrl)"
+                                 alt="@item.Name"
+                                 onerror="this.src='/images/no-image.svg'" />
                         </a>
                     </div>
 

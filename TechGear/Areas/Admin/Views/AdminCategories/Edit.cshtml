@@ -31,70 +31,116 @@
                         <input type="hidden" asp-for="CreatedAt" />
 
                         <div class="mb-3">
-                            <label asp-for="CategoryName" class="form-label fw-bold">Tên danh mục <span class="text-danger">*</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="fa fa-tag"></i></span>
-                                <input asp-for="CategoryName" class="form-control" />
+                            <label asp-for="CategoryName" class="form-label fw-bold">Tên danh mục <span
+                                class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light"><i class="fa fa-tag"></i></span>
+                                    <input asp-for="CategoryName" class="form-control" />
+                                </div>
+                                <span asp-validation-for="CategoryName" class="text-danger small"></span>
                             </div>
-                            <span asp-validation-for="CategoryName" class="text-danger small"></span>
-                        </div>
 
-                        <div class="mb-3">
-                            <label asp-for="Description" class="form-label fw-bold">Mô tả</label>
-                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                            <span asp-validation-for="Description" class="text-danger small"></span>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label fw-bold text-muted small">Ngày tạo (Read-only)</label>
-                            <input type="text" class="form-control bg-light" value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
-                        </div>
-
-                        <div class="mb-4">
-                            <label class="form-label fw-bold d-block">Trạng thái</label>
-                            <div class="form-check form-switch p-0 m-0 border rounded px-3 py-2 bg-light d-flex align-items-center">
-                                <input asp-for="IsActive" class="form-check-input ms-0 me-2" type="checkbox" role="switch" id="activeSwitch" style="cursor: pointer;">
-                                <label class="form-check-label cursor-pointer fw-bold" for="activeSwitch" id="activeLabel">
-                                    @(Model.IsActive ? "Đang hoạt động" : "Đang ẩn")
-                                </label>
+                            <div class="mb-3">
+                                <div class="d-flex align-items-center justify-content-between mb-1">
+                                    <label asp-for="Description" class="form-label fw-bold mb-0">Mô tả</label>
+                                    <button type="button" id="btnGenDesc" class="btn btn-sm btn-outline-primary">
+                                        <i class="fa fa-magic me-1"></i>Tạo mô tả tự động
+                                    </button>
+                                </div>
+                                <textarea asp-for="Description" class="form-control" rows="4"
+                                          id="descriptionField"></textarea>
+                                <span asp-validation-for="Description" class="text-danger small"></span>
+                                <div id="genDescStatus" class="small mt-1" style="display:none"></div>
                             </div>
-                        </div>
 
-                        <hr />
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-muted small">Ngày tạo (Read-only)</label>
+                                <input type="text" class="form-control bg-light"
+                                       value="@Model.CreatedAt.ToString("dd/MM/yyyy HH:mm")" readonly />
+                            </div>
 
-                        <div class="d-flex justify-content-end gap-2">
-                            <a asp-action="Index" class="btn btn-secondary">
-                                <i class="fa fa-arrow-left"></i> Quay lại
-                            </a>
-                            <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
-                                <i class="fa fa-save"></i> Lưu thay đổi
-                            </button>
-                        </div>
-                    </form>
+                            <div class="mb-4">
+                                <label class="form-label fw-bold d-block">Trạng thái</label>
+                                <div
+                                    class="form-check form-switch p-0 m-0 border rounded px-3 py-2 bg-light d-flex align-items-center">
+                                    <input asp-for="IsActive" class="form-check-input ms-0 me-2" type="checkbox"
+                                           role="switch" id="activeSwitch" style="cursor: pointer;">
+                                    <label class="form-check-label cursor-pointer fw-bold" for="activeSwitch"
+                                           id="activeLabel">
+                                        @(Model.IsActive ? "Đang hoạt động" : "Đang ẩn")
+                                    </label>
+                                </div>
+                            </div>
+
+                            <hr />
+
+                            <div class="d-flex justify-content-end gap-2">
+                                <a asp-action="Index" class="btn btn-secondary">
+                                    <i class="fa fa-arrow-left"></i> Quay lại
+                                </a>
+                                <button type="submit" class="btn text-white fw-bold" style="background-color: #ff6a00;">
+                                    <i class="fa fa-save"></i> Lưu thay đổi
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @section Scripts {
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        }
 
-    <script>
-        // Script nhỏ để thay đổi text trạng thái khi bấm nút switch
-        document.getElementById('activeSwitch').addEventListener('change', function() {
-            var label = document.getElementById('activeLabel');
-            if(this.checked) {
-                label.innerText = "Đang hoạt động";
-                label.classList.remove("text-secondary");
-                label.classList.add("text-success");
-            } else {
-                label.innerText = "Đang ẩn";
-                label.classList.remove("text-success");
-                label.classList.add("text-secondary");
+        <script>
+            // Switch label
+            document.getElementById('activeSwitch').addEventListener('change', function () {
+                var label = document.getElementById('activeLabel');
+                if (this.checked) {
+                    label.innerText = "Đang hoạt động";
+                    label.classList.remove("text-secondary");
+                    label.classList.add("text-success");
+                } else {
+                    label.innerText = "Đang ẩn";
+                    label.classList.remove("text-success");
+                    label.classList.add("text-secondary");
+                }
+            });
+
+            // Auto-generate description
+            document.getElementById('btnGenDesc').addEventListener('click', async function () {
+                const name = document.querySelector('[name="CategoryName"]').value.trim();
+                if (!name) {
+                    showGenStatus('warning', '<i class="fa fa-exclamation-triangle me-1"></i>Vui lòng nhập tên danh mục trước.');
+                    return;
+                }
+                const btn = this;
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fa fa-spinner fa-spin me-1"></i>Đang tạo...';
+                try {
+                    const res = await fetch('http://localhost:5089/api/generate-description/category', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name })
+                    });
+                    if (!res.ok) throw new Error();
+                    const data = await res.json();
+                    document.getElementById('descriptionField').value = data.description;
+                    showGenStatus('success', '<i class="fa fa-check-circle me-1"></i>Mô tả đã được tạo. Bạn có thể chỉnh sửa thêm.');
+                } catch {
+                    showGenStatus('danger', '<i class="fa fa-times-circle me-1"></i>Không thể tạo mô tả. Vui lòng thử lại.');
+                } finally {
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fa fa-magic me-1"></i>Tạo mô tả tự động';
+                }
+            });
+            function showGenStatus(type, html) {
+                const el = document.getElementById('genDescStatus');
+                el.className = 'small mt-1 text-' + type;
+                el.innerHTML = html;
+                el.style.display = html ? '' : 'none';
             }
-        });
-    </script>
-}
+        </script>
+    }

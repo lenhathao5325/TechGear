@@ -88,12 +88,15 @@ namespace TechGear.Areas.Admin.Controllers
                             streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(viewModel.ImageFile.ContentType);
                             formData.Add(streamContent, "file", viewModel.ImageFile.FileName);
 
-                            // Call upload API
-                            var uploadResponse = await _apiService.PostAsync<dynamic>("api/upload/image?folder=products", formData);
-                            
-                            if (uploadResponse != null && uploadResponse.success == true)
+                            // Call upload API (Create)
+                            var uploadResponse = await _apiService.PostMultipartAsync<System.Text.Json.JsonElement>("api/upload/image?folder=products", formData);
+
+                            if (uploadResponse.ValueKind != System.Text.Json.JsonValueKind.Undefined
+                                && uploadResponse.TryGetProperty("success", out var successPropC)
+                                && successPropC.GetBoolean()
+                                && uploadResponse.TryGetProperty("imageUrl", out var urlPropC))
                             {
-                                imageUrl = uploadResponse.imageUrl.ToString();
+                                imageUrl = urlPropC.GetString();
                             }
                         }
                         catch (Exception uploadEx)
@@ -197,12 +200,15 @@ namespace TechGear.Areas.Admin.Controllers
                             streamContent.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(viewModel.ImageFile.ContentType);
                             formData.Add(streamContent, "file", viewModel.ImageFile.FileName);
 
-                            // Call upload API
-                            var uploadResponse = await _apiService.PostAsync<dynamic>("api/upload/image?folder=products", formData);
-                            
-                            if (uploadResponse != null && uploadResponse.success == true)
+                            // Call upload API (Edit)
+                            var uploadResponse = await _apiService.PostMultipartAsync<System.Text.Json.JsonElement>("api/upload/image?folder=products", formData);
+
+                            if (uploadResponse.ValueKind != System.Text.Json.JsonValueKind.Undefined
+                                && uploadResponse.TryGetProperty("success", out var successPropE)
+                                && successPropE.GetBoolean()
+                                && uploadResponse.TryGetProperty("imageUrl", out var urlPropE))
                             {
-                                imageUrl = uploadResponse.imageUrl.ToString();
+                                imageUrl = urlPropE.GetString();
                             }
                         }
                         catch (Exception uploadEx)

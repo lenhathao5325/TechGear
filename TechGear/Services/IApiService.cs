@@ -7,6 +7,7 @@ namespace TechGear.Services
         // Generic methods for API calls
         Task<T?> GetAsync<T>(string endpoint);
         Task<T?> PostAsync<T>(string endpoint, object data);
+        Task<T?> PostMultipartAsync<T>(string endpoint, MultipartFormDataContent formData);
         Task<bool> PutAsync<T>(string endpoint, object data);
         Task<bool> DeleteAsync(string endpoint);
         

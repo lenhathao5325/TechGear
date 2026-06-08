@@ -246,5 +246,85 @@ namespace TechGearAPI.Controllers
 
             return Ok(new { message = "Đã xoá sản phẩm" });
         }
+
+        // ================= SEARCH PRODUCTS =================
+        [HttpGet("search")]
+        public async Task<IActionResult> Search([FromQuery] string q)
+        {
+            if (string.IsNullOrWhiteSpace(q))
+                return Ok(new List<object>());
+
+            var keyword = q.Trim().ToLower();
+
+            var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                .Where(p => p.Name.ToLower().Contains(keyword)
+                         || (p.Brand != null && p.Brand.BrandName.ToLower().Contains(keyword))
+                         || (p.Category != null && p.Category.CategoryName.ToLower().Contains(keyword)))
+                .Take(10)
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.ImageUrl,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : null,
+                    BrandName = p.Brand != null ? p.Brand.BrandName : null,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
+
+        // ================= COMPARE PRODUCTS =================
+        [HttpGet("compare")]
+        public async Task<IActionResult> Compare([FromQuery] string ids)
+        {
+            if (string.IsNullOrWhiteSpace(ids))
+                return BadRequest("Vui lòng cung cấp danh sách id sản phẩm.");
+
+            var idList = ids.Split(',')
+                .Select(s => int.TryParse(s.Trim(), out var n) ? n : 0)
+                .Where(n => n > 0)
+                .Distinct()
+                .Take(4)
+                .ToList();
+
+            if (idList.Count < 2)
+                return BadRequest("Cần ít nhất 2 sản phẩm để so sánh.");
+
+            var products = await _context.productAPIs
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.ProductVariants)
+                .Include(p => p.ProductOptions)
+                    .ThenInclude(o => o.ProductOptionValues)
+                .Where(p => idList.Contains(p.Id))
+                .Select(p => new
+                {
+                    p.Id,
+                    p.Name,
+                    p.Description,
+                    p.ImageUrl,
+                    CategoryName = p.Category != null ? p.Category.CategoryName : null,
+                    BrandName = p.Brand != null ? p.Brand.BrandName : null,
+                    MinPrice = p.ProductVariants.Any() ? p.ProductVariants.Min(v => v.Price) : (decimal?)null,
+                    MaxPrice = p.ProductVariants.Any() ? p.ProductVariants.Max(v => v.Price) : (decimal?)null,
+                    TotalStock = p.ProductVariants.Any() ? p.ProductVariants.Sum(v => v.Stock) : 0,
+                    Options = p.ProductOptions.Select(o => new
+                    {
+                        OptionName = o.Name,
+                        Values = o.ProductOptionValues.Select(v => v.Value)
+                    })
+                })
+                .ToListAsync();
+
+            return Ok(products);
+        }
     }
 }
